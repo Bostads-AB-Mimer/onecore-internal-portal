@@ -1,6 +1,6 @@
 {
   "name": "yggdrasil-internal-portal",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Coworker web portal",
   "main": "index.js",
   "scripts": {
