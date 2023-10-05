@@ -1,0 +1,36 @@
+name: Production
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  production:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        context:
+          - backend
+          - frontend
+
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+
+      - name: 🔐 Login to Docker Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔧 Build and push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          build-args: |
+            BACKEND_URL=/api
+          context: ./packages/${{ matrix.context }}
+          push: true
+          tags: |
+            ghcr.io/bostads-ab-mimer/yggdrasil-internal-portal-${{ matrix.context }}:release-${{ github.event.release.tag_name }}
