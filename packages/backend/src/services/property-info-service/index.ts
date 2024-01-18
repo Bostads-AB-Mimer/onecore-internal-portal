@@ -3,21 +3,15 @@ import { getMaterialChoiceStatuses, getMaterialChoices } from './adapters/core-a
 
 export const routes = (router: KoaRouter) => {
   router.get('(.*)/rentalproperties/material-choice-statuses', async (ctx) => {
-    const materialChoiceStatuses = await getMaterialChoiceStatuses('gryta')
-
-    ctx.body = materialChoiceStatuses
+    ctx.body = await getMaterialChoiceStatuses('gryta')
   })
 
   router.get('(.*)/rentalproperties/:id/material-choices', async (ctx) => {
-    const materialChoices = await getMaterialChoices(ctx.params.id)
-
-    ctx.body = materialChoices
+    ctx.body =  await getMaterialChoices(ctx.params.id)
   })
 
   router.get('(.*)/rentalproperties/:apartmentId/:contractId/material-choices', async (ctx) => {
-    const materialChoices = await getMaterialChoices(ctx.params.apartmentId, ctx.params.contractId)
-
-    ctx.body = materialChoices
+    ctx.body = await getMaterialChoices(ctx.params.apartmentId, ctx.params.contractId)
   })
 }
 

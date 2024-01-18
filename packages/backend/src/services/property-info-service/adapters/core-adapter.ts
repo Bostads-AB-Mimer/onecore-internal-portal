@@ -25,11 +25,9 @@ const getAccessToken = async () => {
 }
 
 const createHeaders = (accessToken: string) => {
-  const headers = {
+  return {
     Authorization: 'Bearer ' + accessToken,
   }
-
-  return headers
 }
 
 const getFromCore = async (
