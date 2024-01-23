@@ -1,4 +1,4 @@
-# Mimer Tenant Portal
+# Mimer Internal Portal
 
 ## Getting started
 
