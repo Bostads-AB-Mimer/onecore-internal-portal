@@ -1,5 +1,5 @@
 {
-  "name": "yggdrasil-internal-portal",
+  "name": "onecore-internal-portal",
   "version": "1.0.16",
   "description": "Coworker web portal",
   "main": "index.js",
@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Bostads-AB-Mimer/yggdrasil-internal-portal.git"
+    "url": "git+https://github.com/Bostads-AB-Mimer/onecore-internal-portal.git"
   },
   "author": "Anders Norrback Bornholm",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Bostads-AB-Mimer/yggdrasil-internal-portal/issues"
+    "url": "https://github.com/Bostads-AB-Mimer/onecore-internal-portal/issues"
   },
-  "homepage": "https://github.com/Bostads-AB-Mimer/yggdrasil-internal-portal#readme",
+  "homepage": "https://github.com/Bostads-AB-Mimer/onecore-internal-portal#readme",
   "dependencies": {}
 }
