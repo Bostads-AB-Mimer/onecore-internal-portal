@@ -15,10 +15,5 @@
   "bugs": {
     "url": "https://github.com/Bostads-AB-Mimer/onecore-internal-portal/issues"
   },
-<<<<<<< HEAD
-  "homepage": "https://github.com/Bostads-AB-Mimer/onecore-internal-portal#readme",
-  "dependencies": {}
-=======
   "homepage": "https://github.com/Bostads-AB-Mimer/yggdrasil-internal-portal#readme"
->>>>>>> f30d79b (feat: Use types from onecore-types)
 }
