@@ -13,7 +13,7 @@ const ParkingSpaces = () => {
         cellClassName: '',
         editable: false,
         flex: 1,
-        headerClassName: ''
+        headerClassName: 'font-bison-bold text-lg text-fuscous-gray',
     }
 
     const columns: GridColDef[] = [
