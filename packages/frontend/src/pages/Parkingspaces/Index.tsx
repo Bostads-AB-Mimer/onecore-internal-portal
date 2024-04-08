@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react'
 
 import DataGridTable from '../../components/DataGridTable'
 
-
-
 const ParkingSpaces = () => {
   const [rows, setData] = useState([])
 
@@ -19,11 +17,12 @@ const ParkingSpaces = () => {
         const response = await axios.get(
           'http://localhost:5020/listings-with-applicants'
         )
-
+        console.log(response.data)
         //todo: use onecore-types
         const rows = response.data.map((item) => ({
           address: item.Address,
           rentalPropertyId: item.RentalObjectCode,
+          rent: formatRent(item.MonthlyRent),
           numberOfApplicants: item.applicants.length,
           publishedFrom: formatDateString(item.PublishedFrom),
           publishedTo: formatDateString(item.PublishedTo),
@@ -49,6 +48,12 @@ const ParkingSpaces = () => {
       .padStart(2, '0')}`
   }
 
+  const formatRent = (rent: string) => {
+    const parsedRent = parseInt(rent)
+    const rounded = Math.round(parsedRent)
+    return `${rounded}/kr/mån`
+  }
+
   const sharedProps = {
     cellClassName: '',
     editable: false,
@@ -65,6 +70,11 @@ const ParkingSpaces = () => {
     {
       field: 'rentalPropertyId',
       headerName: 'Hyresid',
+      ...sharedProps,
+    },
+    {
+      field: 'rent',
+      headerName: 'Hyra',
       ...sharedProps,
     },
     {

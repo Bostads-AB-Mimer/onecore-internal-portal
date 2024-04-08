@@ -21,9 +21,9 @@ const DataGridTable = ({
             disableRowSelectionOnClick
             hideFooter
             autoHeight
-            getRowClassName={(params) =>
-                params.indexRelativeToCurrentPage % 2 === 0 ? 'bg-white' : 'bg-alto'
-            }
+            // getRowClassName={(params) =>
+            //     params.indexRelativeToCurrentPage % 2 === 0 ? 'bg-white' : 'bg-alto'
+            // }
             //sx={{ '&, [class^=MuiDataGrid]': { border: 'none'} }}
         />
     );
