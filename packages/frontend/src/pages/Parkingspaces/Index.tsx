@@ -3,23 +3,22 @@ import type { GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
 import * as React from 'react'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react'
 
 import DataGridTable from '../../components/DataGridTable'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 const ParkingSpaces = () => {
-  const [rows, setData] = useState([])
+  const [rows, setData] = useState([]);
 
-  //todo: for demo only, setup backend connection
   useEffect(() => {
-    const getListingsWithApplicants = async () => {
+    const getListingsWithApplicantsRequest = async () => {
       try {
-        const response = await axios.get(
-          'http://localhost:5020/listings-with-applicants'
-        )
+        const response = await axios.get(`${backendUrl}/leases/listings-with-applicants`)
         console.log(response.data)
+        console.log("Type of response.data:", typeof response.data);
         //todo: use onecore-types
-        const rows = response.data.map((item) => ({
+        const rows = response.data.data.map((item: any) => ({
           address: item.Address,
           rentalPropertyId: item.RentalObjectCode,
           rent: formatRent(item.MonthlyRent),
@@ -33,7 +32,7 @@ const ParkingSpaces = () => {
       }
     }
 
-    getListingsWithApplicants()
+    getListingsWithApplicantsRequest()
   }, [])
 
   const formatDateString = (dateString: string) => {
