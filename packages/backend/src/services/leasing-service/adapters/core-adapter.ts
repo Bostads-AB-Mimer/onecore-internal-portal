@@ -5,12 +5,11 @@ const coreBaseUrl = Config.core.url
 
 const getListingsWithApplicants = async () => {
   const url = `${coreBaseUrl}/listings-with-applicants`
-  console.log("doing req at url: ", url)
-  const committedChoicesResponse = await getFromCore({
+  const listingsResponse = await getFromCore({
     method: 'get',
     url: url
   })
 
-  return committedChoicesResponse.data
+  return listingsResponse.data
 }
 export { getListingsWithApplicants }
