@@ -15,13 +15,10 @@ const ParkingSpaces = () => {
     const getListingsWithApplicantsRequest = async () => {
       try {
         const response = await axios.get(`${backendUrl}/leases/listings-with-applicants`)
-        console.log(response.data)
-        console.log("Type of response.data:", typeof response.data);
         //todo: use onecore-types
         const rows = response.data.data.map((item: any) => ({
           address: item.Address,
           rentalPropertyId: item.RentalObjectCode,
-          rent: formatRent(item.MonthlyRent),
           numberOfApplicants: item.applicants.length,
           publishedFrom: formatDateString(item.PublishedFrom),
           publishedTo: formatDateString(item.PublishedTo),
@@ -47,12 +44,6 @@ const ParkingSpaces = () => {
       .padStart(2, '0')}`
   }
 
-  const formatRent = (rent: string) => {
-    const parsedRent = parseInt(rent)
-    const rounded = Math.round(parsedRent)
-    return `${rounded}/kr/mån`
-  }
-
   const sharedProps = {
     cellClassName: '',
     editable: false,
@@ -69,11 +60,6 @@ const ParkingSpaces = () => {
     {
       field: 'rentalPropertyId',
       headerName: 'Hyresid',
-      ...sharedProps,
-    },
-    {
-      field: 'rent',
-      headerName: 'Hyra',
       ...sharedProps,
     },
     {
