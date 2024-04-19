@@ -12,9 +12,10 @@ import GraphikRegular from '../assets/Graphik-Regular.woff2'
 import GraphikBold from '../assets/Graphik-Bold.woff2'
 import Login from './pages/Login/Login'
 import MaterialChoiceDetails from './pages/MaterialChoiceDetails/MaterialChoiceDetails'
-import ParkingSpaces from './pages/Parkingspaces/Index'
+import ParkingSpaces from './pages/ParkingSpaces/Index'
+import ParkingSpace from './pages/ParkingSpace'
 
-import type {} from '@mui/x-data-grid/themeAugmentation';
+import type {} from '@mui/x-data-grid/themeAugmentation'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -77,9 +78,7 @@ const graphikBold = {
 const mdTheme = createTheme({
   palette: {
     mode: 'light',
-    background: {
-
-    },
+    background: {},
     divider: '#951B81',
   },
   typography: {
@@ -221,7 +220,7 @@ const mdTheme = createTheme({
           border: 'none',
         },
         columnHeader: {
-          borderBottom: '2px solid black'
+          borderBottom: '2px solid black',
         },
       },
     },
@@ -246,7 +245,7 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
       if ((error as AxiosError).response?.status === 401) {
-        location.replace('/api/auth/login')
+        // location.replace('/api/auth/login')
       } else {
         console.log('An error occurred fetching data', error)
       }
@@ -264,9 +263,10 @@ function App() {
           <Grid item xs={11}>
             <SiteHeader />
             <Routes>
-              <Route path="/" element={<Home></Home>} />
-              <Route path="/logout" element={<Login></Login>} />
-              <Route path="/parkingspaces" element={<ParkingSpaces></ParkingSpaces>} />
+              <Route path="/" element={<Home />} />
+              <Route path="/logout" element={<Login />} />
+              <Route path="/parkingspaces" element={<ParkingSpaces />} />
+              <Route path="/parkingspace/:id" element={<ParkingSpace />} />
               <Route
                 path="/materialval/utskrift"
                 element={<MaterialChoiceDetails />}

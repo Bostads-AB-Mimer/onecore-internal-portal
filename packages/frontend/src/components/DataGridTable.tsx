@@ -1,26 +1,24 @@
-import * as React from 'react';
-import {DataGrid} from '@mui/x-data-grid';
-import type {GridColDef} from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid'
+import type { GridColDef } from '@mui/x-data-grid'
 
-const DataGridTable = ({
-                       rows,
-                       columns,
-                       getRowId,
-                   }: {
-    rows: any[],
-    columns: GridColDef[],
-    getRowId: any
-
-}) => {
-    return (
-        <DataGrid
-            rows={rows}
-            columns={columns}
-            getRowId={getRowId}
-            disableRowSelectionOnClick
-            hideFooter
-            autoHeight
-        />
-    );
+type Props = {
+  rows: any[]
+  columns: GridColDef[]
+  getRowId: any
 }
+
+const DataGridTable = ({ rows, columns, getRowId }: Props) => {
+  return (
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      getRowId={getRowId}
+      disableRowSelectionOnClick
+      hideFooter
+      autoHeight
+    />
+  )
+}
+
 export default DataGridTable
+

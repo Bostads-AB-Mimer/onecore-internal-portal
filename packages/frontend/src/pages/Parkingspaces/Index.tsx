@@ -1,20 +1,24 @@
 import { IconButton, Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
-import * as React from 'react'
 import axios from 'axios'
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import DataGridTable from '../../components/DataGridTable'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
+
 const ParkingSpaces = () => {
-  const [rows, setData] = useState([]);
+  const navigate = useNavigate()
+  const [rows, setData] = useState([])
 
   useEffect(() => {
     const getListingsWithApplicantsRequest = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/leases/listings-with-applicants`)
+        const response = await axios.get(
+          `${backendUrl}/leases/listings-with-applicants`
+        )
         //todo: use onecore-types
         console.log(response)
         const rows = response.data.map((item: any) => ({
@@ -37,6 +41,7 @@ const ParkingSpaces = () => {
     const date = new Date(dateString)
 
     const year = date.getFullYear()
+
     const month = date.getMonth() + 1
     const day = date.getDate()
 
@@ -82,10 +87,8 @@ const ParkingSpaces = () => {
       field: 'action',
       headerName: '',
       sortable: false,
-      renderCell: () => (
-        <IconButton
-          onClick={() => console.log('todo: implement collapsed view')}
-        >
+      renderCell: (x) => (
+        <IconButton onClick={() => navigate(`/parkingspace/${x.id}`)}>
           <Chevron />
         </IconButton>
       ),
@@ -94,14 +97,14 @@ const ParkingSpaces = () => {
 
   return (
     <div>
-      <Typography className="pb-8" variant="h1">
+      <Typography paddingBottom="2rem" variant="h1">
         Intresseanmälningar Parkeringsplats
       </Typography>
       <DataGridTable
         columns={columns}
         rows={rows}
         getRowId={(row: any) => row.rentalPropertyId}
-      ></DataGridTable>
+      />
     </div>
   )
 }
