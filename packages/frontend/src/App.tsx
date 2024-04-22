@@ -36,6 +36,12 @@ declare module '@mui/material/styles' {
   }
 }
 
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    dark: true
+  }
+}
+
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
@@ -86,6 +92,7 @@ const mdTheme = createTheme({
     mode: 'light',
     background: {},
     divider: '#951B81',
+    grey: { '200': 'rgba(217, 217, 217, 0.5)' },
   },
   typography: {
     title: {
@@ -169,16 +176,29 @@ const mdTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          marginTop: 20,
-          marginBottom: 20,
           textTransform: 'initial',
-          backgroundColor: '#00578A',
-          borderRadius: '100px',
+          backgroundColor: 'black',
           fontFamily: 'graphikRegular',
           fontSize: 14,
           fontWeight: 500,
         },
       },
+      variants: [
+        {
+          props: { variant: 'dark' },
+          style: {
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontWeight: 700,
+            backgrundColor: 'rgba(0, 0, 0, 1)',
+            color: 'rgba(255, 255, 255, 1)',
+            transition: 'none',
+            ':hover': {
+              background: 'black',
+            },
+          },
+        },
+      ],
     },
     MuiLink: {
       styleOverrides: {

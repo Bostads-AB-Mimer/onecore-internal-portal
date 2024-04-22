@@ -60,7 +60,7 @@ const ParkingSpace = () => {
       headerName: '',
       sortable: false,
       renderCell: () => (
-        <Button variant="outlined" color="primary">
+        <Button variant="dark" color="primary">
           Ta bort
         </Button>
       ),
