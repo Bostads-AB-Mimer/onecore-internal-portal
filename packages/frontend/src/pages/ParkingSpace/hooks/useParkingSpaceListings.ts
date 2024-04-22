@@ -9,12 +9,12 @@ export interface ParkingSpaceListing {
 
 type Params = { id: string }
 
-export const useParkingSpaceListing = (params: Params) =>
-  useSuspenseQuery<ParkingSpaceListing, AxiosError>({
+export const useParkingSpaceListings = (params: Params) =>
+  useSuspenseQuery<ParkingSpaceListing[], AxiosError>({
     queryKey: ['parkingSpaceListing', params.id],
     queryFn: () =>
       axios
-        .get<ParkingSpaceListing>(
+        .get<ParkingSpaceListing[]>(
           `${backendUrl}/leases/listing-with-applicants/${params.id}`,
           {
             headers: {
