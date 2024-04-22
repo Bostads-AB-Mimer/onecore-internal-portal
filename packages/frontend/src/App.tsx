@@ -1,6 +1,10 @@
 import { CssBaseline, Grid, ThemeProvider, createTheme } from '@mui/material'
 import { Routes, Route } from 'react-router-dom'
-import { QueryCache, QueryClient, QueryClientProvider } from 'react-query'
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { alpha } from '@mui/material/styles'
 
@@ -239,7 +243,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 15 * (60 * 1000), // 15 mins
-      cacheTime: 30 * (60 * 1000), // 30 mins
+      gcTime: 30 * (60 * 1000), // 30 mins
     },
   },
   queryCache: new QueryCache({
