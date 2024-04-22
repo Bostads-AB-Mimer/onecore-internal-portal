@@ -7,7 +7,7 @@ type Props = {
   getRowId: any
 }
 
-const DataGridTable = ({ rows, columns, getRowId }: Props) => {
+export const DataGridTable = ({ rows, columns, getRowId }: Props) => {
   return (
     <DataGrid
       rows={rows}
@@ -19,6 +19,3 @@ const DataGridTable = ({ rows, columns, getRowId }: Props) => {
     />
   )
 }
-
-export default DataGridTable
-

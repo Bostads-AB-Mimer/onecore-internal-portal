@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { CssBaseline, Grid, ThemeProvider, createTheme } from '@mui/material'
 import { Routes, Route } from 'react-router-dom'
 import {
@@ -7,6 +9,7 @@ import {
 } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { alpha } from '@mui/material/styles'
+import type {} from '@mui/x-data-grid/themeAugmentation'
 
 import Home from './pages/Home/Home'
 import SiteHeader from './components/SiteHeader'
@@ -18,8 +21,7 @@ import Login from './pages/Login/Login'
 import MaterialChoiceDetails from './pages/MaterialChoiceDetails/MaterialChoiceDetails'
 import ParkingSpaces from './pages/ParkingSpaces/Index'
 import ParkingSpace from './pages/ParkingSpace'
-
-import type {} from '@mui/x-data-grid/themeAugmentation'
+import { ParkingSpaceLoading } from './pages/ParkingSpace/components'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -226,6 +228,7 @@ const mdTheme = createTheme({
         columnHeader: {
           borderBottom: '2px solid black',
         },
+        cell: { fontSize: '1.25em' },
       },
     },
     MuiCardActions: {
@@ -249,6 +252,7 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
       if ((error as AxiosError).response?.status === 401) {
+        // TODO: Uncomment this
         // location.replace('/api/auth/login')
       } else {
         console.log('An error occurred fetching data', error)
@@ -256,6 +260,19 @@ const queryClient = new QueryClient({
     },
   }),
 })
+
+const PageBase = (props: {
+  children: React.ReactNode
+  fallback?: React.ReactNode
+}) => {
+  return (
+    <ErrorBoundary fallback={<div>error</div>}>
+      <Suspense fallback={props.fallback ?? <div>LOADING</div>}>
+        {props.children}
+      </Suspense>
+    </ErrorBoundary>
+  )
+}
 
 function App() {
   return (
@@ -268,13 +285,20 @@ function App() {
             <SiteHeader />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/logout" element={<Login />} />
               <Route path="/parkingspaces" element={<ParkingSpaces />} />
-              <Route path="/parkingspace/:id" element={<ParkingSpace />} />
+              <Route
+                path="/parkingspace/:id"
+                element={
+                  <PageBase fallback={<ParkingSpaceLoading />}>
+                    <ParkingSpace />
+                  </PageBase>
+                }
+              />
               <Route
                 path="/materialval/utskrift"
                 element={<MaterialChoiceDetails />}
               />
+              <Route path="/logout" element={<Login />} />
             </Routes>
           </Grid>
           <Grid item xs={0.5} />

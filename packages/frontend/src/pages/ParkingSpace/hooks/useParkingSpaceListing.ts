@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
@@ -10,13 +10,13 @@ export interface ApartmentChoiceStatus {
 
 type Params = { id: string }
 
-export const useParkingSpaceListing = (params: Params) => {
-  return useQuery<ApartmentChoiceStatus[], AxiosError>({
+export const useParkingSpaceListing = (params: Params) =>
+  useSuspenseQuery<ApartmentChoiceStatus[], AxiosError>({
     queryKey: ['parkingSpaceListing', params.id],
     queryFn: () =>
       axios
         .get<ApartmentChoiceStatus[]>(
-          `${backendUrl}/leases/listings-with-applicants`,
+          `${backendUrl}/leases/listing-with-applicants/${params.id}`,
           {
             headers: {
               Accept: 'application/json',
@@ -37,4 +37,3 @@ export const useParkingSpaceListing = (params: Params) => {
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   })
-}

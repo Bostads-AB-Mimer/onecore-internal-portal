@@ -2,10 +2,12 @@ import { Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
 
-import DataGridTable from '../../components/DataGridTable'
+import { useParkingSpaceListing } from './hooks/useParkingSpaceListing'
+import { PageGoBackTo, DataGridTable } from '../../components'
 
 const ParkingSpace = () => {
   const routeParams = useParams<'id'>()
+  const data = useParkingSpaceListing({ id: routeParams.id ?? '' })
 
   const sharedProps = {
     cellClassName: '',
@@ -59,7 +61,8 @@ const ParkingSpace = () => {
   ]
 
   return (
-    <div>
+    <>
+      <PageGoBackTo to="/parkingspaces" text="Översikt Intresseanmälningar" />
       <Typography paddingBottom="2rem" variant="h1">
         Intresseanmälningar {routeParams.id}
       </Typography>
@@ -68,7 +71,7 @@ const ParkingSpace = () => {
         rows={[]}
         getRowId={(row: any) => row.rentalPropertyId}
       />
-    </div>
+    </>
   )
 }
 
