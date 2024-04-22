@@ -1,2 +1,2 @@
 export * from './ParkingSpaceLoading'
-export * from './RemoveListing'
+export * from './RemoveApplicantFromListing'

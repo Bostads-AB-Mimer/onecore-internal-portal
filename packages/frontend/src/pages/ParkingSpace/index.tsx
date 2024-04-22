@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useParkingSpaceListings } from './hooks/useParkingSpaceListings'
 import { PageGoBackTo, DataGridTable } from '../../components'
-import { RemoveListing } from './components'
+import { RemoveApplicantFromListing } from './components'
 
 const ParkingSpace = () => {
   const routeParams = useParams<'id'>()
@@ -61,7 +61,8 @@ const ParkingSpace = () => {
       headerName: '',
       sortable: false,
       renderCell: (v) => (
-        <RemoveListing
+        <RemoveApplicantFromListing
+          listingId={routeParams.id ?? ''}
           applicantId={v.row.id}
           applicantName={v.row.name}
           listingAddress={v.row.address}
