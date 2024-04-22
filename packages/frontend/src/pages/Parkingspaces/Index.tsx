@@ -16,7 +16,8 @@ const ParkingSpaces = () => {
       try {
         const response = await axios.get(`${backendUrl}/leases/listings-with-applicants`)
         //todo: use onecore-types
-        const rows = response.data.data.map((item: any) => ({
+        console.log(response)
+        const rows = response.data.map((item: any) => ({
           address: item.Address,
           rentalPropertyId: item.RentalObjectCode,
           numberOfApplicants: item.applicants.length,
