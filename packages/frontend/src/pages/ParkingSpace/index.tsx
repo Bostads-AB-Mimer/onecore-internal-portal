@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Divider, Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
 
@@ -82,6 +82,16 @@ const ParkingSpace = () => {
         rows={parkingSpaceListings}
         getRowId={(row: any) => row.listed}
       />
+      <Divider
+        sx={{
+          borderBottomWidth: '1.85px',
+          borderColor: 'black',
+          paddingTop: '4rem',
+        }}
+      />
+      <Typography paddingBottom="2rem" variant="h1" paddingTop="2rem">
+        Objektsinformation{' '}
+      </Typography>
     </>
   )
 }
