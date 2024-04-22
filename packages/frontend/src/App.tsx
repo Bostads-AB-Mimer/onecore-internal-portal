@@ -19,7 +19,7 @@ import GraphikRegular from '../assets/Graphik-Regular.woff2'
 import GraphikBold from '../assets/Graphik-Bold.woff2'
 import Login from './pages/Login/Login'
 import MaterialChoiceDetails from './pages/MaterialChoiceDetails/MaterialChoiceDetails'
-import ParkingSpaces from './pages/ParkingSpaces/Index'
+import ParkingSpaces from './pages/Parkingspaces'
 import ParkingSpace from './pages/ParkingSpace'
 import { ParkingSpaceLoading } from './pages/ParkingSpace/components'
 

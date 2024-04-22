@@ -59,7 +59,11 @@ const ParkingSpace = () => {
       field: 'action',
       headerName: '',
       sortable: false,
-      renderCell: () => <Button>hej</Button>,
+      renderCell: () => (
+        <Button variant="outlined" color="primary">
+          Ta bort
+        </Button>
+      ),
     },
   ]
 
