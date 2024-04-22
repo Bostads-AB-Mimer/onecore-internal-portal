@@ -1,9 +1,10 @@
-import { Button, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
 
 import { useParkingSpaceListings } from './hooks/useParkingSpaceListings'
 import { PageGoBackTo, DataGridTable } from '../../components'
+import { RemoveListing } from './components'
 
 const ParkingSpace = () => {
   const routeParams = useParams<'id'>()
@@ -59,10 +60,12 @@ const ParkingSpace = () => {
       field: 'action',
       headerName: '',
       sortable: false,
-      renderCell: () => (
-        <Button variant="dark" color="primary">
-          Ta bort
-        </Button>
+      renderCell: (v) => (
+        <RemoveListing
+          applicantId={v.row.id}
+          applicantName={v.row.name}
+          listingAddress={v.row.address}
+        />
       ),
     },
   ]
