@@ -3,19 +3,18 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-export interface ApartmentChoiceStatus {
-  apartmentId: string
-  numChoices: number
+export interface ParkingSpaceListing {
+  [key: string]: any
 }
 
 type Params = { id: string }
 
 export const useParkingSpaceListing = (params: Params) =>
-  useSuspenseQuery<ApartmentChoiceStatus[], AxiosError>({
+  useSuspenseQuery<ParkingSpaceListing, AxiosError>({
     queryKey: ['parkingSpaceListing', params.id],
     queryFn: () =>
       axios
-        .get<ApartmentChoiceStatus[]>(
+        .get<ParkingSpaceListing>(
           `${backendUrl}/leases/listing-with-applicants/${params.id}`,
           {
             headers: {

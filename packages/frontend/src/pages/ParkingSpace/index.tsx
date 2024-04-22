@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
 
@@ -7,7 +7,7 @@ import { PageGoBackTo, DataGridTable } from '../../components'
 
 const ParkingSpace = () => {
   const routeParams = useParams<'id'>()
-  const data = useParkingSpaceListing({ id: routeParams.id ?? '' })
+  const _data = useParkingSpaceListing({ id: routeParams.id ?? '' })
 
   const sharedProps = {
     cellClassName: '',
@@ -45,6 +45,7 @@ const ParkingSpace = () => {
     {
       field: 'has_parking_space',
       headerName: 'Har bilplats',
+      renderCell: (v: any) => (v.value ? 'Ja' : 'Nej'),
       ...sharedProps,
     },
     {
@@ -56,7 +57,7 @@ const ParkingSpace = () => {
       field: 'action',
       headerName: '',
       sortable: false,
-      renderCell: () => <div>hej</div>,
+      renderCell: () => <Button>hej</Button>,
     },
   ]
 
@@ -69,7 +70,7 @@ const ParkingSpace = () => {
       <DataGridTable
         columns={columns}
         rows={[]}
-        getRowId={(row: any) => row.rentalPropertyId}
+        getRowId={(row: any) => row.listed}
       />
     </>
   )
