@@ -33,6 +33,4 @@ export const useParkingSpaceListings = (params: Params) =>
         return failureCount < 3
       }
     },
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
   })

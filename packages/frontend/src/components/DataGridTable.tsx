@@ -6,6 +6,7 @@ type Props = {
   rows: any[]
   columns: GridColDef[]
   getRowId: any
+  loading?: boolean
 }
 
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -14,8 +15,9 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }))
 
-export const DataGridTable = ({ rows, columns, getRowId }: Props) => (
+export const DataGridTable = ({ rows, columns, getRowId, loading }: Props) => (
   <StripedDataGrid
+    loading={Boolean(loading)}
     rowHeight={65}
     rows={rows}
     columns={columns}
