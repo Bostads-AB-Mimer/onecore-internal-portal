@@ -66,7 +66,7 @@ const ParkingSpaces = () => {
       valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
     },
     {
-      field: 'publishedFrom',
+      field: 'vacantFrom',
       headerName: 'Ledig från och med',
       ...sharedProps,
       valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
