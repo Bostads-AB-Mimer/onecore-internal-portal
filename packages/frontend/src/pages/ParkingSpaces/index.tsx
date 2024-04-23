@@ -88,7 +88,7 @@ const ParkingSpaces = () => {
   ]
 
   return (
-    <div>
+    <>
       <Typography paddingBottom="2rem" variant="h1">
         Intresseanmälningar Parkeringsplats
       </Typography>
@@ -99,7 +99,7 @@ const ParkingSpaces = () => {
         getRowId={(row: any) => row.rentalObjectCode}
         loading={parkingSpaces.status === 'pending'}
       />
-    </div>
+    </>
   )
 }
 
