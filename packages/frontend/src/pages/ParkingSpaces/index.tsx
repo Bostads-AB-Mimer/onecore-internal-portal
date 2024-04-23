@@ -9,6 +9,10 @@ import { useParkingSpaces } from './hooks/useParkingSpaces'
 const ParkingSpaces = () => {
   const parkingSpaces = useParkingSpaces()
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
+  const numberFormatter = new Intl.NumberFormat('sv-SE', {
+    style: 'currency',
+    currency: 'SEK',
+  })
 
   const sharedProps = {
     cellClassName: '',
@@ -22,34 +26,57 @@ const ParkingSpaces = () => {
       field: 'address',
       headerName: 'Bilplats',
       ...sharedProps,
+      flex: 1.25,
+      renderCell: (v) => (
+        <span>
+          <span style={{ display: 'block' }}>{v.row.address}</span>
+          {v.row.rentalObjectCode}
+        </span>
+      ),
     },
     {
-      field: 'rentalObjectCode',
-      headerName: 'Hyresid',
+      field: 'foo',
+      headerName: 'Område',
       ...sharedProps,
+      renderCell: () => 'Område X',
+    },
+    {
+      field: 'rentalObjectTypeCaption',
+      headerName: 'Bilplatstyp',
+      ...sharedProps,
+      renderCell: () => 'Garage m el (foo)',
+    },
+    {
+      field: 'monthlyRent',
+      headerName: 'Hyra',
+      ...sharedProps,
+      valueFormatter: (v) => `${numberFormatter.format(v.value)}/mån`,
     },
     {
       field: 'applicants',
       headerName: 'Sökande',
       ...sharedProps,
-      renderCell: (v) => v.value.length,
-    },
-    {
-      field: 'publishedFrom',
-      headerName: 'Datum publicering',
-      ...sharedProps,
+      flex: 0.75,
+      valueFormatter: (v) => v.value.length,
     },
     {
       field: 'publishedTo',
-      headerName: 'Datum tilldelning',
+      headerName: 'Datum tilldelas',
+      ...sharedProps,
+    },
+    {
+      field: 'publishedFrom',
+      headerName: 'Ledig från och med',
       ...sharedProps,
     },
     {
       field: 'action',
       headerName: '',
       sortable: false,
-      renderCell: (x) => (
-        <Link to={`/parkingspace/${x.id}`}>
+      filterable: false,
+      disableColumnMenu: true,
+      renderCell: (v) => (
+        <Link to={`/parkingspace/${v.id}`}>
           <IconButton>
             <Chevron />
           </IconButton>

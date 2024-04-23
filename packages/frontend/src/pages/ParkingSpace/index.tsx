@@ -7,6 +7,7 @@ import { PageGoBackTo, DataGridTable } from '../../components'
 import { RemoveApplicantFromListing } from './components'
 
 const ParkingSpace = () => {
+  const dateFormatter = new Intl.DateTimeFormat('sv-SE')
   const routeParams = useParams<'id'>()
   const { data: parkingSpaceListings } = useParkingSpaceListings({
     id: routeParams.id ?? '',
@@ -60,6 +61,8 @@ const ParkingSpace = () => {
       field: 'action',
       headerName: '',
       sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
       renderCell: (v) => (
         <RemoveApplicantFromListing
           listingId={routeParams.id ?? ''}
@@ -71,6 +74,11 @@ const ParkingSpace = () => {
     },
   ]
 
+  const rows = parkingSpaceListings.map((v) => ({
+    ...v,
+    listed: dateFormatter.format(new Date(v.listed)),
+  }))
+
   return (
     <>
       <PageGoBackTo to="/parkingspaces" text="Översikt Intresseanmälningar" />
@@ -79,7 +87,7 @@ const ParkingSpace = () => {
       </Typography>
       <DataGridTable
         columns={columns}
-        rows={parkingSpaceListings}
+        rows={rows}
         getRowId={(row: any) => row.listed}
       />
       <Divider
