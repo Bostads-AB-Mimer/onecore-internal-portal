@@ -1,15 +1,16 @@
 import { Divider, Typography } from '@mui/material'
-import type { GridColDef } from '@mui/x-data-grid'
+import type { GridColDef, GridValueFormatterParams } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
+import { Applicant, ListingStatus } from 'onecore-types'
 
-import { useParkingSpaceListings } from './hooks/useParkingSpaceListings'
+import { useParkingSpaceListing } from './hooks/useParkingSpaceListing'
 import { PageGoBackTo, DataGridTable } from '../../components'
 import { RemoveApplicantFromListing } from './components'
 
 const ParkingSpace = () => {
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
   const routeParams = useParams<'id'>()
-  const { data: parkingSpaceListings } = useParkingSpaceListings({
+  const { data: parkingSpaceListing } = useParkingSpaceListing({
     id: routeParams.id ?? '',
   })
 
@@ -20,15 +21,16 @@ const ParkingSpace = () => {
     headerClassName: 'font-bison-bold text-lg text-fuscous-gray',
   }
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef<Applicant>[] = [
     {
       field: 'name',
       headerName: 'Namn',
       ...sharedProps,
     },
     {
-      field: 'points',
+      field: 'foo',
       headerName: 'Köpoäng',
+      renderCell: () => 'N/A',
       ...sharedProps,
     },
     {
@@ -40,20 +42,23 @@ const ParkingSpace = () => {
       field: 'status',
       headerName: 'Status',
       ...sharedProps,
+      valueFormatter: (v) => formatApplicationStatus(v.value),
     },
     {
-      field: 'listed',
+      field: 'applicationDate',
       headerName: 'Anmälan',
       ...sharedProps,
+      valueFormatter: (v: GridValueFormatterParams<string>) =>
+        dateFormatter.format(new Date(v.value)),
     },
     {
-      field: 'has_parking_space',
+      field: 'bar',
       headerName: 'Har bilplats',
-      renderCell: (v) => (v.value ? 'Ja' : 'Nej'),
+      valueFormatter: (v) => (v.value ? 'N/A' : 'N/A'),
       ...sharedProps,
     },
     {
-      field: 'type',
+      field: 'applicationType',
       headerName: 'Ärende',
       ...sharedProps,
     },
@@ -68,27 +73,22 @@ const ParkingSpace = () => {
           listingId={routeParams.id ?? ''}
           applicantId={v.row.id}
           applicantName={v.row.name}
-          listingAddress={v.row.address}
+          listingAddress={parkingSpaceListing.address}
         />
       ),
     },
   ]
 
-  const rows = parkingSpaceListings.map((v) => ({
-    ...v,
-    listed: dateFormatter.format(new Date(v.listed)),
-  }))
-
   return (
     <>
       <PageGoBackTo to="/parkingspaces" text="Översikt Intresseanmälningar" />
       <Typography paddingBottom="2rem" variant="h1">
-        Intresseanmälningar {routeParams.id}
+        Intresseanmälningar {parkingSpaceListing.address}
       </Typography>
       <DataGridTable
         columns={columns}
-        rows={rows}
-        getRowId={(row: any) => row.listed}
+        rows={parkingSpaceListing.applicants ?? []}
+        getRowId={(row: any) => row.id}
       />
       <Divider
         sx={{
@@ -97,11 +97,18 @@ const ParkingSpace = () => {
           paddingTop: '4rem',
         }}
       />
-      <Typography paddingBottom="2rem" variant="h1" paddingTop="2rem">
-        Objektsinformation{' '}
+      <Typography paddingY="2rem" variant="h1">
+        Objektsinformation
       </Typography>
     </>
   )
 }
+
+const formatApplicationStatus = (v: ListingStatus) =>
+  ({
+    [ListingStatus.Active]: 'Aktiv',
+    [ListingStatus.Assigned]: 'Tilldelad',
+    [ListingStatus.Deleted]: 'Borttagen',
+  }[v] ?? 'N/A')
 
 export default ParkingSpace

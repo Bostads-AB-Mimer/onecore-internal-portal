@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useRemoveParkingSpaceListing } from '../hooks/useRemoveParkingSpaceListing'
 
 export interface Props {
-  applicantId: string
+  applicantId: number
   applicantName: string
   listingAddress: string
   listingId: string
