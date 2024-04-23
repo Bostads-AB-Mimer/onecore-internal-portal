@@ -24,14 +24,15 @@ const ParkingSpaces = () => {
       ...sharedProps,
     },
     {
-      field: 'rentalPropertyId',
+      field: 'rentalObjectCode',
       headerName: 'Hyresid',
       ...sharedProps,
     },
     {
-      field: 'numberOfApplicants',
+      field: 'applicants',
       headerName: 'Sökande',
       ...sharedProps,
+      renderCell: (v) => v.value.length,
     },
     {
       field: 'publishedFrom',
@@ -59,11 +60,9 @@ const ParkingSpaces = () => {
 
   const rows =
     parkingSpaces.data?.map((item: any) => ({
-      address: item.Address,
-      rentalPropertyId: item.RentalObjectCode,
-      numberOfApplicants: item.applicants.length,
-      publishedFrom: dateFormatter.format(new Date(item.PublishedFrom)),
-      publishedTo: dateFormatter.format(new Date(item.PublishedTo)),
+      ...item,
+      publishedFrom: dateFormatter.format(new Date(item.publishedFrom)),
+      publishedTo: dateFormatter.format(new Date(item.publishedTo)),
     })) ?? []
 
   return (
@@ -75,7 +74,7 @@ const ParkingSpaces = () => {
       <DataGridTable
         columns={columns}
         rows={rows}
-        getRowId={(row: any) => row.rentalPropertyId}
+        getRowId={(row: any) => row.rentalObjectCode}
         loading={parkingSpaces.status === 'pending'}
       />
     </div>
