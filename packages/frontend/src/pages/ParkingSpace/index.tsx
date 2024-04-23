@@ -1,4 +1,4 @@
-import { Divider, Typography } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import type { GridColDef, GridValueFormatterParams } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
 import { Applicant, ListingStatus } from 'onecore-types'
@@ -9,6 +9,10 @@ import { RemoveApplicantFromListing } from './components'
 
 const ParkingSpace = () => {
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
+  const numberFormatter = new Intl.NumberFormat('sv-SE', {
+    style: 'currency',
+    currency: 'SEK',
+  })
   const routeParams = useParams<'id'>()
   const { data: parkingSpaceListing } = useParkingSpaceListing({
     id: routeParams.id ?? '',
@@ -26,22 +30,26 @@ const ParkingSpace = () => {
       field: 'name',
       headerName: 'Namn',
       ...sharedProps,
+      flex: 1.25,
     },
     {
       field: 'foo',
       headerName: 'Köpoäng',
       renderCell: () => 'N/A',
       ...sharedProps,
+      flex: 0.75,
     },
     {
       field: 'address',
       headerName: 'Boende/Adress',
       ...sharedProps,
+      flex: 1.25,
     },
     {
       field: 'status',
       headerName: 'Status',
       ...sharedProps,
+      flex: 0.75,
       valueFormatter: (v) => formatApplicationStatus(v.value),
     },
     {
@@ -100,6 +108,76 @@ const ParkingSpace = () => {
       <Typography paddingY="2rem" variant="h1">
         Objektsinformation
       </Typography>
+      <Box display="flex" justifyContent="space-between" gap="4rem">
+        <Box flex="0.5" paddingX="1rem">
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Bilplats</Typography>
+            <Box>
+              <Typography fontWeight="bold">
+                {parkingSpaceListing.address}
+              </Typography>
+              <Typography fontWeight="bold" textAlign="right">
+                {'N/A'}
+              </Typography>
+            </Box>
+          </Box>
+          <Box height="50px" />
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Skyltnummer</Typography>
+            <Box>
+              <Typography fontWeight="bold">{'N/A'}</Typography>
+            </Box>
+          </Box>
+          <Box height="50px" />
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Område</Typography>
+            <Box>
+              <Typography fontWeight="bold">{'N/A'}</Typography>
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Bilplatstyp</Typography>
+            <Box>
+              <Typography fontWeight="bold">{'N/A'}</Typography>
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Hyra</Typography>
+            <Box>
+              <Typography fontWeight="bold">{`${numberFormatter.format(
+                parkingSpaceListing.monthlyRent
+              )}/mån`}</Typography>
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Sökande</Typography>
+            <Box>
+              <Typography fontWeight="bold">
+                {parkingSpaceListing.applicants?.length ?? 0}
+              </Typography>
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Datum tilldelas</Typography>
+            <Box>
+              <Typography fontWeight="bold">
+                {dateFormatter.format(
+                  new Date(parkingSpaceListing.publishedTo)
+                )}
+              </Typography>
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Ledig från och med</Typography>
+            <Box>
+              <Typography fontWeight="bold">
+                {dateFormatter.format(new Date(parkingSpaceListing.vacantFrom))}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Box border="1px solid black" flex="1"></Box>
+      </Box>
     </>
   )
 }
