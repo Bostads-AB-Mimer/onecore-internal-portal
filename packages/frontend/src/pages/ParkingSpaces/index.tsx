@@ -63,11 +63,13 @@ const ParkingSpaces = () => {
       field: 'publishedTo',
       headerName: 'Datum tilldelas',
       ...sharedProps,
+      valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
     },
     {
       field: 'publishedFrom',
       headerName: 'Ledig från och med',
       ...sharedProps,
+      valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
     },
     {
       field: 'action',
@@ -85,13 +87,6 @@ const ParkingSpaces = () => {
     },
   ]
 
-  const rows =
-    parkingSpaces.data?.map((item: any) => ({
-      ...item,
-      publishedFrom: dateFormatter.format(new Date(item.publishedFrom)),
-      publishedTo: dateFormatter.format(new Date(item.publishedTo)),
-    })) ?? []
-
   return (
     <div>
       <Typography paddingBottom="2rem" variant="h1">
@@ -100,7 +95,7 @@ const ParkingSpaces = () => {
       {parkingSpaces.error && 'Error'}
       <DataGridTable
         columns={columns}
-        rows={rows}
+        rows={parkingSpaces.data ?? []}
         getRowId={(row: any) => row.rentalObjectCode}
         loading={parkingSpaces.status === 'pending'}
       />
