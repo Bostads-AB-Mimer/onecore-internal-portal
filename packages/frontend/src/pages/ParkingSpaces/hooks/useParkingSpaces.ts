@@ -1,14 +1,11 @@
 import axios, { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import { Listing } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-export interface ParkingSpace {
-  [key: string]: any
-}
-
 export const useParkingSpaces = () =>
-  useQuery<ParkingSpace[], AxiosError>({
+  useQuery<Array<Listing>, AxiosError>({
     queryKey: ['parkingSpaces'],
     queryFn: () =>
       axios
