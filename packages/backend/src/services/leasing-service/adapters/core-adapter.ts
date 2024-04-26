@@ -13,10 +13,13 @@ const getListingsWithApplicants = async () => {
   return listingsResponse.data
 }
 
-const getListingWithApplicants = (id: string) =>
-  getFromCore({
+const getListingWithApplicants = async (listingId: string) => {
+  const response = await getFromCore({
     method: 'get',
-    url: `${coreBaseUrl}/listing-with-applicants/${id}`,
-  }).then((res) => res.data)
+    url: `${coreBaseUrl}/listing/${listingId}`,
+  })
+
+  return response.data
+}
 
 export { getListingsWithApplicants, getListingWithApplicants }

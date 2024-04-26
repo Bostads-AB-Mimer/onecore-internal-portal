@@ -8,8 +8,10 @@ export const routes = (router: KoaRouter) => {
     ctx.body = listings
   })
 
-  router.get('(.*)/leases/listing-with-applicants/:id', async (ctx) => {
-    const listing = await coreAdapter.getListingWithApplicants(ctx.params.id)
+  router.get('(.*)/leases/listing-with-applicants/:leasingId', async (ctx) => {
+    const listing = await coreAdapter.getListingWithApplicants(
+      ctx.params.leasingId
+    )
 
     ctx.body = listing
   })
