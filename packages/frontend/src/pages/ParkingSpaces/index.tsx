@@ -2,6 +2,7 @@ import { IconButton, Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
 import { Link } from 'react-router-dom'
+import { Listing } from 'onecore-types'
 
 import { DataGridTable } from '../../components'
 import { useParkingSpaces } from './hooks/useParkingSpaces'
@@ -96,7 +97,7 @@ const ParkingSpaces = () => {
       <DataGridTable
         columns={columns}
         rows={parkingSpaces.data ?? []}
-        getRowId={(row: any) => row.rentalObjectCode}
+        getRowId={(row: Listing) => row.id}
         loading={parkingSpaces.status === 'pending'}
       />
     </>
