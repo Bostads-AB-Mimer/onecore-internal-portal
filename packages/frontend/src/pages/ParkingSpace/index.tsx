@@ -119,7 +119,7 @@ const ParkingSpace = () => {
                 {parkingSpaceListing.address}
               </Typography>
               <Typography fontWeight="bold" textAlign="right">
-                {'N/A'}
+                {parkingSpaceListing.rentalObjectCode}
               </Typography>
             </Box>
           </Box>
