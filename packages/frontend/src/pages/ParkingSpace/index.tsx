@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from '@mui/material'
+import { Box, Chip, Divider, Typography } from '@mui/material'
 import type { GridColDef, GridValueFormatterParams } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
 import { Applicant, ApplicantStatus } from 'onecore-types'
@@ -49,8 +49,9 @@ const ParkingSpace = () => {
       field: 'status',
       headerName: 'Status',
       ...sharedProps,
-      flex: 0.75,
+      flex: 1.25,
       valueFormatter: (v) => formatApplicantStatus(v.value),
+      renderCell: (v) => <Chip label={v.formattedValue} />,
     },
     {
       field: 'applicationDate',
@@ -64,6 +65,7 @@ const ParkingSpace = () => {
       headerName: 'Har bilplats',
       valueFormatter: (v) => (v.value ? 'N/A' : 'N/A'),
       ...sharedProps,
+      flex: 0.75,
     },
     {
       field: 'applicationType',
