@@ -25,8 +25,7 @@ export const RemoveApplicantFromListing = (props: Props) => {
 
   const onRemove = () =>
     removeListing.mutate(props, {
-      onSuccess: () =>
-        console.log('successfully removed applicant from listing'),
+      onSuccess: () => setOpen(false),
     })
 
   return (
@@ -70,7 +69,11 @@ export const RemoveApplicantFromListing = (props: Props) => {
               <Button variant="dark-outlined" onClick={() => setOpen(false)}>
                 Nej, avbryt
               </Button>
-              <Button variant="dark" onClick={onRemove}>
+              <Button
+                variant="dark"
+                onClick={onRemove}
+                disabled={removeListing.isPending}
+              >
                 Ja, ta bort
               </Button>
             </Box>

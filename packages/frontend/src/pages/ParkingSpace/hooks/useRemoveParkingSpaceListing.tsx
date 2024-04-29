@@ -10,7 +10,7 @@ export const useRemoveParkingSpaceListing = () => {
   return useMutation<unknown, AxiosError, Params>({
     mutationFn: (params: Params) =>
       axios
-        .put<unknown>(`${backendUrl}/leases/delete-endpoint`, params, {
+        .delete<unknown>(`${backendUrl}/applicant/${params.applicantId}`, {
           headers: {
             Accept: 'application/json',
             'Access-Control-Allow-Credentials': true,

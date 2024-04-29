@@ -15,4 +15,10 @@ export const routes = (router: KoaRouter) => {
 
     ctx.body = listing
   })
+
+  router.delete('(.*)/applicant/:applicantId', async (ctx) => {
+    const result = await coreAdapter.removeApplicant(ctx.params.applicantId)
+
+    ctx.body = result
+  })
 }

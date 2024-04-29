@@ -22,4 +22,13 @@ const getListingWithApplicants = async (listingId: string) => {
   return response.data
 }
 
-export { getListingsWithApplicants, getListingWithApplicants }
+const removeApplicant = async (applicantId: string) => {
+  const response = await getFromCore({
+    method: 'delete',
+    url: `${coreBaseUrl}/applicants/${applicantId}/by-manager`,
+  })
+
+  return response.data
+}
+
+export { getListingsWithApplicants, getListingWithApplicants, removeApplicant }

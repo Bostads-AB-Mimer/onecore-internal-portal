@@ -1,7 +1,7 @@
 import { Box, Divider, Typography } from '@mui/material'
 import type { GridColDef, GridValueFormatterParams } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
-import { Applicant, ListingStatus } from 'onecore-types'
+import { Applicant, ApplicantStatus } from 'onecore-types'
 
 import { useParkingSpaceListing } from './hooks/useParkingSpaceListing'
 import { PageGoBackTo, DataGridTable } from '../../components'
@@ -50,7 +50,7 @@ const ParkingSpace = () => {
       headerName: 'Status',
       ...sharedProps,
       flex: 0.75,
-      valueFormatter: (v) => formatApplicationStatus(v.value),
+      valueFormatter: (v) => formatApplicantStatus(v.value),
     },
     {
       field: 'applicationDate',
@@ -176,17 +176,21 @@ const ParkingSpace = () => {
             </Box>
           </Box>
         </Box>
-        <Box border="1px solid black" flex="1"></Box>
+        <Box border="1px solid black" flex="1" />
       </Box>
     </>
   )
 }
 
-const formatApplicationStatus = (v: ListingStatus) =>
-  ({
-    [ListingStatus.Active]: 'Aktiv',
-    [ListingStatus.Assigned]: 'Tilldelad',
-    [ListingStatus.Deleted]: 'Borttagen',
-  }[v] ?? 'N/A')
+const applicantStatusFormatMap: Record<ApplicantStatus, string> = {
+  [ApplicantStatus.Active]: 'Aktiv',
+  [ApplicantStatus.Assigned]: 'Tilldelad',
+  [ApplicantStatus.AssignedToOther]: 'Tilldelad annan',
+  [ApplicantStatus.WithdrawnByUser]: 'Borttagen av användare',
+  [ApplicantStatus.WithdrawnByManager]: 'Borttagen av medarbetare',
+}
+
+const formatApplicantStatus = (v: ApplicantStatus) =>
+  applicantStatusFormatMap[v]
 
 export default ParkingSpace
