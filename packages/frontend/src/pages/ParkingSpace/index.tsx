@@ -35,13 +35,14 @@ const ParkingSpace = () => {
     {
       field: 'foo',
       headerName: 'Köpoäng',
-      renderCell: () => 'N/A',
+      renderCell: () => <i>N/A</i>,
       ...sharedProps,
       flex: 0.75,
     },
     {
       field: 'address',
       headerName: 'Boende/Adress',
+      renderCell: () => <i>N/A</i>,
       ...sharedProps,
       flex: 1.25,
     },
@@ -64,12 +65,14 @@ const ParkingSpace = () => {
       field: 'bar',
       headerName: 'Har bilplats',
       valueFormatter: (v) => (v.value ? 'N/A' : 'N/A'),
+      renderCell: () => <i>N/A</i>,
       ...sharedProps,
       flex: 0.75,
     },
     {
       field: 'applicationType',
       headerName: 'Ärende',
+      renderCell: (v) => v.value || <i>N/A</i>,
       ...sharedProps,
     },
     {
