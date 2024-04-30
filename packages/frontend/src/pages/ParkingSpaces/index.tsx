@@ -1,4 +1,5 @@
-import { IconButton, Typography } from '@mui/material'
+import { Box, IconButton, TextField, Typography } from '@mui/material'
+import { useCallback, useMemo } from 'react'
 import type { GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
 import { Link } from 'react-router-dom'
@@ -7,6 +8,13 @@ import { Listing } from 'onecore-types'
 import { DataGridTable } from '../../components'
 import { useParkingSpaces } from './hooks/useParkingSpaces'
 
+const sharedProps = {
+  cellClassName: '',
+  editable: false,
+  flex: 1,
+  headerClassName: 'font-bison-bold text-lg text-fuscous-gray',
+}
+
 const ParkingSpaces = () => {
   const parkingSpaces = useParkingSpaces()
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
@@ -14,13 +22,6 @@ const ParkingSpaces = () => {
     style: 'currency',
     currency: 'SEK',
   })
-
-  const sharedProps = {
-    cellClassName: '',
-    editable: false,
-    flex: 1,
-    headerClassName: 'font-bison-bold text-lg text-fuscous-gray',
-  }
 
   const columns: GridColDef[] = [
     {
@@ -86,11 +87,25 @@ const ParkingSpaces = () => {
     },
   ]
 
+  const handleSearch = useCallback((v: string) => {
+    console.log('Searching for:', v)
+  }, [])
+
+  const onSearch = useMemo(() => debounce(handleSearch, 300), [handleSearch])
+
   return (
     <>
-      <Typography paddingBottom="2rem" variant="h1">
-        Intresseanmälningar Parkeringsplats
-      </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="flex-end"
+        paddingBottom="2rem"
+      >
+        <Typography variant="h1">
+          Intresseanmälningar Parkeringsplats
+        </Typography>
+        <SearchApplicant onChange={onSearch} />
+      </Box>
       {parkingSpaces.error && 'Error'}
       <DataGridTable
         columns={columns}
@@ -100,6 +115,38 @@ const ParkingSpaces = () => {
       />
     </>
   )
+}
+
+type SearchApplicantProps = {
+  onChange: (v: string) => void
+}
+
+const SearchApplicant = (props: SearchApplicantProps) => {
+  return (
+    <TextField
+      size="small"
+      variant="outlined"
+      placeholder="Sök kundnummer"
+      sx={{ width: '100%', maxWidth: 350 }}
+      onChange={(e) => props.onChange(e.currentTarget.value)}
+    />
+  )
+}
+
+function debounce<F extends (...args: any[]) => void>(
+  callback: F,
+  delay: number
+): (...args: Parameters<F>) => void {
+  let timer: NodeJS.Timeout | null = null
+
+  return (...args: Parameters<F>) => {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      callback(...args)
+    }, delay)
+  }
 }
 
 export default ParkingSpaces
