@@ -134,13 +134,17 @@ const ParkingSpace = () => {
           <Box display="flex" justifyContent="space-between" flex="1">
             <Typography>Område</Typography>
             <Box>
-              <Typography fontWeight="bold">{'N/A'}</Typography>
+              <Typography fontWeight="bold">
+                {parkingSpaceListing.districtCaption}
+              </Typography>
             </Box>
           </Box>
           <Box display="flex" justifyContent="space-between" flex="1">
             <Typography>Bilplatstyp</Typography>
             <Box>
-              <Typography fontWeight="bold">{'N/A'}</Typography>
+              <Typography fontWeight="bold">
+                {parkingSpaceListing.objectTypeCaption}
+              </Typography>
             </Box>
           </Box>
           <Box display="flex" justifyContent="space-between" flex="1">

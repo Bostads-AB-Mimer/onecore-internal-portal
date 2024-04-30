@@ -36,16 +36,14 @@ const ParkingSpaces = () => {
       ),
     },
     {
-      field: 'foo',
+      field: 'districtCaption',
       headerName: 'Område',
       ...sharedProps,
-      renderCell: () => 'Område X',
     },
     {
       field: 'rentalObjectTypeCaption',
       headerName: 'Bilplatstyp',
       ...sharedProps,
-      renderCell: () => 'Garage m el (foo)',
     },
     {
       field: 'monthlyRent',
