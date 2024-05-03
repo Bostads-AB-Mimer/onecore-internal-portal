@@ -114,6 +114,7 @@ const ParkingSpaces = () => {
       </Box>
       {parkingSpaces.error && 'Error'}
       <DataGridTable
+        emptyLabel="Det finns inga annonser att visa..."
         columns={columns}
         rows={filterListings(parkingSpaces.data ?? [], searchString)}
         getRowId={(row: Listing) => row.id}
