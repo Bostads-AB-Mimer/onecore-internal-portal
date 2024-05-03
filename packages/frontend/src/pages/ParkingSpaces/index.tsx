@@ -106,7 +106,11 @@ const ParkingSpaces = () => {
         <Typography variant="h1">
           Intresseanmälningar Parkeringsplats
         </Typography>
-        <SearchApplicant onChange={onSearch} />
+        <SearchApplicant
+          onChange={onSearch}
+          disabled={parkingSpaces.isLoading}
+          placeholder="Sök kundnummer"
+        />
       </Box>
       {parkingSpaces.error && 'Error'}
       <DataGridTable
@@ -133,13 +137,17 @@ const filterListings = (
 
 type SearchApplicantProps = {
   onChange: (v: string) => void
+  disabled: boolean
+  placeholder: string
 }
 
 const SearchApplicant = (props: SearchApplicantProps) => (
   <TextField
     size="small"
     variant="outlined"
-    placeholder="Sök kundnummer"
+    placeholder={props.placeholder}
+    disabled={props.disabled}
+    onChange={(e) => props.onChange(e.currentTarget.value)}
     sx={{
       width: '100%',
       maxWidth: 350,
@@ -165,7 +173,6 @@ const SearchApplicant = (props: SearchApplicantProps) => (
         },
       },
     }}
-    onChange={(e) => props.onChange(e.currentTarget.value)}
   />
 )
 
