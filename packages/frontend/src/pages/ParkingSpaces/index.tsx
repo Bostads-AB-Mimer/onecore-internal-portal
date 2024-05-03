@@ -135,16 +135,38 @@ type SearchApplicantProps = {
   onChange: (v: string) => void
 }
 
-const SearchApplicant = (props: SearchApplicantProps) => {
-  return (
-    <TextField
-      size="small"
-      variant="outlined"
-      placeholder="Sök kundnummer"
-      sx={{ width: '100%', maxWidth: 350 }}
-      onChange={(e) => props.onChange(e.currentTarget.value)}
-    />
-  )
-}
+const SearchApplicant = (props: SearchApplicantProps) => (
+  <TextField
+    size="small"
+    variant="outlined"
+    placeholder="Sök kundnummer"
+    sx={{
+      width: '100%',
+      maxWidth: 350,
+      '& .MuiOutlinedInput-root': {
+        fontSize: '16px',
+        paddingTop: '2px',
+        paddingBottom: '2px',
+        color: '#000',
+        '& .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#2e2e2e',
+          borderRadius: '8px',
+          borderWidth: '2.5px',
+        },
+        '&.Mui-focused': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderWidth: '2.5px',
+            borderColor: '#2e2e2e',
+          },
+        },
+        '& .MuiInputLabel-outlined': {
+          color: '#2e2e2e',
+          '&.Mui-focused': {},
+        },
+      },
+    }}
+    onChange={(e) => props.onChange(e.currentTarget.value)}
+  />
+)
 
 export default ParkingSpaces
