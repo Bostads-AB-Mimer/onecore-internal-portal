@@ -1,5 +1,5 @@
 import { Box, IconButton, TextField, Typography } from '@mui/material'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import type { GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
 import { Link } from 'react-router-dom'
@@ -7,6 +7,7 @@ import { Listing } from 'onecore-types'
 
 import { DataGridTable } from '../../components'
 import { useParkingSpaces } from './hooks/useParkingSpaces'
+import * as utils from '../../utils'
 
 const sharedProps = {
   cellClassName: '',
@@ -17,6 +18,7 @@ const sharedProps = {
 
 const ParkingSpaces = () => {
   const parkingSpaces = useParkingSpaces()
+  const [searchString, setSearchString] = useState<string>()
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
   const numberFormatter = new Intl.NumberFormat('sv-SE', {
     style: 'currency',
@@ -87,11 +89,11 @@ const ParkingSpaces = () => {
     },
   ]
 
-  const handleSearch = useCallback((v: string) => {
-    console.log('Searching for:', v)
-  }, [])
-
-  const onSearch = useMemo(() => debounce(handleSearch, 300), [handleSearch])
+  const handleSearch = useCallback((v: string) => setSearchString(v), [])
+  const onSearch = useMemo(
+    () => utils.debounce(handleSearch, 300),
+    [handleSearch]
+  )
 
   return (
     <>
@@ -109,11 +111,23 @@ const ParkingSpaces = () => {
       {parkingSpaces.error && 'Error'}
       <DataGridTable
         columns={columns}
-        rows={parkingSpaces.data ?? []}
+        rows={filterListings(parkingSpaces.data ?? [], searchString)}
         getRowId={(row: Listing) => row.id}
         loading={parkingSpaces.status === 'pending'}
       />
     </>
+  )
+}
+
+const filterListings = (
+  listings: Array<Listing>,
+  q?: string
+): Array<Listing> => {
+  if (!q) return listings
+  return listings.filter((l) =>
+    l.applicants?.some((a) =>
+      a.contactCode.toLowerCase().includes(q.toLowerCase())
+    )
   )
 }
 
@@ -131,22 +145,6 @@ const SearchApplicant = (props: SearchApplicantProps) => {
       onChange={(e) => props.onChange(e.currentTarget.value)}
     />
   )
-}
-
-function debounce<F extends (...args: any[]) => void>(
-  callback: F,
-  delay: number
-): (...args: Parameters<F>) => void {
-  let timer: NodeJS.Timeout | null = null
-
-  return (...args: Parameters<F>) => {
-    if (timer) {
-      clearTimeout(timer)
-    }
-    timer = setTimeout(() => {
-      callback(...args)
-    }, delay)
-  }
 }
 
 export default ParkingSpaces
