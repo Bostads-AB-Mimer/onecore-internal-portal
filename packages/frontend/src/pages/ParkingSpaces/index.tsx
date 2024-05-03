@@ -10,7 +10,6 @@ import { useParkingSpaces } from './hooks/useParkingSpaces'
 import * as utils from '../../utils'
 
 const sharedProps = {
-  cellClassName: '',
   editable: false,
   flex: 1,
   headerClassName: 'font-bison-bold text-lg text-fuscous-gray',
