@@ -1,11 +1,12 @@
 import { CssBaseline, Grid, ThemeProvider } from '@mui/material'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Outlet } from 'react-router-dom'
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
+import { ErrorBoundary } from 'react-error-boundary'
 
 import Home from './pages/Home/Home'
 import SiteHeader from './components/SiteHeader'
@@ -33,6 +34,14 @@ const queryClient = new QueryClient({
   }),
 })
 
+const PageBase = () => {
+  return (
+    <ErrorBoundary fallback={<div>Oops, there was an error...</div>}>
+      <Outlet />
+    </ErrorBoundary>
+  )
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -43,14 +52,16 @@ function App() {
           <Grid item xs={11}>
             <SiteHeader />
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/parkingspaces" element={<ParkingSpaces />} />
-              <Route path="/parkingspace/:id" element={<ParkingSpace />} />
-              <Route
-                path="/materialval/utskrift"
-                element={<MaterialChoiceDetails />}
-              />
-              <Route path="/logout" element={<Login />} />
+              <Route element={<PageBase />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/parkingspaces" element={<ParkingSpaces />} />
+                <Route path="/parkingspace/:id" element={<ParkingSpace />} />
+                <Route
+                  path="/materialval/utskrift"
+                  element={<MaterialChoiceDetails />}
+                />
+                <Route path="/logout" element={<Login />} />
+              </Route>
             </Routes>
           </Grid>
           <Grid item xs={0.5} />
