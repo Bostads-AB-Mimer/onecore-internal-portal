@@ -79,7 +79,7 @@ const ParkingSpaces = () => {
       disableColumnMenu: true,
       renderCell: (v) => (
         <Link to={`/parkingspace/${v.id}`}>
-          <IconButton>
+          <IconButton sx={{ color: 'blackcolor="black"' }}>
             <Chevron />
           </IconButton>
         </Link>
