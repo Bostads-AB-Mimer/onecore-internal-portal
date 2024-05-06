@@ -1,10 +1,10 @@
 import { Box, Chip, Divider, Typography } from '@mui/material'
-import type { GridColDef, GridValueFormatterParams } from '@mui/x-data-grid'
+import type { GridColDef } from '@mui/x-data-grid'
 import { useParams } from 'react-router-dom'
-import { Applicant, ApplicantStatus } from 'onecore-types'
+import { ApplicantStatus } from 'onecore-types'
 
 import { useParkingSpaceListing } from './hooks/useParkingSpaceListing'
-import { PageGoBackTo, DataGridTable } from '../../components'
+import { DataGridTable, PageGoBackTo } from '../../components'
 import { RemoveApplicantFromListing } from './components'
 
 const ParkingSpace = () => {
@@ -24,7 +24,7 @@ const ParkingSpace = () => {
     headerClassName: 'font-bison-bold text-lg text-fuscous-gray',
   }
 
-  const columns: GridColDef<Applicant>[] = [
+  const columns: GridColDef[] = [
     {
       field: 'name',
       headerName: 'Namn',
@@ -32,16 +32,15 @@ const ParkingSpace = () => {
       flex: 1.25,
     },
     {
-      field: 'foo',
+      field: 'queuePoints',
       headerName: 'Köpoäng',
-      renderCell: () => <i>N/A</i>,
       ...sharedProps,
       flex: 0.75,
     },
     {
       field: 'address',
       headerName: 'Boende/Adress',
-      renderCell: () => <i>N/A</i>,
+      valueGetter: (v) => v.row.address.street,
       ...sharedProps,
       flex: 1.25,
     },
@@ -57,14 +56,12 @@ const ParkingSpace = () => {
       field: 'applicationDate',
       headerName: 'Anmälan',
       ...sharedProps,
-      valueFormatter: (v: GridValueFormatterParams<string>) =>
-        dateFormatter.format(new Date(v.value)),
+      valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
     },
     {
-      field: 'bar',
+      field: 'currentHousingContract',
       headerName: 'Har bilplats',
-      valueFormatter: (v) => (v.value ? 'N/A' : 'N/A'),
-      renderCell: () => <i>N/A</i>,
+      valueFormatter: (v) => (v.value ? 'Ja' : 'Nej'),
       ...sharedProps,
       flex: 0.75,
     },
@@ -101,7 +98,19 @@ const ParkingSpace = () => {
         emptyLabel="Det finns inga sökande att visa..."
         columns={columns}
         rows={parkingSpaceListing.applicants ?? []}
-        getRowId={(row: any) => row.id}
+        getRowId={(row) => row.id}
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+        }
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'queuePoints', sort: 'desc' }],
+          },
+        }}
+        rowHeight={65}
+        disableRowSelectionOnClick
+        hideFooter
+        autoHeight
       />
       <Divider
         sx={{
