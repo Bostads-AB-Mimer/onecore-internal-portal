@@ -76,6 +76,7 @@ const Applicants = (props: { listingId: string }) => {
       disableColumnMenu: true,
       renderCell: (v) => (
         <RemoveApplicantFromListing
+          disabled={v.row.status !== ApplicantStatus.Active}
           listingId={props.listingId}
           applicantId={v.row.id}
           applicantName={v.row.name}
