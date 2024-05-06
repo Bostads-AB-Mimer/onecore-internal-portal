@@ -71,7 +71,11 @@ export const RemoveApplicantFromListing = (props: Props) => {
               justifyContent="space-between"
               paddingTop="1rem"
             >
-              <Button variant="dark-outlined" onClick={() => setOpen(false)}>
+              <Button
+                variant="dark-outlined"
+                onClick={() => setOpen(false)}
+                disabled={removeListing.isPending}
+              >
                 Nej, avbryt
               </Button>
               <Button
