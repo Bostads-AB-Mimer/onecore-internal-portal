@@ -1,5 +1,3 @@
-import { Suspense } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 import { CssBaseline, Grid, ThemeProvider, createTheme } from '@mui/material'
 import { Routes, Route } from 'react-router-dom'
 import {
@@ -21,7 +19,6 @@ import Login from './pages/Login/Login'
 import MaterialChoiceDetails from './pages/MaterialChoiceDetails/MaterialChoiceDetails'
 import ParkingSpaces from './pages/ParkingSpaces'
 import ParkingSpace from './pages/ParkingSpace'
-import { ParkingSpaceLoading } from './pages/ParkingSpace/components'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -295,19 +292,6 @@ const queryClient = new QueryClient({
   }),
 })
 
-const PageBase = (props: {
-  children: React.ReactNode
-  fallback?: React.ReactNode
-}) => {
-  return (
-    <ErrorBoundary fallback={<div>error</div>}>
-      <Suspense fallback={props.fallback ?? <div>LOADING</div>}>
-        {props.children}
-      </Suspense>
-    </ErrorBoundary>
-  )
-}
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -320,14 +304,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/parkingspaces" element={<ParkingSpaces />} />
-              <Route
-                path="/parkingspace/:id"
-                element={
-                  <PageBase fallback={<ParkingSpaceLoading />}>
-                    <ParkingSpace />
-                  </PageBase>
-                }
-              />
+              <Route path="/parkingspace/:id" element={<ParkingSpace />} />
               <Route
                 path="/materialval/utskrift"
                 element={<MaterialChoiceDetails />}
