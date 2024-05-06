@@ -1,4 +1,4 @@
-import { Chip, Typography } from '@mui/material'
+import { Chip, Stack, Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
 import { ApplicantStatus } from 'onecore-types'
 
@@ -101,6 +101,19 @@ export const Applicants = (props: { listingId: string }) => {
           sorting: {
             sortModel: [{ field: 'queuePoints', sort: 'desc' }],
           },
+        }}
+        slots={{
+          noRowsOverlay: () => (
+            <Stack
+              paddingTop="1rem"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography fontSize="14px">
+                Det finns inga sökande att visa...
+              </Typography>
+            </Stack>
+          ),
         }}
         rowHeight={65}
         disableRowSelectionOnClick

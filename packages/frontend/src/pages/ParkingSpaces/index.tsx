@@ -120,7 +120,9 @@ const ParkingSpaces = () => {
               alignItems="center"
               justifyContent="center"
             >
-              <Typography fontSize="14px">{props.emptyLabel}</Typography>
+              <Typography fontSize="14px">
+                Det finns inga annonser att visa...
+              </Typography>
             </Stack>
           ),
         }}
