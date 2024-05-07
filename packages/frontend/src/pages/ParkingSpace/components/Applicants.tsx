@@ -14,7 +14,6 @@ export const Applicants = (props: { listingId: string }) => {
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
 
   const sharedProps = {
-    cellClassName: '',
     editable: false,
     flex: 1,
     headerClassName: 'font-bison-bold text-lg text-fuscous-gray',
