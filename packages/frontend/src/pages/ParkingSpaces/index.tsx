@@ -143,11 +143,19 @@ const filterListings = (
   q?: string
 ): Array<Listing> => {
   if (!q) return listings
-  return listings.filter((l) =>
-    l.applicants?.some((a) =>
+
+  return listings.filter((l) => {
+    if (!l.applicants) return false
+    const containsContactCode = l.applicants.some((a) =>
       a.contactCode.toLowerCase().includes(q.toLowerCase())
     )
-  )
+
+    const containsNationalRegistrationNumber = l.applicants.some((a) =>
+      a.nationalRegistrationNumber.includes(q)
+    )
+
+    return containsContactCode || containsNationalRegistrationNumber
+  })
 }
 
 type SearchApplicantProps = {
