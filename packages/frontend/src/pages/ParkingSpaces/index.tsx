@@ -127,6 +127,9 @@ const ParkingSpaces = () => {
         }}
         columns={columns}
         rows={filterListings(parkingSpaces.data ?? [], searchString)}
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+        }
         getRowId={(row) => row.id}
         loading={parkingSpaces.status === 'pending'}
         rowHeight={65}
