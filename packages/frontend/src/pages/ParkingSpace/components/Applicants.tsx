@@ -92,13 +92,11 @@ export const Applicants = (props: { listingId: string }) => {
         columns={columns}
         rows={parkingSpaceListing.applicants}
         getRowId={(row) => row.id}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-        }
         initialState={{
           sorting: {
             sortModel: [{ field: 'queuePoints', sort: 'desc' }],
           },
+          pagination: { paginationModel: { pageSize: 5 } },
         }}
         slots={{
           noRowsOverlay: () => (
@@ -113,10 +111,10 @@ export const Applicants = (props: { listingId: string }) => {
             </Stack>
           ),
         }}
-        rowHeight={65}
+        pageSizeOptions={[5, 10, 25]}
+        rowHeight={72}
         disableRowSelectionOnClick
         autoHeight
-        hideFooter
       />
     </>
   )
