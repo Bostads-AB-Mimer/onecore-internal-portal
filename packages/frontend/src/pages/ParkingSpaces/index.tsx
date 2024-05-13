@@ -48,6 +48,11 @@ const ParkingSpaces = () => {
       ...sharedProps,
     },
     {
+      field: 'waitingListType',
+      headerName: 'Typ',
+      ...sharedProps,
+    },
+    {
       field: 'monthlyRent',
       headerName: 'Hyra',
       ...sharedProps,
