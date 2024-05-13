@@ -62,13 +62,13 @@ const ParkingSpaces = () => {
     },
     {
       field: 'publishedTo',
-      headerName: 'Datum tilldelas',
+      headerName: 'Publicerad T.O.M',
       ...sharedProps,
       valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
     },
     {
       field: 'vacantFrom',
-      headerName: 'Ledig från och med',
+      headerName: 'Ledig FR.O.M',
       ...sharedProps,
       valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
     },

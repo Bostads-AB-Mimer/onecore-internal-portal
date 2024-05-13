@@ -1,4 +1,4 @@
-import { Divider, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { Suspense } from 'react'
 import { useParams } from 'react-router-dom'
 

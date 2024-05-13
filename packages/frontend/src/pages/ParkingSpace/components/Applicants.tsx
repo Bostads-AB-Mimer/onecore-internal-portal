@@ -60,6 +60,12 @@ export const Applicants = (props: { listingId: string }) => {
       flex: 0.75,
     },
     {
+      field: 'foo',
+      headerName: 'Svar erbj.',
+      renderCell: (v) => v.value || <i>N/A</i>,
+      ...sharedProps,
+    },
+    {
       field: 'applicationType',
       headerName: 'Ärende',
       renderCell: (v) => v.value || <i>N/A</i>,
