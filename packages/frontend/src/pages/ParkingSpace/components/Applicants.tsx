@@ -113,9 +113,6 @@ export const Applicants = (props: { listingId: string }) => {
         rows={parkingSpaceListing.applicants}
         getRowId={(row) => row.id}
         initialState={{
-          sorting: {
-            sortModel: [{ field: 'queuePoints', sort: 'desc' }],
-          },
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         slots={{
