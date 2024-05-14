@@ -32,13 +32,6 @@ export const Applicants = (props: { listingId: string }) => {
       flex: 0.75,
     },
     {
-      field: 'priority',
-      headerName: 'Prioritetsgrupp',
-      ...sharedProps,
-      valueFormatter: (v) => formatApplicantStatus(v.value),
-      renderCell: (v) => v.value ?? <i>N/A</i>,
-    },
-    {
       field: 'address',
       headerName: 'Boende/Adress',
       valueGetter: (v) => v.row.address.street,
