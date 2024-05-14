@@ -53,9 +53,9 @@ export const Applicants = (props: { listingId: string }) => {
       valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
     },
     {
-      field: 'currentHousingContract',
+      field: 'parkingSpaceContracts',
       headerName: 'Har bilplats',
-      valueFormatter: (v) => (v.value ? 'Ja' : 'Nej'),
+      valueFormatter: (v) => (v.value.length ? 'Ja' : 'Nej'),
       ...sharedProps,
       flex: 0.75,
     },
@@ -68,7 +68,7 @@ export const Applicants = (props: { listingId: string }) => {
     {
       field: 'applicationType',
       headerName: 'Ärende',
-      renderCell: (v) => v.value || <i>N/A</i>,
+      renderCell: (v) => v.formattedValue || <i>N/A</i>,
       valueFormatter: (v) => (v.value === 'Replace' ? 'Byte' : 'Hyra flera'),
       ...sharedProps,
     },
