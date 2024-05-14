@@ -69,6 +69,7 @@ export const Applicants = (props: { listingId: string }) => {
       field: 'applicationType',
       headerName: 'Ärende',
       renderCell: (v) => v.value || <i>N/A</i>,
+      valueFormatter: (v) => (v.value === 'Replace' ? 'Byte' : 'Hyra flera'),
       ...sharedProps,
     },
     {
