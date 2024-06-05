@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -13,7 +13,8 @@ import { Listing } from 'onecore-types'
 
 import { useCreateApplicantForListing } from '../hooks/useCreateApplicantForListing'
 import { SearchBar } from '../../../components'
-import { useTenant } from '../hooks/useTenant'
+import { useContact } from '../hooks/useContact'
+import * as utils from '../../../utils'
 
 export interface Props {
   listing: Listing
@@ -24,15 +25,19 @@ export const CreateApplicantForListing = (props: Props) => {
   const createApplicant = useCreateApplicantForListing()
   const [open, setOpen] = useState(false)
   const [searchString, setSearchString] = useState<string>('')
-  const tenantQuery = useTenant(searchString)
+  const contactQuery = useContact(searchString)
+
+  const handleSearch = useCallback((v: string) => setSearchString(v), [])
+  const onSearch = useMemo(
+    () => utils.debounce(handleSearch, 500),
+    [handleSearch]
+  )
 
   const onCreate = () =>
     createApplicant.mutate(
       { listingId: props.listing.id },
       { onSuccess: () => setOpen(false) }
     )
-
-  const onSearchTenant = setSearchString
 
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
   const numberFormatter = new Intl.NumberFormat('sv-SE', {
@@ -184,11 +189,11 @@ export const CreateApplicantForListing = (props: Props) => {
               <Box paddingTop="1rem">
                 <SearchBar
                   disabled={false}
-                  onChange={onSearchTenant}
+                  onChange={onSearch}
                   placeholder="Sök personnummer/kundnummer"
                 />
               </Box>
-              {!tenantQuery.data && <Box height="50px" />}
+              {!contactQuery.data && <Box height="50px" />}
               <Box
                 paddingTop="1rem"
                 display="flex"
@@ -196,7 +201,7 @@ export const CreateApplicantForListing = (props: Props) => {
                 justifyContent="flex-end"
               >
                 <Button variant="dark-outlined">Avbryt</Button>
-                <Button disabled={Boolean(!tenantQuery.data)} variant="dark">
+                <Button disabled={Boolean(!contactQuery.data)} variant="dark">
                   Spara
                 </Button>
               </Box>

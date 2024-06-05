@@ -42,4 +42,30 @@ const removeApplicant = async (applicantId: string) => {
   return response.data
 }
 
-export { getListingsWithApplicants, getListingWithApplicants, removeApplicant }
+const getContactByNatRegNumber = async (natRegNumber: string) => {
+  const url = `${coreBaseUrl}/contact/${natRegNumber}`
+  const result = await getFromCore({
+    method: 'get',
+    url: url,
+  })
+
+  return result.data
+}
+
+const getContactByContactCode = async (contactCode: string) => {
+  const url = `${coreBaseUrl}/contact/contact-code/${contactCode}`
+  const result = await getFromCore({
+    method: 'get',
+    url: url,
+  })
+
+  return result.data
+}
+
+export {
+  getListingsWithApplicants,
+  getListingWithApplicants,
+  removeApplicant,
+  getContactByNatRegNumber,
+  getContactByContactCode,
+}

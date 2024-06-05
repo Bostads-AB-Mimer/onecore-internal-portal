@@ -1,16 +1,16 @@
 import axios, { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { Listing } from 'onecore-types'
+import { Contact } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-export const useTenant = (q: string) =>
-  useQuery<Array<Listing>, AxiosError>({
-    queryKey: ['tenant', q],
+export const useContact = (q: string) =>
+  useQuery<Contact, AxiosError>({
+    queryKey: ['contact', q],
     enabled: Boolean(q),
     queryFn: () =>
       axios
-        .get(`${backendUrl}/tenant?q=${q}`, {
+        .get(`${backendUrl}/contact/search/${q}`, {
           headers: {
             Accept: 'application/json',
             'Access-Control-Allow-Credentials': true,
