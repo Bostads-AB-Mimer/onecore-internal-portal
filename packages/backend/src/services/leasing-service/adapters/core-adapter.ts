@@ -1,5 +1,6 @@
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
+import {DetailedApplicant} from "onecore-types";
 
 const coreBaseUrl = Config.core.url
 
@@ -13,7 +14,7 @@ const getListingsWithApplicants = async () => {
   return listingsResponse.data
 }
 
-const getListingWithApplicants = async (listingId: string) => {
+const getListingWithApplicants = async (listingId: string): Promise<DetailedApplicant[]> => {
   const listing = getFromCore({
     method: 'get',
     url: `${coreBaseUrl}/listing/${listingId}`,
