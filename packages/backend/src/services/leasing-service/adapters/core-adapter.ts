@@ -1,6 +1,6 @@
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
-import {DetailedApplicant, Listing} from "onecore-types";
+import { Contact, DetailedApplicant, Listing } from 'onecore-types'
 
 const coreBaseUrl = Config.core.url
 
@@ -14,7 +14,9 @@ const getListingsWithApplicants = async () => {
   return listingsResponse.data
 }
 
-const getListingWithApplicants = async (listingId: string): Promise<Listing & { applicants: DetailedApplicant[] }> => {
+const getListingWithApplicants = async (
+  listingId: string
+): Promise<Listing & { applicants: DetailedApplicant[] }> => {
   const listing: Promise<Listing> = getFromCore({
     method: 'get',
     url: `${coreBaseUrl}/listing/${listingId}`,
@@ -25,7 +27,10 @@ const getListingWithApplicants = async (listingId: string): Promise<Listing & { 
     url: `${coreBaseUrl}/listing/${listingId}/applicants/details`,
   }).then((res) => res.data)
 
-  const [listingResult, applicantsResult] = await Promise.all([listing, applicants])
+  const [listingResult, applicantsResult] = await Promise.all([
+    listing,
+    applicants,
+  ])
 
   return {
     ...listingResult,
@@ -42,24 +47,38 @@ const removeApplicant = async (applicantId: string) => {
   return response.data
 }
 
-const getContactByNatRegNumber = async (natRegNumber: string) => {
-  const url = `${coreBaseUrl}/contact/${natRegNumber}`
-  const result = await getFromCore({
-    method: 'get',
-    url: url,
-  })
+type Result<T, E> = { ok: false; err: E } | { ok: true; data: T }
 
-  return result.data
+const getContactByNatRegNumber = async (
+  natRegNumber: string
+): Promise<Result<Contact, unknown>> => {
+  try {
+    const url = `${coreBaseUrl}/contact/${natRegNumber}`
+    const result = await getFromCore({
+      method: 'get',
+      url: url,
+    })
+
+    return { ok: true, data: result.data }
+  } catch (err) {
+    return { ok: false, err }
+  }
 }
 
-const getContactByContactCode = async (contactCode: string) => {
-  const url = `${coreBaseUrl}/contact/contact-code/${contactCode}`
-  const result = await getFromCore({
-    method: 'get',
-    url: url,
-  })
+const getContactByContactCode = async (
+  contactCode: string
+): Promise<Result<Contact, unknown>> => {
+  try {
+    const url = `${coreBaseUrl}/contact/contact-code/${contactCode}`
+    const result = await getFromCore({
+      method: 'get',
+      url: url,
+    })
 
-  return result.data
+    return { ok: true, data: result.data }
+  } catch (err) {
+    return { ok: false, err }
+  }
 }
 
 export {

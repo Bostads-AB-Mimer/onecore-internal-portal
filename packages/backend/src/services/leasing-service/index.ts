@@ -29,16 +29,17 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/contact/search/:query', async (ctx) => {
-    try {
-      const natRegNumber = /^\d{8}-\d{4}$/
-      const query = natRegNumber.test(ctx.params.query)
-        ? coreAdapter.getContactByNatRegNumber(ctx.params.query)
-        : coreAdapter.getContactByContactCode(ctx.params.query)
+    const natRegNumber = /^\d{8}-\d{4}$/
+    const query = natRegNumber.test(ctx.params.query)
+      ? coreAdapter.getContactByNatRegNumber(ctx.params.query)
+      : coreAdapter.getContactByContactCode(ctx.params.query)
 
-      const result = await query
+    const result = await query
 
+    if (result.ok) {
+      ctx.status = 200
       ctx.body = result.data
-    } catch (err) {
+    } else {
       ctx.status = 500
     }
   })
