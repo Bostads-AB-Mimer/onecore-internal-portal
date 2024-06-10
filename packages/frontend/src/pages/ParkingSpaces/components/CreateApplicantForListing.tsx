@@ -7,13 +7,21 @@ import {
   Typography,
   Box,
   IconButton,
+  Stack,
+  MenuItem,
+  CircularProgress,
+  Autocomplete,
+  TextField,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { Listing } from 'onecore-types'
+import { ApplicantStatus, Contact, Listing } from 'onecore-types'
 
-import { useCreateApplicantForListing } from '../hooks/useCreateApplicantForListing'
+import {
+  CreateApplicantRequestParams,
+  useCreateApplicantForListing,
+} from '../hooks/useCreateApplicantForListing'
 import { SearchBar } from '../../../components'
-import { useContact } from '../hooks/useContact'
+import { useSearchContact } from '../hooks/useSearchContact'
 import * as utils from '../../../utils'
 
 export interface Props {
@@ -24,20 +32,10 @@ export interface Props {
 export const CreateApplicantForListing = (props: Props) => {
   const createApplicant = useCreateApplicantForListing()
   const [open, setOpen] = useState(false)
-  const [searchString, setSearchString] = useState<string>('')
-  const contactQuery = useContact(searchString)
+  const [contact, setContact] = useState<Contact | null>(null)
 
-  const handleSearch = useCallback((v: string) => setSearchString(v), [])
-  const onSearch = useMemo(
-    () => utils.debounce(handleSearch, 500),
-    [handleSearch]
-  )
-
-  const onCreate = () =>
-    createApplicant.mutate(
-      { listingId: props.listing.id },
-      { onSuccess: () => setOpen(false) }
-    )
+  const onCreate = (params: CreateApplicantRequestParams) =>
+    createApplicant.mutate(params, { onSuccess: () => setOpen(false) })
 
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
   const numberFormatter = new Intl.NumberFormat('sv-SE', {
@@ -186,14 +184,8 @@ export const CreateApplicantForListing = (props: Props) => {
             </Box>
             <Box paddingX="0.5rem" paddingTop="1rem">
               <Typography variant="h2">Kundinformation</Typography>
-              <Box paddingTop="1rem">
-                <SearchBar
-                  disabled={false}
-                  onChange={onSearch}
-                  placeholder="Sök personnummer/kundnummer"
-                />
-              </Box>
-              {!contactQuery.data && <Box height="50px" />}
+              <SearchContact onSelect={setContact} />
+              <Box height="150px" />
               <Box
                 paddingTop="1rem"
                 display="flex"
@@ -201,14 +193,143 @@ export const CreateApplicantForListing = (props: Props) => {
                 justifyContent="flex-end"
               >
                 <Button variant="dark-outlined">Avbryt</Button>
-                <Button disabled={Boolean(!contactQuery.data)} variant="dark">
-                  Spara
-                </Button>
+                {!contact ? (
+                  <Button disabled variant="dark">
+                    Spara
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={false}
+                    variant="dark"
+                    onClick={() =>
+                      onCreate({
+                        contactCode: contact.contactCode,
+                        status: ApplicantStatus.Active,
+                        listingId: props.listing.id,
+                        name: contact.fullName,
+                        nationalRegistrationNumber:
+                          contact.nationalRegistrationNumber,
+                        applicationType: 'foo',
+                      })
+                    }
+                  >
+                    Spara
+                  </Button>
+                )}
               </Box>
             </Box>
           </DialogContent>
         </Box>
       </Dialog>
     </>
+  )
+}
+
+const SearchContact = (props: { onSelect: (contact: Contact) => void }) => {
+  const [contact, setContact] = useState<Contact | null>(null)
+  const [searchString, setSearchString] = useState<string>('')
+
+  const contactQuery = useSearchContact(searchString)
+
+  const [state, setState] = useState<'idle' | 'focus' | 'typing'>('idle')
+
+  const onSetSearchString = useMemo(
+    () => utils.debounce((value: string) => setSearchString(value), 500),
+    []
+  )
+
+  const handleSearch = useCallback(
+    (v: string) => {
+      onSetSearchString(v)
+      setState(v ? 'typing' : 'idle')
+    },
+    [onSetSearchString]
+  )
+
+  const onSelect = (c: Contact) => {
+    console.log('selected contact: ', c)
+    props.onSelect(c)
+    setContact(c)
+  }
+
+  const onBlur = () => {
+    setState('idle')
+  }
+
+  console.log(contact)
+  return (
+    <Box paddingTop="1rem">
+      <Autocomplete<Contact>
+        getOptionLabel={(v) => v.fullName}
+        filterOptions={(v) => v}
+        options={contactQuery.data ?? []}
+        renderInput={(params) => (
+          <TextField {...params} label="Add a location" fullWidth />
+        )}
+        onInputChange={(_, v) => handleSearch(v)}
+        renderOption={(props, v) => (
+          <MenuItem {...props} key={v.contactCode}>
+            {v.fullName}
+          </MenuItem>
+        )}
+        onChange={(_, v) => {
+          if (v) {
+            onSelect(v)
+          }
+        }}
+        getOptionKey={(v) => v.contactCode}
+        value={contact}
+      />
+      {/* <SearchBar */}
+
+      {/* value={inputValue} */}
+      {/* onFocus={() => setState('focus')} */}
+      {/* onBlur={() => setState('idle')} */}
+      {/* disabled={false} */}
+      {/* onChange={handleSearch} */}
+      {/* placeholder="Sök personnummer/kundnummer" */}
+      {/* /> */}
+      {/* {state === 'typing' && ( */}
+      {/* <Stack */}
+      {/* borderRadius="6px" */}
+      {/* marginTop="6px" */}
+      {/* position="absolute" */}
+      {/* width="100%" */}
+      {/* bgcolor="white" */}
+      {/* zIndex="99" */}
+      {/* maxHeight="120px" */}
+      {/* minHeight="40px" */}
+      {/* overflow="scroll" */}
+      {/* boxShadow="0px 1px 3px 0px rgba(0, 0, 0, 0.3)" */}
+      {/* > */}
+      {/* {contactQuery.status === 'pending' && ( */}
+      {/* <Box */}
+      {/* display="flex" */}
+      {/* alignItems="center" */}
+      {/* justifyContent="center" */}
+      {/* flex="1" */}
+      {/* > */}
+      {/* <CircularProgress size="25px" /> */}
+      {/* </Box> */}
+      {/* )} */}
+      {/* {contactQuery.status !== 'pending' && ( */}
+      {/* <> */}
+      {/* {!contactQuery.data?.length ? ( */}
+      {/* <Typography>Inga resultat hittades...</Typography> */}
+      {/* ) : ( */}
+      {/* contactQuery.data.map((c) => ( */}
+      {/* <MenuItem */}
+      {/* key={c.contactCode} */}
+      {/* onClick={() => props.onSelect(c as unknown as Contact)} */}
+      {/* > */}
+      {/* {c.fullName} */}
+      {/* </MenuItem> */}
+      {/* )) */}
+      {/* )} */}
+      {/* </> */}
+      {/* )} */}
+      {/* </Stack> */}
+      {/* )} */}
+    </Box>
   )
 }

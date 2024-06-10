@@ -4,13 +4,13 @@ import { Contact } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-export const useContact = (q: string) =>
-  useQuery<Contact, AxiosError>({
-    queryKey: ['contact', q],
-    enabled: Boolean(q),
+export const useSearchContact = (q: string) =>
+  useQuery<Array<Contact>, AxiosError>({
+    queryKey: ['search-contact'],
+    enabled: Boolean(q?.length >= 3),
     queryFn: () =>
       axios
-        .get(`${backendUrl}/contact/search/${q}`, {
+        .get(`${backendUrl}/contact/search?q=${q}`, {
           headers: {
             Accept: 'application/json',
             'Access-Control-Allow-Credentials': true,

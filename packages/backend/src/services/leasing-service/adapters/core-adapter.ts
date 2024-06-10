@@ -1,6 +1,7 @@
+import { Applicant, Contact, DetailedApplicant, Listing } from 'onecore-types'
+
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
-import { Contact, DetailedApplicant, Listing } from 'onecore-types'
 
 const coreBaseUrl = Config.core.url
 
@@ -42,6 +43,15 @@ const removeApplicant = async (applicantId: string) => {
   const response = await getFromCore({
     method: 'delete',
     url: `${coreBaseUrl}/applicants/${applicantId}/by-manager`,
+  })
+
+  return response.data
+}
+
+const createApplicant = async (applicant: Omit<Applicant, 'id'>) => {
+  const response = await getFromCore({
+    method: 'delete',
+    url: `${coreBaseUrl}/applicants/${'foo'}/by-manager`,
   })
 
   return response.data
