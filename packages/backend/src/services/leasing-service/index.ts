@@ -28,7 +28,7 @@ export const routes = (router: KoaRouter) => {
     ctx.body = result
   })
 
-  router.get('(.*)/contact/search', async (ctx) => {
+  router.get('(.*)/contacts/search', async (ctx) => {
     // const result = (await new Promise((res) =>
     // setTimeout(
     // () =>
@@ -51,7 +51,7 @@ export const routes = (router: KoaRouter) => {
       return
     }
 
-    const result = await coreAdapter.getContactBySearchQuery(ctx.query.q)
+    const result = await coreAdapter.getContactsBySearchQuery(ctx.query.q)
 
     if (result.ok) {
       ctx.status = 200

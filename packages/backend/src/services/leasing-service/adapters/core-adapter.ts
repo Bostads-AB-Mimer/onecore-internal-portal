@@ -59,13 +59,13 @@ const createApplicant = async (applicant: Omit<Applicant, 'id'>) => {
   return response.data
 }
 
-const getContactBySearchQuery = async (
+const getContactsBySearchQuery = async (
   q: string
 ): Promise<Result<Array<Contact>, unknown>> => {
   try {
     const result = await getFromCore<Array<Contact>>({
       method: 'get',
-      url: `${coreBaseUrl}/contact/search?q=${q}`,
+      url: `${coreBaseUrl}/contacts/search?q=${q}`,
     })
     return { ok: true, data: result.data }
   } catch (err) {
@@ -77,5 +77,5 @@ export {
   getListingsWithApplicants,
   getListingWithApplicants,
   removeApplicant,
-  getContactBySearchQuery,
+  getContactsBySearchQuery,
 }
