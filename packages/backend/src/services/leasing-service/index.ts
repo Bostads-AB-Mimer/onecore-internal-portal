@@ -28,40 +28,30 @@ export const routes = (router: KoaRouter) => {
     ctx.body = result
   })
 
-  // router.get('(.*)/contact/search/:query', async (ctx) => {
-  // const natRegNumber = /^\d{8}-\d{4}$/
-  // const query = natRegNumber.test(ctx.params.query)
-  // ? coreAdapter.getContactByNatRegNumber(ctx.params.query)
-  // : coreAdapter.getContactByContactCode(ctx.params.query)
-
-  // const result = await query
-
-  // if (result.ok) {
-  // ctx.status = 200
-  // ctx.body = result.data
-  // } else {
-  // ctx.status = 500
-  // }
-  // })
-
   router.get('(.*)/contact/search', async (ctx) => {
-    const result = (await new Promise((res) =>
-      setTimeout(
-        () =>
-          res({
-            ok: true,
-            data: [
-              { fullName: 'Foo Barsson', contactCode: 1 },
-              { fullName: 'Foo Barsson', contactCode: 2 },
-              { fullName: 'Foo Barsson', contactCode: 3 },
-              { fullName: 'Foo Barsson', contactCode: 4 },
-              { fullName: 'Foo Barsson', contactCode: 5 },
-              { fullName: 'Foo Barsson', contactCode: 6 },
-            ],
-          }),
-        300
-      )
-    )) as any
+    // const result = (await new Promise((res) =>
+    // setTimeout(
+    // () =>
+    // res({
+    // ok: true,
+    // data: [
+    // { fullName: 'Foo Barsson', contactCode: 1 },
+    // { fullName: 'Foo Barsson', contactCode: 2 },
+    // { fullName: 'Foo Barsson', contactCode: 3 },
+    // { fullName: 'Foo Barsson', contactCode: 4 },
+    // { fullName: 'Foo Barsson', contactCode: 5 },
+    // { fullName: 'Foo Barsson', contactCode: 6 },
+    // ],
+    // }),
+    // 300
+    // )
+    // )) as any
+    if (typeof ctx.query.q !== 'string') {
+      ctx.status = 400
+      return
+    }
+
+    const result = await coreAdapter.getContactBySearchQuery(ctx.query.q)
 
     if (result.ok) {
       ctx.status = 200

@@ -5,6 +5,8 @@ import { getFromCore } from '../../common/adapters/core-adapter'
 
 const coreBaseUrl = Config.core.url
 
+type Result<T, E> = { ok: false; err: E } | { ok: true; data: T }
+
 const getListingsWithApplicants = async () => {
   const url = `${coreBaseUrl}/listings-with-applicants`
   const listingsResponse = await getFromCore({
@@ -57,34 +59,14 @@ const createApplicant = async (applicant: Omit<Applicant, 'id'>) => {
   return response.data
 }
 
-type Result<T, E> = { ok: false; err: E } | { ok: true; data: T }
-
-const getContactByNatRegNumber = async (
-  natRegNumber: string
-): Promise<Result<Contact, unknown>> => {
+const getContactBySearchQuery = async (
+  q: string
+): Promise<Result<Array<Contact>, unknown>> => {
   try {
-    const url = `${coreBaseUrl}/contact/${natRegNumber}`
-    const result = await getFromCore({
+    const result = await getFromCore<Array<Contact>>({
       method: 'get',
-      url: url,
+      url: `${coreBaseUrl}/contact/search?q=${q}`,
     })
-
-    return { ok: true, data: result.data }
-  } catch (err) {
-    return { ok: false, err }
-  }
-}
-
-const getContactByContactCode = async (
-  contactCode: string
-): Promise<Result<Contact, unknown>> => {
-  try {
-    const url = `${coreBaseUrl}/contact/contact-code/${contactCode}`
-    const result = await getFromCore({
-      method: 'get',
-      url: url,
-    })
-
     return { ok: true, data: result.data }
   } catch (err) {
     return { ok: false, err }
@@ -95,6 +77,5 @@ export {
   getListingsWithApplicants,
   getListingWithApplicants,
   removeApplicant,
-  getContactByNatRegNumber,
-  getContactByContactCode,
+  getContactBySearchQuery,
 }
