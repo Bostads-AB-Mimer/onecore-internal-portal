@@ -7,11 +7,10 @@ import { useSearchContact } from '../../hooks/useSearchContact'
 import { mdTheme } from '../../../../theme'
 
 export const SearchContact = (props: {
-  onSelect: (contact: Contact) => void
+  onSelect: (contact: Contact | null) => void
   contact: Contact | null
 }) => {
   const [searchString, setSearchString] = useState<string>('')
-
   const contactQuery = useSearchContact(searchString)
 
   const onSetSearchString = useMemo(
@@ -26,16 +25,22 @@ export const SearchContact = (props: {
     [onSetSearchString]
   )
 
-  const onSelect = (c: Contact) => {
-    props.onSelect(c)
-  }
-
   return (
     <Box paddingTop="1rem">
       <Autocomplete<Contact>
         getOptionLabel={(v) => v.fullName}
         filterOptions={(v) => v}
         options={contactQuery.data ?? []}
+        onInputChange={(_, v) => handleSearch(v)}
+        onChange={(_, v) => props.onSelect(v)}
+        getOptionKey={(v) => v.contactCode}
+        value={props.contact}
+        ListboxProps={{ style: { maxHeight: 125 } }}
+        renderOption={(props, v) => (
+          <MenuItem {...props} key={v.contactCode}>
+            {v.fullName}
+          </MenuItem>
+        )}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -68,20 +73,6 @@ export const SearchContact = (props: {
             }}
           />
         )}
-        onInputChange={(_, v) => handleSearch(v)}
-        renderOption={(props, v) => (
-          <MenuItem {...props} key={v.contactCode}>
-            {v.fullName}
-          </MenuItem>
-        )}
-        onChange={(_, v) => {
-          if (v) {
-            onSelect(v)
-          }
-        }}
-        getOptionKey={(v) => v.contactCode}
-        value={props.contact}
-        ListboxProps={{ style: { maxHeight: 125 } }}
       />
     </Box>
   )
