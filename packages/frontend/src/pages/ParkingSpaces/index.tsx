@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { DataGridTable, SearchBar } from '../../components'
 import { useParkingSpaces } from './hooks/useParkingSpaces'
 import * as utils from '../../utils'
-import { CreateApplicantForListing } from './components/CreateApplicantForListing'
+import { CreateApplicantForListing } from './components/create-applicant-for-listing/CreateApplicantForListing'
 
 const sharedProps = {
   editable: false,
