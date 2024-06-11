@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback } from 'react'
 
 import * as utils from '../../../../utils'
 import { useSearchContact } from '../../hooks/useSearchContact'
+import { mdTheme } from '../../../../theme'
 
 export const SearchContact = (props: {
   onSelect: (contact: Contact) => void
@@ -36,7 +37,36 @@ export const SearchContact = (props: {
         filterOptions={(v) => v}
         options={contactQuery.data ?? []}
         renderInput={(params) => (
-          <TextField {...params} label="Add a location" fullWidth />
+          <TextField
+            {...params}
+            size="small"
+            variant="outlined"
+            placeholder="Sök boende"
+            fullWidth
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                fontSize: '16px',
+                paddingTop: '2px',
+                paddingBottom: '2px',
+                color: '#000',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: mdTheme.palette.warmGrey.main,
+                  borderRadius: '6px',
+                  borderWidth: '1.5px',
+                },
+                '&.Mui-focused': {
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderWidth: '1.5px',
+                    borderColor: '#2e2e2e',
+                  },
+                },
+                '& .MuiInputLabel-outlined': {
+                  color: '#2e2e2e',
+                  '&.Mui-focused': {},
+                },
+              },
+            }}
+          />
         )}
         onInputChange={(_, v) => handleSearch(v)}
         renderOption={(props, v) => (
