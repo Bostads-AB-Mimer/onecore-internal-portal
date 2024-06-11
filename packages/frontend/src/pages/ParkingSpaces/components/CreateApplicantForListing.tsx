@@ -185,12 +185,71 @@ export const CreateApplicantForListing = (props: Props) => {
             <Box paddingX="0.5rem" paddingTop="1rem">
               <Typography variant="h2">Kundinformation</Typography>
               <SearchContact onSelect={setContact} />
-              <Box height="150px" />
+              <Box>
+                <Box
+                  paddingTop="1rem"
+                  display="flex"
+                  justifyContent="space-between"
+                  flex="1"
+                >
+                  <Typography>Namn</Typography>
+                  <Box>
+                    <Typography fontWeight="bold">
+                      {contact?.fullName}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  flex="1"
+                  paddingTop="0.5rem"
+                >
+                  <Typography>Adress</Typography>
+                  <Box>
+                    <Typography fontWeight="bold">
+                      {contact?.address?.street} {contact?.address?.number}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  flex="1"
+                  paddingTop="0.5rem"
+                >
+                  <Typography>Område</Typography>
+                  <Box>
+                    <Typography fontWeight="bold">N/A</Typography>
+                  </Box>
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  flex="1"
+                  paddingTop="0.5rem"
+                >
+                  <Typography>Kontraktstatus bostad</Typography>
+                  <Box>
+                    <Typography fontWeight="bold">N/A</Typography>
+                  </Box>
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  flex="1"
+                  paddingTop="0.5rem"
+                >
+                  <Typography>Kontrakt bilplats</Typography>
+                  <Box>
+                    <Typography fontWeight="bold">N/A</Typography>
+                  </Box>
+                </Box>
+              </Box>
               <Box
-                paddingTop="1rem"
+                paddingTop="2rem"
                 display="flex"
-                gap="0.5rem"
-                justifyContent="flex-end"
+                justifyContent="space-between"
               >
                 <Button variant="dark-outlined">Avbryt</Button>
                 {!contact ? (
@@ -256,7 +315,6 @@ const SearchContact = (props: { onSelect: (contact: Contact) => void }) => {
     setState('idle')
   }
 
-  console.log(contact)
   return (
     <Box paddingTop="1rem">
       <Autocomplete<Contact>
