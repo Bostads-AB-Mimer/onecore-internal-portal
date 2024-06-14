@@ -1,23 +1,24 @@
 import axios, { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { Contact } from 'onecore-types'
+
+import { ContactSearchData } from '../components/create-applicant-for-listing/types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-export const useSearchContact = (q: string) =>
-  useQuery<Array<Contact>, AxiosError>({
-    queryKey: ['search-contact'],
+export const useSearchContacts = (q: string) =>
+  useQuery<Array<ContactSearchData>, AxiosError>({
+    queryKey: ['search-contacts', q],
     enabled: Boolean(q?.length >= 3),
     queryFn: () =>
       axios
-        .get(`${backendUrl}/contact/search?q=${q}`, {
+        .get(`${backendUrl}/contacts/search?q=${q}`, {
           headers: {
             Accept: 'application/json',
             'Access-Control-Allow-Credentials': true,
           },
           withCredentials: true,
         })
-        .then((res) => res.data),
+        .then((res) => res.data.data),
     retry: (failureCount: number, error: AxiosError) => {
       if (error.response?.status === 401) {
         return false

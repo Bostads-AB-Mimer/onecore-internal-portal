@@ -51,7 +51,7 @@ export const routes = (router: KoaRouter) => {
       return
     }
 
-    const result = await coreAdapter.getContactsBySearchQuery(ctx.query.q)
+    const result = await coreAdapter.getContactsDataBySearchQuery(ctx.query.q)
 
     if (result.ok) {
       ctx.status = 200

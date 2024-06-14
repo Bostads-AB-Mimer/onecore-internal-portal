@@ -3,15 +3,16 @@ import { Contact } from 'onecore-types'
 import { useState, useMemo, useCallback } from 'react'
 
 import * as utils from '../../../../utils'
-import { useSearchContact } from '../../hooks/useSearchContact'
+import { useSearchContacts } from '../../hooks/useSearchContacts'
 import { mdTheme } from '../../../../theme'
+import { ContactSearchData } from './types'
 
 export const SearchContact = (props: {
-  onSelect: (contact: Contact | null) => void
-  contact: Contact | null
+  onSelect: (contact: ContactSearchData | null) => void
+  contact: ContactSearchData | null
 }) => {
   const [searchString, setSearchString] = useState<string>('')
-  const contactQuery = useSearchContact(searchString)
+  const contactsQuery = useSearchContacts(searchString)
 
   const onSetSearchString = useMemo(
     () => utils.debounce((value: string) => setSearchString(value), 500),
@@ -27,10 +28,10 @@ export const SearchContact = (props: {
 
   return (
     <Box paddingTop="1rem">
-      <Autocomplete<Contact>
+      <Autocomplete<ContactSearchData>
         getOptionLabel={(v) => v.fullName}
         filterOptions={(v) => v}
-        options={contactQuery.data ?? []}
+        options={contactsQuery.data ?? []}
         onInputChange={(_, v) => handleSearch(v)}
         onChange={(_, v) => props.onSelect(v)}
         getOptionKey={(v) => v.contactCode}

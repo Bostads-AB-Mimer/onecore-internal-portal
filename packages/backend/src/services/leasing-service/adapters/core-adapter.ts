@@ -59,7 +59,7 @@ const createApplicant = async (applicant: Omit<Applicant, 'id'>) => {
   return response.data
 }
 
-const getContactsBySearchQuery = async (
+const getContactsDataBySearchQuery = async (
   q: string
 ): Promise<Result<Array<Contact>, unknown>> => {
   try {
@@ -77,5 +77,5 @@ export {
   getListingsWithApplicants,
   getListingWithApplicants,
   removeApplicant,
-  getContactsBySearchQuery,
+  getContactsDataBySearchQuery,
 }

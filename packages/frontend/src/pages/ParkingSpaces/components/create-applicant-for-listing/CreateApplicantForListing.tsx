@@ -18,6 +18,7 @@ import {
 import { SearchContact } from './SearchContact'
 import { ListingInfo } from './ListingInfo'
 import { ContactInfo } from './ContactInfo'
+import { ContactSearchData } from './types'
 
 export interface Props {
   listing: Listing
@@ -27,7 +28,7 @@ export interface Props {
 export const CreateApplicantForListing = (props: Props) => {
   const createApplicant = useCreateApplicantForListing()
   const [open, setOpen] = useState(false)
-  const [contact, setContact] = useState<Contact | null>(null)
+  const [contact, setContact] = useState<ContactSearchData | null>(null)
 
   const onCreate = (params: CreateApplicantRequestParams) =>
     createApplicant.mutate(params, { onSuccess: () => setOpen(false) })
@@ -80,7 +81,7 @@ export const CreateApplicantForListing = (props: Props) => {
             <Box paddingX="0.5rem" paddingTop="1rem">
               <Typography variant="h2">Kundinformation</Typography>
               <SearchContact onSelect={setContact} contact={contact} />
-              <ContactInfo contact={contact} />
+              {/* <ContactInfo contact={contact} /> */}
               <Box
                 paddingTop="2rem"
                 display="flex"
@@ -89,7 +90,7 @@ export const CreateApplicantForListing = (props: Props) => {
                 <Button onClick={() => setOpen(false)} variant="dark-outlined">
                   Avbryt
                 </Button>
-                {!contact ? (
+                {/* !contact ? (
                   <Button disabled variant="dark">
                     Spara
                   </Button>
@@ -111,7 +112,7 @@ export const CreateApplicantForListing = (props: Props) => {
                   >
                     Spara
                   </Button>
-                )}
+                  ) */}
               </Box>
             </Box>
           </DialogContent>
