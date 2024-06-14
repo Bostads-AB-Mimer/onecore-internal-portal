@@ -5,7 +5,7 @@ import { getFromCore } from '../../common/adapters/core-adapter'
 
 const coreBaseUrl = Config.core.url
 
-type Result<T, E> = { ok: false; err: E } | { ok: true; data: T }
+type AdapterResult<T, E> = { ok: false; err: E } | { ok: true; data: T }
 
 const getListingsWithApplicants = async () => {
   const url = `${coreBaseUrl}/listings-with-applicants`
@@ -35,10 +35,7 @@ const getListingWithApplicants = async (
     applicants,
   ])
 
-  return {
-    ...listingResult,
-    applicants: applicantsResult || [],
-  }
+  return { ...listingResult, applicants: applicantsResult || [] }
 }
 
 const removeApplicant = async (applicantId: string) => {
@@ -61,12 +58,30 @@ const createApplicant = async (applicant: Omit<Applicant, 'id'>) => {
 
 const getContactsDataBySearchQuery = async (
   q: string
-): Promise<Result<Array<Contact>, unknown>> => {
+): Promise<
+  AdapterResult<Array<Pick<Contact, 'fullName' | 'contactCode'>>, unknown>
+> => {
   try {
-    const result = await getFromCore<Array<Contact>>({
+    const result = await getFromCore<{ data: Array<Contact> }>({
       method: 'get',
       url: `${coreBaseUrl}/contacts/search?q=${q}`,
-    })
+    }).then((res) => res.data)
+
+    return { ok: true, data: result.data }
+  } catch (err) {
+    return { ok: false, err }
+  }
+}
+
+const getContactByContactCode = async (
+  contactCode: string
+): Promise<AdapterResult<Contact, unknown>> => {
+  try {
+    const result = await getFromCore<{ data: Contact }>({
+      method: 'get',
+      url: `${coreBaseUrl}/contact/contactCode/${contactCode}`,
+    }).then((res) => res.data)
+
     return { ok: true, data: result.data }
   } catch (err) {
     return { ok: false, err }
@@ -78,4 +93,5 @@ export {
   getListingWithApplicants,
   removeApplicant,
   getContactsDataBySearchQuery,
+  getContactByContactCode,
 }

@@ -9,7 +9,7 @@ import {
   IconButton,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { ApplicantStatus, Contact, Listing } from 'onecore-types'
+import { ApplicantStatus, Listing } from 'onecore-types'
 
 import {
   CreateApplicantRequestParams,
@@ -17,8 +17,9 @@ import {
 } from '../../hooks/useCreateApplicantForListing'
 import { SearchContact } from './SearchContact'
 import { ListingInfo } from './ListingInfo'
-import { ContactInfo } from './ContactInfo'
 import { ContactSearchData } from './types'
+import { useContactByContactCode } from '../../hooks/useContactByContactCode'
+import { ContactInfo } from './ContactInfo'
 
 export interface Props {
   listing: Listing
@@ -28,7 +29,10 @@ export interface Props {
 export const CreateApplicantForListing = (props: Props) => {
   const createApplicant = useCreateApplicantForListing()
   const [open, setOpen] = useState(false)
-  const [contact, setContact] = useState<ContactSearchData | null>(null)
+  const [selectedContact, setSelectedContact] =
+    useState<ContactSearchData | null>(null)
+
+  const contactQuery = useContactByContactCode(selectedContact?.contactCode)
 
   const onCreate = (params: CreateApplicantRequestParams) =>
     createApplicant.mutate(params, { onSuccess: () => setOpen(false) })
@@ -80,8 +84,11 @@ export const CreateApplicantForListing = (props: Props) => {
             </Box>
             <Box paddingX="0.5rem" paddingTop="1rem">
               <Typography variant="h2">Kundinformation</Typography>
-              <SearchContact onSelect={setContact} contact={contact} />
-              {/* <ContactInfo contact={contact} /> */}
+              <SearchContact
+                onSelect={setSelectedContact}
+                contact={selectedContact}
+              />
+              <ContactInfo contact={contactQuery.data ?? null} />
               <Box
                 paddingTop="2rem"
                 display="flex"
@@ -90,7 +97,7 @@ export const CreateApplicantForListing = (props: Props) => {
                 <Button onClick={() => setOpen(false)} variant="dark-outlined">
                   Avbryt
                 </Button>
-                {/* !contact ? (
+                {!contactQuery.data ? (
                   <Button disabled variant="dark">
                     Spara
                   </Button>
@@ -100,19 +107,19 @@ export const CreateApplicantForListing = (props: Props) => {
                     variant="dark"
                     onClick={() =>
                       onCreate({
-                        contactCode: contact.contactCode,
+                        contactCode: contactQuery.data.contactCode,
                         status: ApplicantStatus.Active,
                         listingId: props.listing.id,
-                        name: contact.fullName,
+                        name: contactQuery.data.fullName,
                         nationalRegistrationNumber:
-                          contact.nationalRegistrationNumber,
+                          contactQuery.data.nationalRegistrationNumber,
                         applicationType: 'foo',
                       })
                     }
                   >
                     Spara
                   </Button>
-                  ) */}
+                )}
               </Box>
             </Box>
           </DialogContent>

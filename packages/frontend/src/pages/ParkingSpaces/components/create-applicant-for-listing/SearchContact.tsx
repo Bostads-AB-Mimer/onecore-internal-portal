@@ -1,5 +1,4 @@
 import { Box, Autocomplete, TextField, MenuItem } from '@mui/material'
-import { Contact } from 'onecore-types'
 import { useState, useMemo, useCallback } from 'react'
 
 import * as utils from '../../../../utils'

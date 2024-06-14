@@ -29,29 +29,25 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/contacts/search', async (ctx) => {
-    // const result = (await new Promise((res) =>
-    // setTimeout(
-    // () =>
-    // res({
-    // ok: true,
-    // data: [
-    // { fullName: 'Foo Barsson', contactCode: 1 },
-    // { fullName: 'Foo Barsson', contactCode: 2 },
-    // { fullName: 'Foo Barsson', contactCode: 3 },
-    // { fullName: 'Foo Barsson', contactCode: 4 },
-    // { fullName: 'Foo Barsson', contactCode: 5 },
-    // { fullName: 'Foo Barsson', contactCode: 6 },
-    // ],
-    // }),
-    // 300
-    // )
-    // )) as any
     if (typeof ctx.query.q !== 'string') {
       ctx.status = 400
       return
     }
 
     const result = await coreAdapter.getContactsDataBySearchQuery(ctx.query.q)
+
+    if (result.ok) {
+      ctx.status = 200
+      ctx.body = result.data
+    } else {
+      ctx.status = 500
+    }
+  })
+
+  router.get('(.*)/contact/:contactCode', async (ctx) => {
+    const result = await coreAdapter.getContactByContactCode(
+      ctx.params.contactCode
+    )
 
     if (result.ok) {
       ctx.status = 200
