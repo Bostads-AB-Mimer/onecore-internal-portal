@@ -10,6 +10,8 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Listing } from 'onecore-types'
+import { toast } from 'react-toastify'
+import { LoadingButton } from '@mui/lab'
 
 import {
   CreateApplicantRequestParams,
@@ -35,7 +37,16 @@ export const CreateApplicantForListing = (props: Props) => {
   const contactQuery = useContactByContactCode(selectedContact?.contactCode)
 
   const onCreate = (params: CreateApplicantRequestParams) =>
-    createApplicant.mutate(params, { onSuccess: () => setOpen(false) })
+    createApplicant.mutate(params, {
+      onSuccess: () => {
+        setOpen(false)
+        toast('Intresseanmälan skapad', {
+          type: 'success',
+          hideProgressBar: true,
+        })
+        createApplicant.reset()
+      },
+    })
 
   return (
     <>
@@ -106,8 +117,9 @@ export const CreateApplicantForListing = (props: Props) => {
                     Spara
                   </Button>
                 ) : (
-                  <Button
+                  <LoadingButton
                     disabled={false}
+                    loading={createApplicant.isPending}
                     variant="dark"
                     onClick={() =>
                       onCreate({
@@ -118,7 +130,7 @@ export const CreateApplicantForListing = (props: Props) => {
                     }
                   >
                     Spara
-                  </Button>
+                  </LoadingButton>
                 )}
               </Box>
             </DialogContent>
