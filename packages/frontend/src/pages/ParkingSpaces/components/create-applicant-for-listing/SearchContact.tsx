@@ -37,6 +37,7 @@ export const SearchContact = (props: {
         value={props.contact}
         ListboxProps={{ style: { maxHeight: 125 } }}
         noOptionsText="Inga boende hittades..."
+        loading={contactsQuery.fetchStatus === 'fetching'}
         renderOption={(props, v) => (
           <MenuItem {...props} key={v.contactCode}>
             {v.fullName}

@@ -1,4 +1,5 @@
 import KoaRouter from '@koa/router'
+
 import * as coreAdapter from './adapters/core-adapter'
 
 export const routes = (router: KoaRouter) => {
@@ -57,7 +58,7 @@ export const routes = (router: KoaRouter) => {
     }
   })
 
-  router.post('(.*)/listing/:listingId', async (ctx) => {
+  router.post('(.*)/listing/applicant', async (ctx) => {
     const params = ctx.request.body
     const result =
       await coreAdapter.createNoteOfInterestForInternalParkingSpace(params)

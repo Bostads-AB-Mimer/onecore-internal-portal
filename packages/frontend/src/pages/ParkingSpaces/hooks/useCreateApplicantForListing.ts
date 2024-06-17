@@ -1,16 +1,12 @@
 import axios, { AxiosError } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ApplicantStatus } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 export type CreateApplicantRequestParams = {
-  name: string
-  nationalRegistrationNumber: string
-  contactCode: string
+  parkingSpaceId: string
   applicationType: string
-  status: ApplicantStatus
-  listingId: number
+  contactCode: string
 }
 
 export const useCreateApplicantForListing = () => {
@@ -18,7 +14,7 @@ export const useCreateApplicantForListing = () => {
   return useMutation<unknown, AxiosError, CreateApplicantRequestParams>({
     mutationFn: (params: CreateApplicantRequestParams) =>
       axios
-        .post<unknown>(`${backendUrl}/listing/${params.listingId}`, {
+        .post<unknown>(`${backendUrl}/listing/applicant`, params, {
           headers: {
             Accept: 'application/json',
             'Access-Control-Allow-Credentials': true,

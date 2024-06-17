@@ -9,7 +9,7 @@ import {
   IconButton,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { ApplicantStatus, Listing } from 'onecore-types'
+import { Listing } from 'onecore-types'
 
 import {
   CreateApplicantRequestParams,
@@ -108,13 +108,9 @@ export const CreateApplicantForListing = (props: Props) => {
                   variant="dark"
                   onClick={() =>
                     onCreate({
-                      contactCode: contactQuery.data.contactCode,
-                      status: ApplicantStatus.Active,
-                      listingId: props.listing.id,
-                      name: contactQuery.data.fullName,
-                      nationalRegistrationNumber:
-                        contactQuery.data.nationalRegistrationNumber,
                       applicationType: 'foo',
+                      contactCode: contactQuery.data.contactCode,
+                      parkingSpaceId: props.listing.rentalObjectCode,
                     })
                   }
                 >
