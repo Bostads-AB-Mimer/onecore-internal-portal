@@ -47,15 +47,6 @@ const removeApplicant = async (applicantId: string) => {
   return response.data
 }
 
-const createApplicant = async (applicant: Omit<Applicant, 'id'>) => {
-  const response = await getFromCore({
-    method: 'delete',
-    url: `${coreBaseUrl}/applicants/${'foo'}/by-manager`,
-  })
-
-  return response.data
-}
-
 const getContactsDataBySearchQuery = async (
   q: string
 ): Promise<
@@ -88,10 +79,29 @@ const getContactByContactCode = async (
   }
 }
 
+const createNoteOfInterestForInternalParkingSpace = async (params: {
+  parkingSpaceId: string
+  applicationType: string
+  contactCode: string
+}): Promise<AdapterResult<unknown, unknown>> => {
+  try {
+    const response = await getFromCore<unknown>({
+      method: 'post',
+      url: `${coreBaseUrl}/parkingspaces/${params.parkingSpaceId}/noteofinterests`,
+      data: params,
+    })
+
+    return { ok: true, data: response.data }
+  } catch (err) {
+    return { ok: false, err }
+  }
+}
+
 export {
   getListingsWithApplicants,
   getListingWithApplicants,
   removeApplicant,
   getContactsDataBySearchQuery,
   getContactByContactCode,
+  createNoteOfInterestForInternalParkingSpace,
 }

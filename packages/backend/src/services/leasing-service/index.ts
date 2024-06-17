@@ -57,5 +57,17 @@ export const routes = (router: KoaRouter) => {
     }
   })
 
-  router.post('(.*)/listing/:listingId', async (ctx) => {})
+  router.post('(.*)/listing/:listingId', async (ctx) => {
+    const params = ctx.request.body
+    const result =
+      await coreAdapter.createNoteOfInterestForInternalParkingSpace(params)
+
+    if (result.ok) {
+      ctx.status = 200
+      ctx.body = result.data
+    } else {
+      ctx.status = 500
+      ctx.body = result.err
+    }
+  })
 }

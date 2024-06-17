@@ -187,7 +187,7 @@ export const mdTheme = createTheme(theme, {
         {
           props: { variant: 'dark' },
           style: {
-            borderRadius: '8px',
+            borderRadius: '6px',
             textTransform: 'none',
             fontWeight: 700,
             backgrund: 'rgba(0, 0, 0, 1)',
@@ -204,7 +204,7 @@ export const mdTheme = createTheme(theme, {
         {
           props: { variant: 'dark-outlined' },
           style: {
-            borderRadius: '8px',
+            borderRadius: '6px',
             textTransform: 'none',
             border: '2px solid black',
             fontWeight: 700,

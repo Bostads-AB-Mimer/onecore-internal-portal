@@ -36,6 +36,7 @@ export const SearchContact = (props: {
         getOptionKey={(v) => v.contactCode}
         value={props.contact}
         ListboxProps={{ style: { maxHeight: 125 } }}
+        noOptionsText="Inga boende hittades..."
         renderOption={(props, v) => (
           <MenuItem {...props} key={v.contactCode}>
             {v.fullName}

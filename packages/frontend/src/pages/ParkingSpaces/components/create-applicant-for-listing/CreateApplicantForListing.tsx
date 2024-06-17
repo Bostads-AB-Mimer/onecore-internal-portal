@@ -60,7 +60,7 @@ export const CreateApplicantForListing = (props: Props) => {
         maxWidth="xs"
         fullWidth
       >
-        <Box paddingTop="1rem" paddingX="1rem">
+        <Box paddingTop="1rem">
           <Box display="flex">
             <DialogTitle variant="h1" fontSize={24} textAlign="left">
               Ny intresseanmälan, {props.listing.address}
@@ -89,38 +89,38 @@ export const CreateApplicantForListing = (props: Props) => {
                 contact={selectedContact}
               />
               <ContactInfo contact={contactQuery.data ?? null} />
-              <Box
-                paddingTop="2rem"
-                display="flex"
-                justifyContent="space-between"
-              >
-                <Button onClick={() => setOpen(false)} variant="dark-outlined">
-                  Avbryt
+            </Box>
+            <Box
+              paddingTop="2rem"
+              display="flex"
+              justifyContent="space-between"
+            >
+              <Button onClick={() => setOpen(false)} variant="dark-outlined">
+                Avbryt
+              </Button>
+              {!contactQuery.data ? (
+                <Button disabled variant="dark">
+                  Spara
                 </Button>
-                {!contactQuery.data ? (
-                  <Button disabled variant="dark">
-                    Spara
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={false}
-                    variant="dark"
-                    onClick={() =>
-                      onCreate({
-                        contactCode: contactQuery.data.contactCode,
-                        status: ApplicantStatus.Active,
-                        listingId: props.listing.id,
-                        name: contactQuery.data.fullName,
-                        nationalRegistrationNumber:
-                          contactQuery.data.nationalRegistrationNumber,
-                        applicationType: 'foo',
-                      })
-                    }
-                  >
-                    Spara
-                  </Button>
-                )}
-              </Box>
+              ) : (
+                <Button
+                  disabled={false}
+                  variant="dark"
+                  onClick={() =>
+                    onCreate({
+                      contactCode: contactQuery.data.contactCode,
+                      status: ApplicantStatus.Active,
+                      listingId: props.listing.id,
+                      name: contactQuery.data.fullName,
+                      nationalRegistrationNumber:
+                        contactQuery.data.nationalRegistrationNumber,
+                      applicationType: 'foo',
+                    })
+                  }
+                >
+                  Spara
+                </Button>
+              )}
             </Box>
           </DialogContent>
         </Box>
