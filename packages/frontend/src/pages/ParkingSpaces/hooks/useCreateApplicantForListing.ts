@@ -21,7 +21,11 @@ export const useCreateApplicantForListing = () => {
           },
           withCredentials: true,
         })
-        .then((res) => res.data),
+        .then((res) => res.data)
+        .catch((err) => {
+          console.log(err)
+          throw err
+        }),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ['parkingSpaceListings'],
