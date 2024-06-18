@@ -9,7 +9,7 @@ export type CreateApplicantRequestParams = {
   contactCode: string
 }
 
-export const useCreateApplicantForListing = () => {
+export const useCreateApplicantForListing = (listingId: number) => {
   const queryClient = useQueryClient()
   return useMutation<unknown, AxiosError, CreateApplicantRequestParams>({
     mutationFn: (params: CreateApplicantRequestParams) =>
@@ -21,14 +21,15 @@ export const useCreateApplicantForListing = () => {
           },
           withCredentials: true,
         })
-        .then((res) => res.data)
-        .catch((err) => {
-          console.log(err)
-          throw err
-        }),
+        .then((res) => res.data),
     onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: ['parkingSpaceListings'],
-      }),
+      Promise.all([
+        queryClient.refetchQueries({
+          queryKey: ['parkingSpaceListing', String(listingId)],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['parkingSpaceListings'],
+        }),
+      ]),
   })
 }

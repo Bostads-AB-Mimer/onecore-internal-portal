@@ -6,7 +6,7 @@ import { Listing } from 'onecore-types'
 import { Link } from 'react-router-dom'
 
 import { DataGridTable, SearchBar } from '../../components'
-import { useParkingSpaces } from './hooks/useParkingSpaces'
+import { useParkingSpaceListings } from './hooks/useParkingSpaceListings'
 import * as utils from '../../utils'
 import { CreateApplicantForListing } from './components/create-applicant-for-listing/CreateApplicantForListing'
 
@@ -16,7 +16,7 @@ const sharedProps = {
 }
 
 const ParkingSpaces = () => {
-  const parkingSpaces = useParkingSpaces()
+  const parkingSpaces = useParkingSpaceListings()
   const [searchString, setSearchString] = useState<string>()
   const dateFormatter = new Intl.DateTimeFormat('sv-SE')
   const numberFormatter = new Intl.NumberFormat('sv-SE', {

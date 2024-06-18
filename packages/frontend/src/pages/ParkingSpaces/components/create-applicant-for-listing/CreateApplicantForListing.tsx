@@ -29,7 +29,7 @@ export interface Props {
 }
 
 export const CreateApplicantForListing = (props: Props) => {
-  const createApplicant = useCreateApplicantForListing()
+  const createApplicant = useCreateApplicantForListing(props.listing.id)
   const [open, setOpen] = useState(false)
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
@@ -123,7 +123,7 @@ export const CreateApplicantForListing = (props: Props) => {
                     variant="dark"
                     onClick={() =>
                       onCreate({
-                        applicationType: 'foo',
+                        applicationType: 'Additional', // TODO: Need to get this value
                         contactCode: contactQuery.data.contactCode,
                         parkingSpaceId: props.listing.rentalObjectCode,
                       })
