@@ -99,7 +99,7 @@ export const CreateApplicantForListing = (props: Props) => {
                 </IconButton>
               </Box>
             </Box>
-            <DialogContent>
+            <DialogContent sx={{ paddingTop: '0.5rem' }}>
               <Box paddingX="0.5rem">
                 <Typography variant="h2">Objektsinformation</Typography>
                 <ListingInfo listing={props.listing} />
