@@ -44,7 +44,7 @@ export const CreateApplicantForListing = (props: Props) => {
           type: 'success',
           hideProgressBar: true,
         })
-        createApplicant.reset()
+        setSelectedContact(null)
       },
     })
 
