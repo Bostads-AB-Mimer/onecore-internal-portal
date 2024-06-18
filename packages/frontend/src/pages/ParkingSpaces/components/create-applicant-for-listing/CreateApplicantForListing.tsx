@@ -7,6 +7,10 @@ import {
   Typography,
   Box,
   IconButton,
+  Divider,
+  Radio,
+  FormControlLabel,
+  RadioGroup,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Listing } from 'onecore-types'
@@ -34,19 +38,28 @@ export const CreateApplicantForListing = (props: Props) => {
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
 
+  const [applicationType, setApplicationType] = useState<
+    'Replace' | 'Additional'
+  >()
+
   const contactQuery = useContactByContactCode(selectedContact?.contactCode)
 
   const onCreate = (params: CreateApplicantRequestParams) =>
     createApplicant.mutate(params, {
       onSuccess: () => {
-        setOpen(false)
+        onCloseModal()
         toast('Intresseanmälan skapad', {
           type: 'success',
           hideProgressBar: true,
         })
-        setSelectedContact(null)
       },
     })
+
+  const onCloseModal = () => {
+    setOpen(false)
+    setSelectedContact(null)
+    setApplicationType(undefined)
+  }
 
   return (
     <>
@@ -65,12 +78,7 @@ export const CreateApplicantForListing = (props: Props) => {
           Ny anmälan
         </Box>
       </Button>
-      <Dialog
-        onClose={() => setOpen(false)}
-        open={open}
-        maxWidth="xs"
-        fullWidth
-      >
+      <Dialog onClose={onCloseModal} open={open} maxWidth="xs" fullWidth>
         {createApplicant.error ? (
           <CreateApplicantError reset={createApplicant.reset} />
         ) : (
@@ -104,26 +112,48 @@ export const CreateApplicantForListing = (props: Props) => {
                 />
                 <ContactInfo contact={contactQuery.data ?? null} />
               </Box>
+              <Box paddingX="0.5rem">
+                <Divider />
+              </Box>
+              <Box
+                paddingX="0.5rem"
+                paddingTop="0.5rem"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Typography>Ärendetyp</Typography>
+                <RadioGroup name="radio-buttons-group" row>
+                  <FormControlLabel
+                    checked={applicationType === 'Replace'}
+                    control={<Radio size="small" />}
+                    label="Byte"
+                    onChange={() => setApplicationType('Replace')}
+                  />
+                  <FormControlLabel
+                    checked={applicationType === 'Additional'}
+                    control={<Radio size="small" />}
+                    label="Hyra flera"
+                    onChange={() => setApplicationType('Additional')}
+                  />
+                </RadioGroup>
+              </Box>
               <Box
                 paddingTop="2rem"
                 display="flex"
                 justifyContent="space-between"
               >
-                <Button onClick={() => setOpen(false)} variant="dark-outlined">
+                <Button onClick={onCloseModal} variant="dark-outlined">
                   Avbryt
                 </Button>
-                {!contactQuery.data ? (
-                  <Button disabled variant="dark">
-                    Spara
-                  </Button>
-                ) : (
+                {contactQuery.data && applicationType ? (
                   <LoadingButton
                     disabled={false}
                     loading={createApplicant.isPending}
                     variant="dark"
                     onClick={() =>
                       onCreate({
-                        applicationType: 'Additional', // TODO: Need to get this value
+                        applicationType,
                         contactCode: contactQuery.data.contactCode,
                         parkingSpaceId: props.listing.rentalObjectCode,
                       })
@@ -131,6 +161,10 @@ export const CreateApplicantForListing = (props: Props) => {
                   >
                     Spara
                   </LoadingButton>
+                ) : (
+                  <Button disabled variant="dark">
+                    Lägg till
+                  </Button>
                 )}
               </Box>
             </DialogContent>
