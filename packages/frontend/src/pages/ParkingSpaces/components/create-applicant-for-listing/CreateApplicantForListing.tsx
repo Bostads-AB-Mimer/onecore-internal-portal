@@ -11,11 +11,13 @@ import {
   Radio,
   FormControlLabel,
   RadioGroup,
+  Tab as MuiTab,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Listing } from 'onecore-types'
 import { toast } from 'react-toastify'
-import { LoadingButton } from '@mui/lab'
+import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab'
+import { styled } from 'styled-components'
 
 import {
   CreateApplicantRequestParams,
@@ -32,11 +34,32 @@ export interface Props {
   disabled: boolean
 }
 
+const Tab = styled(MuiTab)(() => ({
+  fontSize: 20,
+  textTransform: 'uppercase',
+  fontFamily: 'bisonBold',
+  fontWeight: 900,
+  letterSpacing: '-0.00833em',
+  color: 'rgba(0, 0, 0, 0.5)',
+  '&.Mui-selected': {
+    color: 'rgba(0, 0, 0, 0.87)',
+  },
+}))
+
+const Tabs = styled(TabList)(() => ({
+  '& .MuiTabs-indicator': {
+    width: '100%',
+    backgroundColor: 'black',
+    height: '3px',
+  },
+}))
+
 export const CreateApplicantForListing = (props: Props) => {
   const createApplicant = useCreateApplicantForListing(props.listing.id)
   const [open, setOpen] = useState(false)
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
+  const [selectedTab, setSelectedTab] = useState('1')
 
   const [applicationType, setApplicationType] = useState<
     'Replace' | 'Additional'
@@ -61,6 +84,9 @@ export const CreateApplicantForListing = (props: Props) => {
     setApplicationType(undefined)
   }
 
+  const handleChange = (_e: React.SyntheticEvent, tab: string) =>
+    setSelectedTab(tab)
+
   return (
     <>
       <Button
@@ -78,7 +104,7 @@ export const CreateApplicantForListing = (props: Props) => {
           Ny anmälan
         </Box>
       </Button>
-      <Dialog onClose={onCloseModal} open={open} maxWidth="xs" fullWidth>
+      <Dialog onClose={onCloseModal} open={open} maxWidth="sm" fullWidth>
         {createApplicant.error ? (
           <CreateApplicantError reset={createApplicant.reset} />
         ) : (
@@ -105,12 +131,30 @@ export const CreateApplicantForListing = (props: Props) => {
                 <ListingInfo listing={props.listing} />
               </Box>
               <Box paddingX="0.5rem" paddingTop="1rem">
-                <Typography variant="h2">Kundinformation</Typography>
-                <SearchContact
-                  onSelect={setSelectedContact}
-                  contact={selectedContact}
-                />
-                <ContactInfo contact={contactQuery.data ?? null} />
+                <TabContext value={selectedTab}>
+                  <Tabs onChange={handleChange}>
+                    <Tab
+                      label="Kundinformation"
+                      value="1"
+                      sx={{ paddingLeft: 0 }}
+                    />
+                    <Tab label="Kontrakt" value="2" />
+                  </Tabs>
+                  <TabPanel value="1" sx={{ paddingLeft: 0, paddingTop: 0 }}>
+                    <SearchContact
+                      onSelect={setSelectedContact}
+                      contact={selectedContact}
+                    />
+                    <ContactInfo contact={contactQuery.data ?? null} />
+                  </TabPanel>
+                  <TabPanel value="2" sx={{ paddingLeft: 0, paddingTop: 0 }}>
+                    <SearchContact
+                      onSelect={setSelectedContact}
+                      contact={selectedContact}
+                    />
+                    <ContactInfo contact={contactQuery.data ?? null} />
+                  </TabPanel>
+                </TabContext>
               </Box>
               <Box paddingX="0.5rem">
                 <Divider />
