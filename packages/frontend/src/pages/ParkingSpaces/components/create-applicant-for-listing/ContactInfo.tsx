@@ -1,7 +1,8 @@
 import { Box, Typography } from '@mui/material'
 import { Contact } from 'onecore-types'
+import { Tenant } from '../../hooks/useContactByContactCode'
 
-export const ContactInfo = (props: { contact: Contact | null }) => (
+export const ContactInfo = (props: { contact: Tenant | null }) => (
   <Box>
     <Box
       paddingTop="1rem"

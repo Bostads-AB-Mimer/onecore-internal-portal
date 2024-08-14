@@ -59,7 +59,7 @@ export const routes = (router: KoaRouter) => {
 
   router.get('(.*)/contact/:contactCode', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
-    const result = await coreAdapter.getContactByContactCode(
+    const result = await coreAdapter.getTenantByContactCode(
       ctx.params.contactCode
     )
 

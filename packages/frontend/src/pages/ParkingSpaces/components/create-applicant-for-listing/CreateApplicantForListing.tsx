@@ -87,6 +87,11 @@ export const CreateApplicantForListing = (props: Props) => {
   const handleChange = (_e: React.SyntheticEvent, tab: string) =>
     setSelectedTab(tab)
 
+  const leases =
+    contactQuery.data?.housingContracts.concat(
+      contactQuery.data.parkingSpaceContracts ?? []
+    ) ?? []
+
   return (
     <>
       <Button
@@ -134,11 +139,16 @@ export const CreateApplicantForListing = (props: Props) => {
                 <TabContext value={selectedTab}>
                   <Tabs onChange={handleChange}>
                     <Tab
+                      disableRipple
                       label="Kundinformation"
                       value="1"
                       sx={{ paddingLeft: 0 }}
                     />
-                    <Tab label="Kontrakt" value="2" />
+                    <Tab
+                      label={`Kontrakt (${leases.length})`}
+                      value="2"
+                      disableRipple
+                    />
                   </Tabs>
                   <TabPanel value="1" sx={{ paddingLeft: 0, paddingTop: 0 }}>
                     <SearchContact

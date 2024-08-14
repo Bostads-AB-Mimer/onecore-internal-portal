@@ -1,4 +1,10 @@
-import { Applicant, Contact, DetailedApplicant, Listing } from 'onecore-types'
+import {
+  Contact,
+  DetailedApplicant,
+  Lease,
+  Listing,
+  Tenant,
+} from 'onecore-types'
 
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
@@ -64,13 +70,13 @@ const getContactsDataBySearchQuery = async (
   }
 }
 
-const getContactByContactCode = async (
+const getTenantByContactCode = async (
   contactCode: string
-): Promise<AdapterResult<Contact, unknown>> => {
+): Promise<AdapterResult<Tenant, unknown>> => {
   try {
-    const result = await getFromCore<{ data: { content: Contact } }>({
+    const result = await getFromCore<{ data: { content: Tenant } }>({
       method: 'get',
-      url: `${coreBaseUrl}/contact/contactCode/${contactCode}`,
+      url: `${coreBaseUrl}/tenant/contactCode/${contactCode}`,
     }).then((res) => res.data)
 
     return { ok: true, data: result.data.content }
@@ -103,6 +109,6 @@ export {
   getListingWithApplicants,
   removeApplicant,
   getContactsDataBySearchQuery,
-  getContactByContactCode,
+  getTenantByContactCode,
   createNoteOfInterestForInternalParkingSpace,
 }
