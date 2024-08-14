@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   RadioGroup,
   Tab as MuiTab,
+  Stack,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Listing } from 'onecore-types'
@@ -28,6 +29,8 @@ import { ListingInfo } from './ListingInfo'
 import { ContactSearchData } from './types'
 import { useContactByContactCode } from '../../hooks/useContactByContactCode'
 import { ContactInfo } from './ContactInfo'
+import { DataGridTable } from '../../../../components'
+import { GridColDef } from '@mui/x-data-grid'
 
 export interface Props {
   listing: Listing
@@ -158,10 +161,7 @@ export const CreateApplicantForListing = (props: Props) => {
                     <ContactInfo contact={contactQuery.data ?? null} />
                   </TabPanel>
                   <TabPanel value="2" sx={{ paddingLeft: 0, paddingTop: 0 }}>
-                    <SearchContact
-                      onSelect={setSelectedContact}
-                      contact={selectedContact}
-                    />
+                    <Contracts />
                     <ContactInfo contact={contactQuery.data ?? null} />
                   </TabPanel>
                 </TabContext>
@@ -229,6 +229,58 @@ export const CreateApplicantForListing = (props: Props) => {
   )
 }
 
+const sharedProps = {
+  editable: false,
+  flex: 1,
+}
+
+const columns: GridColDef[] = [
+  {
+    field: 'type',
+    headerName: 'Typ',
+    ...sharedProps,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    ...sharedProps,
+  },
+  {
+    field: 'address',
+    headerName: 'Adress',
+    ...sharedProps,
+  },
+  {
+    field: 'address',
+    headerName: 'Adress',
+    ...sharedProps,
+  },
+]
+
+const Contracts = (props: { contracts: Lease[] }) => (
+  <DataGridTable
+    initialState={{
+      pagination: { paginationModel: { pageSize: 5 } },
+    }}
+    pageSizeOptions={[5, 10, 25]}
+    slots={{
+      noRowsOverlay: () => (
+        <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
+          <Typography fontSize="14px">
+            Det finns inga kontrakt att visa...
+          </Typography>
+        </Stack>
+      ),
+    }}
+    columns={columns}
+    rows={filterListings(parkingSpaces.data ?? [], searchString)}
+    getRowId={(row) => row.id}
+    loading={parkingSpaces.status === 'pending'}
+    rowHeight={72}
+    disableRowSelectionOnClick
+    autoHeight
+  />
+)
 const CreateApplicantError = (props: { reset: () => void }) => (
   <Box
     padding="1rem"
