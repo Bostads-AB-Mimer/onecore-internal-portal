@@ -15,10 +15,11 @@ import {
   Stack,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { Listing } from 'onecore-types'
+import { Lease, Listing } from 'onecore-types'
 import { toast } from 'react-toastify'
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab'
 import { styled } from 'styled-components'
+import { GridColDef } from '@mui/x-data-grid'
 
 import {
   CreateApplicantRequestParams,
@@ -30,7 +31,6 @@ import { ContactSearchData } from './types'
 import { useContactByContactCode } from '../../hooks/useContactByContactCode'
 import { ContactInfo } from './ContactInfo'
 import { DataGridTable } from '../../../../components'
-import { GridColDef } from '@mui/x-data-grid'
 
 export interface Props {
   listing: Listing
@@ -153,21 +153,20 @@ export const CreateApplicantForListing = (props: Props) => {
                       disableRipple
                     />
                   </Tabs>
-                  <TabPanel value="1" sx={{ paddingLeft: 0, paddingTop: 0 }}>
+                  <TabPanel value="1" sx={{ padding: 0 }}>
                     <SearchContact
                       onSelect={setSelectedContact}
                       contact={selectedContact}
                     />
                     <ContactInfo contact={contactQuery.data ?? null} />
+                    <Box>
+                      <Divider />
+                    </Box>
                   </TabPanel>
-                  <TabPanel value="2" sx={{ paddingLeft: 0, paddingTop: 0 }}>
-                    <Contracts />
-                    <ContactInfo contact={contactQuery.data ?? null} />
+                  <TabPanel value="2" sx={{ padding: 0 }}>
+                    <Leases leases={leases} />
                   </TabPanel>
                 </TabContext>
-              </Box>
-              <Box paddingX="0.5rem">
-                <Divider />
               </Box>
               <Box
                 paddingX="0.5rem"
@@ -251,18 +250,18 @@ const columns: GridColDef[] = [
     ...sharedProps,
   },
   {
-    field: 'address',
-    headerName: 'Adress',
+    field: 'monthlyRent',
+    headerName: 'Hyra',
     ...sharedProps,
   },
 ]
 
-const Contracts = (props: { contracts: Lease[] }) => (
+const Leases = (props: { leases: Lease[] }) => (
   <DataGridTable
+    sx={{ paddingTop: '1rem' }}
     initialState={{
       pagination: { paginationModel: { pageSize: 5 } },
     }}
-    pageSizeOptions={[5, 10, 25]}
     slots={{
       noRowsOverlay: () => (
         <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
@@ -272,15 +271,17 @@ const Contracts = (props: { contracts: Lease[] }) => (
         </Stack>
       ),
     }}
+    hideFooter
     columns={columns}
-    rows={filterListings(parkingSpaces.data ?? [], searchString)}
+    rows={props.leases}
     getRowId={(row) => row.id}
-    loading={parkingSpaces.status === 'pending'}
+    loading={false}
     rowHeight={72}
     disableRowSelectionOnClick
     autoHeight
   />
 )
+
 const CreateApplicantError = (props: { reset: () => void }) => (
   <Box
     padding="1rem"

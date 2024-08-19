@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import { Contact } from 'onecore-types'
+
 import { Tenant } from '../../hooks/useContactByContactCode'
 
 export const ContactInfo = (props: { contact: Tenant | null }) => (
@@ -45,20 +45,11 @@ export const ContactInfo = (props: { contact: Tenant | null }) => (
       flex="1"
       paddingTop="0.5rem"
     >
-      <Typography>Kontraktstatus bostad</Typography>
+      <Typography>Kontrakt</Typography>
       <Box>
-        <Typography fontWeight="bold">N/A</Typography>
-      </Box>
-    </Box>
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      flex="1"
-      paddingTop="0.5rem"
-    >
-      <Typography>Kontrakt bilplats</Typography>
-      <Box>
-        <Typography fontWeight="bold">N/A</Typography>
+        <Typography fontWeight="bold">
+          {props.contact?.leaseIds?.length}
+        </Typography>
       </Box>
     </Box>
   </Box>
