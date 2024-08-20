@@ -72,6 +72,72 @@ export const routes = (router: KoaRouter) => {
     }
   })
 
+  router.get(
+    '(.*)/get-and-validate-tenant/:contactCode/:districtCode/:rentalObjectCode',
+    async (ctx) => {
+      const getTenant = await coreAdapter.getTenantByContactCode(
+        ctx.params.contactCode
+      )
+
+      if (!getTenant.ok) {
+        ctx.status = 500
+        return
+      }
+
+      const validate = await Promise.all([
+        coreAdapter.validatePropertyRentalRules(
+          ctx.params.contactCode,
+          ctx.params.rentalObjectCode
+        ),
+        coreAdapter.validateResidentialAreaRentalRules(
+          ctx.params.contactCode,
+          ctx.params.districtCode
+        ),
+      ]).then(([validatePropertyResult, validateResidentialAreaResult]) => {
+        if (!validatePropertyResult.ok || !validateResidentialAreaResult.ok) {
+          return { ok: false } as const
+        }
+
+        if (validatePropertyResult.data.applicationType === 'Replace') {
+          return {
+            ok: true,
+            tenant: getTenant.data,
+            validationResult: { applicationType: 'Replace', type: 'property' },
+          } as const
+        }
+
+        if (validateResidentialAreaResult.data.applicationType === 'Replace') {
+          return {
+            ok: true,
+            tenant: getTenant.data,
+            validationResult: {
+              applicationType: 'Replace',
+              type: 'residential-area',
+            },
+          } as const
+        }
+
+        return { ok: true, tenant: getTenant.data } as const
+      })
+
+      console.log(validate)
+      if (!validate.ok) {
+        ctx.status = 500
+        return
+      }
+
+      console.log({
+        tenant: validate.tenant,
+        validationResult: validate.validationResult,
+      })
+      ctx.status = 200
+      ctx.body = {
+        tenant: validate.tenant,
+        validationResult: validate.validationResult,
+      }
+    }
+  )
+
   router.post('(.*)/listing/applicant', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
     const params = ctx.request.body

@@ -85,6 +85,46 @@ const getTenantByContactCode = async (
   }
 }
 
+const validatePropertyRentalRules = async (
+  contactCode: string,
+  rentalObjectCode: string
+): Promise<
+  AdapterResult<{ applicationType: 'Replace' | 'Additional' }, unknown>
+> => {
+  try {
+    const result = await getFromCore<{
+      data: { applicationType: 'Replace' | 'Additional' }
+    }>({
+      method: 'get',
+      url: `${coreBaseUrl}/applicants/validate-rental-rules/property/${contactCode}/${rentalObjectCode}`,
+    }).then((res) => res.data)
+
+    return { ok: true, data: result.data }
+  } catch (err) {
+    return { ok: false, err }
+  }
+}
+
+const validateResidentialAreaRentalRules = async (
+  contactCode: string,
+  districtCode: string
+): Promise<
+  AdapterResult<{ applicationType: 'Replace' | 'Additional' }, unknown>
+> => {
+  try {
+    const result = await getFromCore<{
+      data: { applicationType: 'Replace' | 'Additional' }
+    }>({
+      method: 'get',
+      url: `${coreBaseUrl}/applicants/validate-rental-rules/residential-area/${contactCode}/${districtCode}`,
+    }).then((res) => res.data)
+
+    return { ok: true, data: result.data }
+  } catch (err) {
+    return { ok: false, err }
+  }
+}
+
 const createNoteOfInterestForInternalParkingSpace = async (params: {
   parkingSpaceId: string
   applicationType: string
@@ -111,4 +151,6 @@ export {
   getContactsDataBySearchQuery,
   getTenantByContactCode,
   createNoteOfInterestForInternalParkingSpace,
+  validatePropertyRentalRules,
+  validateResidentialAreaRentalRules,
 }

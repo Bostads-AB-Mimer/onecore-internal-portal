@@ -28,7 +28,7 @@ import {
 import { SearchContact } from './SearchContact'
 import { ListingInfo } from './ListingInfo'
 import { ContactSearchData } from './types'
-import { useContactByContactCode } from '../../hooks/useContactByContactCode'
+import { useTenantWithValidation } from '../../hooks/useTenantWithValidation'
 import { ContactInfo } from './ContactInfo'
 import { DataGridTable } from '../../../../components'
 
@@ -68,7 +68,11 @@ export const CreateApplicantForListing = (props: Props) => {
     'Replace' | 'Additional'
   >()
 
-  const contactQuery = useContactByContactCode(selectedContact?.contactCode)
+  const tenantQuery = useTenantWithValidation(
+    selectedContact?.contactCode,
+    props.listing.districtCode,
+    props.listing.rentalObjectCode
+  )
 
   const onCreate = (params: CreateApplicantRequestParams) =>
     createApplicant.mutate(params, {
@@ -91,8 +95,8 @@ export const CreateApplicantForListing = (props: Props) => {
     setSelectedTab(tab)
 
   const leases =
-    contactQuery.data?.housingContracts.concat(
-      contactQuery.data.parkingSpaceContracts ?? []
+    tenantQuery.data?.tenant.housingContracts.concat(
+      tenantQuery.data.tenant.parkingSpaceContracts ?? []
     ) ?? []
 
   return (
@@ -158,7 +162,7 @@ export const CreateApplicantForListing = (props: Props) => {
                       onSelect={setSelectedContact}
                       contact={selectedContact}
                     />
-                    <ContactInfo contact={contactQuery.data ?? null} />
+                    <ContactInfo contact={tenantQuery.data ?? null} />
                     <Box>
                       <Divider />
                     </Box>
@@ -199,7 +203,7 @@ export const CreateApplicantForListing = (props: Props) => {
                 <Button onClick={onCloseModal} variant="dark-outlined">
                   Avbryt
                 </Button>
-                {contactQuery.data && applicationType ? (
+                {tenantQuery.data && applicationType ? (
                   <LoadingButton
                     disabled={false}
                     loading={createApplicant.isPending}
@@ -207,7 +211,7 @@ export const CreateApplicantForListing = (props: Props) => {
                     onClick={() =>
                       onCreate({
                         applicationType,
-                        contactCode: contactQuery.data.contactCode,
+                        contactCode: tenantQuery.data.tenant.contactCode,
                         parkingSpaceId: props.listing.rentalObjectCode,
                       })
                     }
