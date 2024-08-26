@@ -8,6 +8,7 @@ import {
 
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
+import { AxiosError } from 'axios'
 
 const coreBaseUrl = Config.core.url
 
@@ -89,7 +90,10 @@ const validatePropertyRentalRules = async (
   contactCode: string,
   rentalObjectCode: string
 ): Promise<
-  AdapterResult<{ applicationType: 'Replace' | 'Additional' }, unknown>
+  AdapterResult<
+    { applicationType: 'Replace' | 'Additional' },
+    'no-contract-in-area-or-property' | 'unknown'
+  >
 > => {
   try {
     const result = await getFromCore<{
@@ -101,7 +105,11 @@ const validatePropertyRentalRules = async (
 
     return { ok: true, data: result.data }
   } catch (err) {
-    return { ok: false, err }
+    if (err instanceof AxiosError && err.response?.status === 403) {
+      return { ok: false, err: 'no-contract-in-area-or-property' }
+    } else {
+      return { ok: false, err: 'unknown' }
+    }
   }
 }
 
@@ -109,7 +117,10 @@ const validateResidentialAreaRentalRules = async (
   contactCode: string,
   districtCode: string
 ): Promise<
-  AdapterResult<{ applicationType: 'Replace' | 'Additional' }, unknown>
+  AdapterResult<
+    { applicationType: 'Replace' | 'Additional' },
+    'no-contract-in-area-or-property' | 'unknown'
+  >
 > => {
   try {
     const result = await getFromCore<{
@@ -121,7 +132,11 @@ const validateResidentialAreaRentalRules = async (
 
     return { ok: true, data: result.data }
   } catch (err) {
-    return { ok: false, err }
+    if (err instanceof AxiosError && err.response?.status === 403) {
+      return { ok: false, err: 'no-contract-in-area-or-property' }
+    } else {
+      return { ok: false, err: 'unknown' }
+    }
   }
 }
 

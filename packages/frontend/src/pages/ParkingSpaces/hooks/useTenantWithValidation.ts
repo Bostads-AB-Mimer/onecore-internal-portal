@@ -14,27 +14,23 @@ export type Tenant = Omit<Contact, 'leases' | 'isTenant'> & {
   housingContracts: NonEmptyArray<Lease>
 }
 
-type Type =
-  | {
-      tenant: Tenant
-      validationResult: { type: 'residential-area'; applicationType: 'Replace' }
-    }
-  | {
-      tenant: Tenant
-      validationResult: { type: 'property'; applicationType: 'Replace' }
-    }
-  | {
-      tenant: Tenant
-      validationResult: undefined
-    }
+export type TenantWithValidation = {
+  tenant: Tenant
+  validationResult:
+    | 'ok'
+    | 'no-contract'
+    | 'needs-replace-by-property'
+    | 'needs-replace-by-residential-area'
+    | 'has-at-least-one-parking-space'
+}
 
 export const useTenantWithValidation = (
   contactCode?: string,
   districtCode?: string,
   rentalObjectCode?: string
 ) =>
-  useQuery<Type, AxiosError>({
-    queryKey: ['tenant', contactCode],
+  useQuery<TenantWithValidation, AxiosError>({
+    queryKey: ['tenant-with-validation', contactCode],
     enabled: Boolean(contactCode && districtCode && rentalObjectCode),
     queryFn: () =>
       axios

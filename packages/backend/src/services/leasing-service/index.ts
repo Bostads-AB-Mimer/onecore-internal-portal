@@ -94,6 +94,21 @@ export const routes = (router: KoaRouter) => {
           ctx.params.districtCode
         ),
       ]).then(([validatePropertyResult, validateResidentialAreaResult]) => {
+        const missingContract =
+          (!validatePropertyResult.ok &&
+            validatePropertyResult.err === 'no-contract-in-area-or-property') ||
+          (!validateResidentialAreaResult.ok &&
+            validateResidentialAreaResult.err ===
+              'no-contract-in-area-or-property')
+
+        if (missingContract) {
+          return {
+            ok: true,
+            tenant: getTenant.data,
+            validationResult: 'no-contract',
+          } as const
+        }
+
         if (!validatePropertyResult.ok || !validateResidentialAreaResult.ok) {
           return { ok: false } as const
         }
@@ -102,7 +117,7 @@ export const routes = (router: KoaRouter) => {
           return {
             ok: true,
             tenant: getTenant.data,
-            validationResult: { applicationType: 'Replace', type: 'property' },
+            validationResult: 'needs-replace-by-property',
           } as const
         }
 
@@ -110,26 +125,32 @@ export const routes = (router: KoaRouter) => {
           return {
             ok: true,
             tenant: getTenant.data,
-            validationResult: {
-              applicationType: 'Replace',
-              type: 'residential-area',
-            },
+            validationResult: 'needs-replace-by-residential-area',
           } as const
         }
 
-        return { ok: true, tenant: getTenant.data } as const
+        if (
+          getTenant.data.parkingSpaceContracts &&
+          getTenant.data.parkingSpaceContracts.length > 0
+        )
+          return {
+            ok: true,
+            tenant: getTenant.data,
+            validationResult: 'has-at-least-one-parking-space',
+          } as const
+
+        return {
+          ok: true,
+          tenant: getTenant.data,
+          validationResult: 'ok',
+        } as const
       })
 
-      console.log(validate)
       if (!validate.ok) {
         ctx.status = 500
         return
       }
 
-      console.log({
-        tenant: validate.tenant,
-        validationResult: validate.validationResult,
-      })
       ctx.status = 200
       ctx.body = {
         tenant: validate.tenant,

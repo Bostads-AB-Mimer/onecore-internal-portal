@@ -28,9 +28,13 @@ import {
 import { SearchContact } from './SearchContact'
 import { ListingInfo } from './ListingInfo'
 import { ContactSearchData } from './types'
-import { useTenantWithValidation } from '../../hooks/useTenantWithValidation'
+import {
+  TenantWithValidation,
+  useTenantWithValidation,
+} from '../../hooks/useTenantWithValidation'
 import { ContactInfo } from './ContactInfo'
 import { DataGridTable } from '../../../../components'
+import { match, P } from 'ts-pattern'
 
 export interface Props {
   listing: Listing
@@ -172,29 +176,40 @@ export const CreateApplicantForListing = (props: Props) => {
                   </TabPanel>
                 </TabContext>
               </Box>
-              <Box
-                paddingX="0.5rem"
-                paddingTop="0.5rem"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography>Ärendetyp</Typography>
-                <RadioGroup name="radio-buttons-group" row>
-                  <FormControlLabel
-                    checked={applicationType === 'Replace'}
-                    control={<Radio size="small" />}
-                    label="Byte"
-                    onChange={() => setApplicationType('Replace')}
-                  />
-                  <FormControlLabel
-                    checked={applicationType === 'Additional'}
-                    control={<Radio size="small" />}
-                    label="Hyra flera"
-                    onChange={() => setApplicationType('Additional')}
-                  />
-                </RadioGroup>
-              </Box>
+              {tenantQuery.data &&
+                tenantQuery.data.validationResult !== 'ok' && (
+                  <Box
+                    paddingX="0.5rem"
+                    paddingTop="0.5rem"
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Typography>Ärendetyp</Typography>
+                    <RadioGroup name="radio-buttons-group" row>
+                      <FormControlLabel
+                        checked={applicationType === 'Replace'}
+                        control={<Radio size="small" />}
+                        label="Byte"
+                        onChange={() => setApplicationType('Replace')}
+                      />
+                      <FormControlLabel
+                        checked={applicationType === 'Additional'}
+                        control={<Radio size="small" />}
+                        label="Hyra flera"
+                        onChange={() => setApplicationType('Additional')}
+                      />
+                    </RadioGroup>
+                    <Box>
+                      <Typography>
+                        {translateValidationResult(
+                          tenantQuery.data.validationResult
+                        )}
+                      </Typography>
+                    </Box>
+                  </Box>
+                )}
+
               <Box
                 paddingTop="2rem"
                 display="flex"
@@ -231,6 +246,39 @@ export const CreateApplicantForListing = (props: Props) => {
     </>
   )
 }
+
+function translateValidationResult(
+  result: Exclude<TenantWithValidation['validationResult'], 'ok'>
+) {
+  const translationMap: Record<typeof result, string> = {
+    'has-at-least-one-parking-space':
+      'Kunden har redan bilplats. Välj "Byte" eller "Hyra flera"',
+    'needs-replace-by-property':
+      'Kunden måste byta bilplats eftersom denna bilplats ligger i ett begränsat område eller fastighet.',
+    'needs-replace-by-residential-area':
+      'Kunden måste byta bilplats eftersom denna bilplats ligger i ett begränsat område eller fastighet.',
+    'no-contract':
+      'Kunden saknar kontrakt i detta område eller denna fastighet.',
+  }
+
+  return translationMap[result]
+}
+
+// return match(result)
+//   .with(
+//     'has-at-least-one-parking-space',
+//     () => 'Kunden har redan bilplats. Välj "Byte" eller "Hyra flera"'
+//   )
+//   .with(
+//     P.union('needs-replace-by-property', 'needs-replace-by-residential-area'),
+//     () =>
+//       'Kunden måste byta bilplats eftersom denna bilplats ligger i ett begränsat område eller fastighet.'
+//   )
+//   .with(
+//     'no-contract',
+//     () => 'Kunden saknar kontrakt i detta område eller denna fastighet.'
+//   )
+//   .exhaustive()
 
 const sharedProps = {
   editable: false,
