@@ -12,7 +12,7 @@ export const ContactInfo = (props: { tenant: Tenant | null }) => (
     >
       <Typography>Namn</Typography>
       <Box>
-        <Typography fontWeight="bold">{props.tenant?.fullName}</Typography>
+        <Typography>{props.tenant?.fullName}</Typography>
       </Box>
     </Box>
     <Box
@@ -23,7 +23,7 @@ export const ContactInfo = (props: { tenant: Tenant | null }) => (
     >
       <Typography>Adress</Typography>
       <Box>
-        <Typography fontWeight="bold">
+        <Typography>
           {props.tenant?.address?.street} {props.tenant?.address?.number}
         </Typography>
       </Box>
@@ -36,7 +36,9 @@ export const ContactInfo = (props: { tenant: Tenant | null }) => (
     >
       <Typography>Område</Typography>
       <Box>
-        <Typography fontWeight="bold">N/A</Typography>
+        <Typography>
+          {props.tenant?.currentHousingContract?.residentialArea?.caption}
+        </Typography>
       </Box>
     </Box>
     <Box
@@ -47,9 +49,18 @@ export const ContactInfo = (props: { tenant: Tenant | null }) => (
     >
       <Typography>Kontrakt</Typography>
       <Box>
-        <Typography fontWeight="bold">
-          {props.tenant?.leaseIds?.length}
-        </Typography>
+        <Typography>{props.tenant?.leaseIds?.length}</Typography>
+      </Box>
+    </Box>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      flex="1"
+      paddingTop="0.5rem"
+    >
+      <Typography>Köpoäng</Typography>
+      <Box>
+        <Typography>{props.tenant?.queuePoints}</Typography>
       </Box>
     </Box>
   </Box>

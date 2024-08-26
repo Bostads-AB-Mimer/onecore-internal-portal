@@ -271,22 +271,6 @@ function translateValidationResult(
   return translationMap[result]
 }
 
-// return match(result)
-//   .with(
-//     'has-at-least-one-parking-space',
-//     () => 'Kunden har redan bilplats. Välj "Byte" eller "Hyra flera"'
-//   )
-//   .with(
-//     P.union('needs-replace-by-property', 'needs-replace-by-residential-area'),
-//     () =>
-//       'Kunden måste byta bilplats eftersom denna bilplats ligger i ett begränsat område eller fastighet.'
-//   )
-//   .with(
-//     'no-contract',
-//     () => 'Kunden saknar kontrakt i detta område eller denna fastighet.'
-//   )
-//   .exhaustive()
-
 const sharedProps = {
   editable: false,
   flex: 1,
@@ -302,16 +286,19 @@ const columns: GridColDef[] = [
     field: 'status',
     headerName: 'Status',
     ...sharedProps,
+    renderCell: () => 'N/A',
   },
   {
     field: 'address',
     headerName: 'Adress',
     ...sharedProps,
+    renderCell: () => 'N/A',
   },
   {
     field: 'monthlyRent',
     headerName: 'Hyra',
     ...sharedProps,
+    renderCell: () => 'N/A',
   },
 ]
 
@@ -333,7 +320,7 @@ const Leases = (props: { leases: Lease[] }) => (
     hideFooter
     columns={columns}
     rows={props.leases}
-    getRowId={(row) => row.id}
+    getRowId={(row) => row.leaseId}
     loading={false}
     rowHeight={72}
     disableRowSelectionOnClick
