@@ -34,7 +34,6 @@ import {
 } from '../../hooks/useTenantWithValidation'
 import { ContactInfo } from './ContactInfo'
 import { DataGridTable } from '../../../../components'
-import { match, P } from 'ts-pattern'
 
 export interface Props {
   listing: Listing
@@ -166,7 +165,7 @@ export const CreateApplicantForListing = (props: Props) => {
                       onSelect={setSelectedContact}
                       contact={selectedContact}
                     />
-                    <ContactInfo contact={tenantQuery.data ?? null} />
+                    <ContactInfo tenant={tenantQuery.data?.tenant ?? null} />
                     <Box>
                       <Divider />
                     </Box>
@@ -178,30 +177,38 @@ export const CreateApplicantForListing = (props: Props) => {
               </Box>
               {tenantQuery.data &&
                 tenantQuery.data.validationResult !== 'ok' && (
-                  <Box
-                    paddingX="0.5rem"
-                    paddingTop="0.5rem"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Typography>Ärendetyp</Typography>
-                    <RadioGroup name="radio-buttons-group" row>
-                      <FormControlLabel
-                        checked={applicationType === 'Replace'}
-                        control={<Radio size="small" />}
-                        label="Byte"
-                        onChange={() => setApplicationType('Replace')}
-                      />
-                      <FormControlLabel
-                        checked={applicationType === 'Additional'}
-                        control={<Radio size="small" />}
-                        label="Hyra flera"
-                        onChange={() => setApplicationType('Additional')}
-                      />
-                    </RadioGroup>
-                    <Box>
-                      <Typography>
+                  <Box>
+                    <Box
+                      paddingX="0.5rem"
+                      paddingTop="0.5rem"
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Typography>Ärendetyp</Typography>
+                      <RadioGroup name="radio-buttons-group" row>
+                        <FormControlLabel
+                          disabled={
+                            tenantQuery?.data.validationResult === 'no-contract'
+                          }
+                          checked={applicationType === 'Replace'}
+                          control={<Radio size="small" />}
+                          label="Byte"
+                          onChange={() => setApplicationType('Replace')}
+                        />
+                        <FormControlLabel
+                          disabled={
+                            tenantQuery?.data.validationResult === 'no-contract'
+                          }
+                          checked={applicationType === 'Additional'}
+                          control={<Radio size="small" />}
+                          label="Hyra flera"
+                          onChange={() => setApplicationType('Additional')}
+                        />
+                      </RadioGroup>
+                    </Box>
+                    <Box paddingX="0.5rem" paddingTop="0.5rem">
+                      <Typography color="error">
                         {translateValidationResult(
                           tenantQuery.data.validationResult
                         )}
@@ -218,7 +225,7 @@ export const CreateApplicantForListing = (props: Props) => {
                 <Button onClick={onCloseModal} variant="dark-outlined">
                   Avbryt
                 </Button>
-                {tenantQuery.data && applicationType ? (
+                {tenantQuery.data ? (
                   <LoadingButton
                     disabled={false}
                     loading={createApplicant.isPending}
@@ -231,7 +238,7 @@ export const CreateApplicantForListing = (props: Props) => {
                       })
                     }
                   >
-                    Spara
+                    Lägg till
                   </LoadingButton>
                 ) : (
                   <Button disabled variant="dark">

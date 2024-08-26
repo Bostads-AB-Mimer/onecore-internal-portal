@@ -30,7 +30,12 @@ export const useTenantWithValidation = (
   rentalObjectCode?: string
 ) =>
   useQuery<TenantWithValidation, AxiosError>({
-    queryKey: ['tenant-with-validation', contactCode],
+    queryKey: [
+      'tenant-with-validation',
+      contactCode,
+      districtCode,
+      rentalObjectCode,
+    ],
     enabled: Boolean(contactCode && districtCode && rentalObjectCode),
     queryFn: () =>
       axios

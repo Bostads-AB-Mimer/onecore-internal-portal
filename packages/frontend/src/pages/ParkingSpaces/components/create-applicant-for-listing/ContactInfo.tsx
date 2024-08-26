@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material'
 
-import { Tenant } from '../../hooks/useContactByContactCode'
+import { Tenant } from '../../hooks/useTenantWithValidation'
 
-export const ContactInfo = (props: { contact: Tenant | null }) => (
+export const ContactInfo = (props: { tenant: Tenant | null }) => (
   <Box>
     <Box
       paddingTop="1rem"
@@ -12,7 +12,7 @@ export const ContactInfo = (props: { contact: Tenant | null }) => (
     >
       <Typography>Namn</Typography>
       <Box>
-        <Typography fontWeight="bold">{props.contact?.fullName}</Typography>
+        <Typography fontWeight="bold">{props.tenant?.fullName}</Typography>
       </Box>
     </Box>
     <Box
@@ -24,7 +24,7 @@ export const ContactInfo = (props: { contact: Tenant | null }) => (
       <Typography>Adress</Typography>
       <Box>
         <Typography fontWeight="bold">
-          {props.contact?.address?.street} {props.contact?.address?.number}
+          {props.tenant?.address?.street} {props.tenant?.address?.number}
         </Typography>
       </Box>
     </Box>
@@ -48,7 +48,7 @@ export const ContactInfo = (props: { contact: Tenant | null }) => (
       <Typography>Kontrakt</Typography>
       <Box>
         <Typography fontWeight="bold">
-          {props.contact?.leaseIds?.length}
+          {props.tenant?.leaseIds?.length}
         </Typography>
       </Box>
     </Box>
