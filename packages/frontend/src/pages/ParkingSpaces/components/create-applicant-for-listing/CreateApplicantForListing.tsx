@@ -227,7 +227,9 @@ export const CreateApplicantForListing = (props: Props) => {
                 </Button>
                 {tenantQuery.data ? (
                   <LoadingButton
-                    disabled={false}
+                    disabled={
+                      tenantQuery.data.validationResult === 'no-contract'
+                    }
                     loading={createApplicant.isPending}
                     variant="dark"
                     onClick={() =>
