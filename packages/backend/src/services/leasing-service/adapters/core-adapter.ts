@@ -66,12 +66,12 @@ const getContactsDataBySearchQuery = async (
   AdapterResult<Array<Pick<Contact, 'fullName' | 'contactCode'>>, unknown>
 > => {
   try {
-    const result = await getFromCore<{ data: { content: Array<Contact> } }>({
+    const result = await getFromCore<{ content: Array<Contact> }>({
       method: 'get',
       url: `${coreBaseUrl}/contacts/search?q=${q}`,
     }).then((res) => res.data)
 
-    return { ok: true, data: result.data.content }
+    return { ok: true, data: result.content }
   } catch (err) {
     return { ok: false, err }
   }
@@ -81,12 +81,12 @@ const getTenantByContactCode = async (
   contactCode: string
 ): Promise<AdapterResult<Tenant, unknown>> => {
   try {
-    const result = await getFromCore<{ data: { content: Tenant } }>({
+    const result = await getFromCore<{ content: Tenant }>({
       method: 'get',
-      url: `${coreBaseUrl}/tenant/contactCode/${contactCode}`,
+      url: `${coreBaseUrl}/tenants/contactCode/${contactCode}`,
     }).then((res) => res.data)
 
-    return { ok: true, data: result.data.content }
+    return { ok: true, data: result.content }
   } catch (err) {
     return { ok: false, err }
   }
