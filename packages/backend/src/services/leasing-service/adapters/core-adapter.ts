@@ -14,14 +14,20 @@ const coreBaseUrl = Config.core.url
 
 type AdapterResult<T, E> = { ok: false; err: E } | { ok: true; data: T }
 
-const getListingsWithApplicants = async () => {
-  const url = `${coreBaseUrl}/listings-with-applicants`
-  const listingsResponse = await getFromCore({
-    method: 'get',
-    url: url,
-  })
+const getListingsWithApplicants = async (): Promise<
+  AdapterResult<Array<unknown>, 'unknown'>
+> => {
+  try {
+    const url = `${coreBaseUrl}/listings-with-applicants`
+    const listingsResponse = await getFromCore({
+      method: 'get',
+      url: url,
+    })
 
-  return listingsResponse.data.content
+    return { ok: true, data: listingsResponse.data.content }
+  } catch (err) {
+    return { ok: false, err: 'unknown' }
+  }
 }
 
 const getListingWithApplicants = async (

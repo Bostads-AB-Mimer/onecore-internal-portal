@@ -7,10 +7,16 @@ import * as coreAdapter from './adapters/core-adapter'
 export const routes = (router: KoaRouter) => {
   router.get('(.*)/leases/listings-with-applicants', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
-    const listings = await coreAdapter.getListingsWithApplicants()
+    const result = await coreAdapter.getListingsWithApplicants()
+    if (!result.ok) {
+      ctx.status = 500
+      ctx.body = { error: 'Unknown error', ...metadata }
+      return
+    }
 
+    ctx.status = 200
     ctx.body = {
-      content: listings,
+      content: result.data,
       ...metadata,
     }
   })
