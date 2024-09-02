@@ -1,10 +1,4 @@
-import {
-  Contact,
-  DetailedApplicant,
-  Lease,
-  Listing,
-  Tenant,
-} from 'onecore-types'
+import { Contact, DetailedApplicant, Listing, Tenant } from 'onecore-types'
 
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
