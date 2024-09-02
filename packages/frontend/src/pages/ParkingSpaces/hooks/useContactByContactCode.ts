@@ -1,18 +1,8 @@
 import axios, { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { Contact, Lease } from 'onecore-types'
+import { Tenant } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
-
-type NonEmptyArray<T> = [T, ...T[]]
-
-export type Tenant = Omit<Contact, 'leases' | 'isTenant'> & {
-  queuePoints: number
-  currentHousingContract?: Lease
-  upcomingHousingContract?: Lease
-  parkingSpaceContracts?: Lease[]
-  housingContracts: NonEmptyArray<Lease>
-}
 
 export const useContactByContactCode = (contactCode?: string) =>
   useQuery<Tenant, AxiosError>({
