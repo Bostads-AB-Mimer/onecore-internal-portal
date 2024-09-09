@@ -1,8 +1,8 @@
 import { Contact, DetailedApplicant, Listing, Tenant } from 'onecore-types'
+import { AxiosError } from 'axios'
 
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
-import { AxiosError } from 'axios'
 
 const coreBaseUrl = Config.core.url
 
@@ -159,6 +159,38 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
   }
 }
 
+// TODO: Use from onecore-types when mim-15 is merged
+type InternalParkingSpaceSyncSuccessResponse = {
+  invalid: Array<{
+    rentalObjectCode: string
+    err: Array<{ path: string; code: string }>
+  }>
+  insertions: {
+    inserted: Array<{ rentalObjectCode: string; id: number }>
+    failed: Array<{
+      rentalObjectCode: string
+      err: 'unknown' | 'active-listing-exists'
+    }>
+  }
+}
+
+const syncInternalParkingSpacesFromXpand = async (): Promise<
+  AdapterResult<InternalParkingSpaceSyncSuccessResponse, 'unknown'>
+> => {
+  try {
+    const response = await getFromCore<{
+      content: InternalParkingSpaceSyncSuccessResponse
+    }>({
+      method: 'post',
+      url: `${coreBaseUrl}/listings/sync-internal-from-xpand`,
+    })
+
+    return { ok: true, data: response.data.content }
+  } catch (err) {
+    return { ok: false, err: 'unknown' }
+  }
+}
+
 export {
   getListingsWithApplicants,
   getListingWithApplicants,
@@ -168,4 +200,5 @@ export {
   createNoteOfInterestForInternalParkingSpace,
   validatePropertyRentalRules,
   validateResidentialAreaRentalRules,
+  syncInternalParkingSpacesFromXpand,
 }
