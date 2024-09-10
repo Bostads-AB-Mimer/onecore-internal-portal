@@ -163,7 +163,7 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
 type InternalParkingSpaceSyncSuccessResponse = {
   invalid: Array<{
     rentalObjectCode: string
-    err: Array<{ path: string; code: string }>
+    errors: Array<{ path: string; code: string }>
   }>
   insertions: {
     inserted: Array<{ rentalObjectCode: string; id: number }>

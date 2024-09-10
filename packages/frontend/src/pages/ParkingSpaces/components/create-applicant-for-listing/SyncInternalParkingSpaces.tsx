@@ -137,7 +137,7 @@ const SyncInternalParkingSpacesResult = (props: {
                     {v.rentalObjectCode}
                   </Typography>
                   <Stack paddingLeft="0.5rem" gap="0.5rem">
-                    {v.err.map((err) => (
+                    {v.errors.map((err) => (
                       <Box key={`${err.path}-${err.code}`}>
                         <Box>
                           <Typography component="span" padding="0">
