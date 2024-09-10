@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 // TODO: Use from onecore-types when mim-15 is merged
-type InternalParkingSpaceSyncSuccessResponse = {
+export type InternalParkingSpaceSyncSuccessResponse = {
   invalid: Array<{
     rentalObjectCode: string
     err: Array<{ path: string; code: string }>
