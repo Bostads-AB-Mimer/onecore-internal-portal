@@ -1,22 +1,8 @@
 import axios, { AxiosError } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { InternalParkingSpaceSyncSuccessResponse } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
-
-// TODO: Use from onecore-types when mim-15 is merged
-export type InternalParkingSpaceSyncSuccessResponse = {
-  invalid: Array<{
-    rentalObjectCode: string
-    errors: Array<{ path: string; code: string }>
-  }>
-  insertions: {
-    inserted: Array<{ rentalObjectCode: string; id: number }>
-    failed: Array<{
-      rentalObjectCode: string
-      err: 'unknown' | 'active-listing-exists'
-    }>
-  }
-}
 
 export const useSyncInternalParkingSpaces = () => {
   const queryClient = useQueryClient()

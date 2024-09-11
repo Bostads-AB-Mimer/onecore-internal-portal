@@ -12,10 +12,8 @@ import CloseIcon from '@mui/icons-material/Close'
 import { LoadingButton } from '@mui/lab'
 import { useState } from 'react'
 
-import {
-  InternalParkingSpaceSyncSuccessResponse,
-  useSyncInternalParkingSpaces,
-} from '../../hooks/useSyncInternalParkingSpaces'
+import { useSyncInternalParkingSpaces } from '../hooks/useSyncInternalParkingSpaces'
+import { InternalParkingSpaceSyncSuccessResponse } from 'onecore-types'
 
 export const SyncInternalParkingSpaces = () => {
   const syncInternalParkingSpaces = useSyncInternalParkingSpaces()

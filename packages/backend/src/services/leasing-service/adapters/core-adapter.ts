@@ -1,4 +1,10 @@
-import { Contact, DetailedApplicant, Listing, Tenant } from 'onecore-types'
+import {
+  Contact,
+  DetailedApplicant,
+  InternalParkingSpaceSyncSuccessResponse,
+  Listing,
+  Tenant,
+} from 'onecore-types'
 import { AxiosError } from 'axios'
 
 import Config from '../../../common/config'
@@ -156,21 +162,6 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
     return { ok: true, data: response.data.content }
   } catch (err) {
     return { ok: false, err }
-  }
-}
-
-// TODO: Use from onecore-types when mim-15 is merged
-type InternalParkingSpaceSyncSuccessResponse = {
-  invalid: Array<{
-    rentalObjectCode: string
-    errors: Array<{ path: string; code: string }>
-  }>
-  insertions: {
-    inserted: Array<{ rentalObjectCode: string; id: number }>
-    failed: Array<{
-      rentalObjectCode: string
-      err: 'unknown' | 'active-listing-exists'
-    }>
   }
 }
 

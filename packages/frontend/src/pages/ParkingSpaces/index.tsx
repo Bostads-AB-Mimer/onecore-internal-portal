@@ -9,7 +9,7 @@ import { DataGridTable, SearchBar } from '../../components'
 import { useParkingSpaceListings } from './hooks/useParkingSpaceListings'
 import * as utils from '../../utils'
 import { CreateApplicantForListing } from './components/create-applicant-for-listing/CreateApplicantForListing'
-import { SyncInternalParkingSpaces } from './components/create-applicant-for-listing/SyncInternalParkingSpaces'
+import { SyncInternalParkingSpaces } from './components/SyncInternalParkingSpaces'
 
 const sharedProps = {
   editable: false,
