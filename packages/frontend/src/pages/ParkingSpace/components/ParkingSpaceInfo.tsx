@@ -17,10 +17,9 @@ export const ParkingSpaceInfo = (props: { listingId: string }) => {
 
   const createOffer = useCreateOffer()
 
-  const onCreateOffer = () =>
-    createOffer.mutate(props, {
-      onSuccess: () => console.log('cool'),
-    })
+  const onCreateOffer = () => {
+    createOffer.mutate(props, {})
+  }
 
   const renderStartOfferProcessButton = (listingStatus: ListingStatus) => {
     if (listingStatus == ListingStatus.Expired) {

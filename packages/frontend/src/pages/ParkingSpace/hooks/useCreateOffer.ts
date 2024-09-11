@@ -24,5 +24,8 @@ export const useCreateOffer = () => {
       queryClient.invalidateQueries({
         queryKey: ['parkingSpaceListing', params.listingId],
       }),
+    onError: (error) => {
+      console.error('error:', error)
+    },
   })
 }
