@@ -66,6 +66,14 @@ export const Applicants = (props: { listingId: string }) => {
       flex: 0.75,
     },
     {
+      field: 'status',
+      headerName: 'Status',
+      ...sharedProps,
+      flex: 1.25,
+      valueFormatter: (v) => formatApplicantStatus(v.value),
+      renderCell: (v) => <Chip label={v.formattedValue} />,
+    },
+    {
       field: 'foo',
       headerName: 'Svar erbj.',
       renderCell: (v) => v.value || <i>N/A</i>,
