@@ -8,7 +8,7 @@ export interface ParkingSpaceListing {
   [key: string]: any
 }
 
-type Params = { id: string }
+type Params = { id: number }
 
 type ResultType = Listing & {
   applicants: Array<DetailedApplicant>

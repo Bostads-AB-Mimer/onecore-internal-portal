@@ -1,23 +1,18 @@
-import { Chip, Typography } from '@mui/material'
+import { Chip } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
-import { ApplicantStatus } from 'onecore-types'
+import { ApplicantStatus, DetailedApplicant } from 'onecore-types'
 
 import { DataGridTable } from '../../../components'
-import { useParkingSpaceListing } from '../hooks/useParkingSpaceListing'
 
-export const OfferRound = (props: { listingId: string; numRound: number }) => {
-  const { data: parkingSpaceListing } = useParkingSpaceListing({
-    id: props.listingId,
-  })
-
+export const OfferRound = (props: {
+  numRound: number
+  applicants: Array<DetailedApplicant>
+}) => {
   return (
     <>
-      <Typography paddingBottom="2rem" variant="h1">
-        Erbjudandeomgång {props.numRound} {parkingSpaceListing.address}
-      </Typography>
       <DataGridTable
         columns={columns}
-        rows={parkingSpaceListing.applicants}
+        rows={props.applicants}
         getRowId={(row) => row.id}
         initialState={{
           pagination: { paginationModel: { pageSize: 5 } },

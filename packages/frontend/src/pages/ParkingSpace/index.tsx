@@ -1,6 +1,7 @@
-import { Tab as MuiTab, Typography, styled } from '@mui/material'
+import { Box, Tab as MuiTab, Typography, styled } from '@mui/material'
 import { Suspense, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { TabContext, TabPanel, TabList } from '@mui/lab'
 
 import { PageGoBackTo } from '../../components'
 import {
@@ -10,7 +11,6 @@ import {
   ParkingSpaceInfo,
   ParkingSpaceInfoLoading,
 } from './components'
-import { TabContext, TabPanel, TabList } from '@mui/lab'
 import { useParkingSpaceListing } from './hooks/useParkingSpaceListing'
 
 const ParkingSpace = () => {
@@ -43,6 +43,10 @@ const Tab = styled(MuiTab)(() => ({
   '&.Mui-selected': {
     color: 'rgba(0, 0, 0, 0.87)',
   },
+  minWidth: '45px',
+  paddingLeft: '0.4rem',
+  paddingRight: '0.4rem',
+  marginRight: '1rem',
 }))
 
 const Tabs = styled(TabList)(() => ({
@@ -64,19 +68,21 @@ const ParkingSpaceTabs = (props: { listingId: string }) => {
 
   return (
     <TabContext value={selectedTab}>
+      <Typography paddingBottom="0.5rem" variant="h1">
+        Intresseanmälningar {data.address}
+      </Typography>
       <Tabs onChange={handleChange}>
-        <Tab disableRipple label="Annons" value="1" sx={{}} />
+        <Tab disableRipple label="Annons" value="1" />
         {data.offers.map((offer, i) => (
           <Tab
             key={offer.id}
             disableRipple
-            label={`Erbjudandeomgång ${i + 1}`}
+            label={`Omgång ${i + 1}`}
             value={String(offer.id)}
-            sx={{}}
           />
         ))}
       </Tabs>
-      <>
+      <Box paddingTop="1rem">
         <TabPanel value="1" sx={{ padding: 0 }}>
           <Applicants key="foo" listingId={props.listingId} />
         </TabPanel>
@@ -84,12 +90,12 @@ const ParkingSpaceTabs = (props: { listingId: string }) => {
           <TabPanel key={offer.id} value={String(offer.id)} sx={{ padding: 0 }}>
             <OfferRound
               key={offer.id}
-              listingId={props.listingId}
+              applicants={offer.selectedApplicants}
               numRound={i + 1}
             />
           </TabPanel>
         ))}
-      </>
+      </Box>
     </TabContext>
   )
 }
