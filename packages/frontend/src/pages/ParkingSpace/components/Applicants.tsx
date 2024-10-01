@@ -40,7 +40,7 @@ export const Applicants = (props: { listingId: string }) => {
     },
     {
       field: 'upcomingHousingContract',
-      headerName: '',
+      headerName: 'Bostadskontrakt',
       ...sharedProps,
       flex: 1.25,
       valueGetter: (v) => {
