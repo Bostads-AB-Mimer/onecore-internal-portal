@@ -31,7 +31,7 @@ const sharedProps = {
   flex: 1,
 }
 
-const dateFormatter = new Intl.DateTimeFormat('sv-SE')
+const dateFormatter = new Intl.DateTimeFormat('sv-SE', { timeZone: 'UTC' })
 const columns: GridColDef[] = [
   {
     field: 'name',
