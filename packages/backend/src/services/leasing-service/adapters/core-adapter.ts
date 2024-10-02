@@ -1,7 +1,9 @@
 import {
+  ApplicantStatus,
   Contact,
   DetailedApplicant,
   InternalParkingSpaceSyncSuccessResponse,
+  LeaseStatus,
   Listing,
   Offer,
   Tenant,
@@ -31,10 +33,37 @@ const getListingsWithApplicants = async (): Promise<
   }
 }
 
+export type OfferApplicant = {
+  id: number
+  listingId: number
+  offerId: number
+  applicantId: number
+  status: ApplicantStatus
+  applicationType: 'Replace' | 'Additional'
+  queuePoints: number
+  address: string
+  hasParkingSpace: boolean
+  housingLeaseStatus: LeaseStatus
+  priority: number | null // TODO: Maybe this doesnt need to be null
+  sortOrder: number
+  createdAt: Date
+
+  // Below properties comes from applicant table
+  applicationDate: Date
+  name: string
+}
+
+type OfferWithOfferApplicants = Offer & {
+  selectedApplicants: Array<OfferApplicant>
+}
+
 const getListingWithApplicants = async (
   listingId: string
 ): Promise<
-  Listing & { applicants: Array<DetailedApplicant>; offers: Array<Offer> }
+  Listing & {
+    applicants: Array<DetailedApplicant>
+    offers: Array<OfferWithOfferApplicants>
+  }
 > => {
   const listing: Promise<Listing> = getFromCore({
     method: 'get',
@@ -46,7 +75,7 @@ const getListingWithApplicants = async (
     url: `${coreBaseUrl}/listing/${listingId}/applicants/details`,
   }).then((res) => res.data.content)
 
-  const offers: Promise<Array<Offer>> = getFromCore({
+  const offers: Promise<Array<OfferWithOfferApplicants>> = getFromCore({
     method: 'get',
     url: `${coreBaseUrl}/offers/listing-id/${listingId}`,
   }).then((res) => res.data.content)
