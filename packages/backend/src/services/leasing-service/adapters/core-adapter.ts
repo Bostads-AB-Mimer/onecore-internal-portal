@@ -1,11 +1,9 @@
 import {
-  ApplicantStatus,
   Contact,
   DetailedApplicant,
   InternalParkingSpaceSyncSuccessResponse,
-  LeaseStatus,
   Listing,
-  Offer,
+  OfferWithOfferApplicants,
   Tenant,
 } from 'onecore-types'
 import { AxiosError } from 'axios'
@@ -31,30 +29,6 @@ const getListingsWithApplicants = async (): Promise<
   } catch (err) {
     return { ok: false, err: 'unknown' }
   }
-}
-
-export type OfferApplicant = {
-  id: number
-  listingId: number
-  offerId: number
-  applicantId: number
-  status: ApplicantStatus
-  applicationType: 'Replace' | 'Additional'
-  queuePoints: number
-  address: string
-  hasParkingSpace: boolean
-  housingLeaseStatus: LeaseStatus
-  priority: number | null // TODO: Maybe this doesnt need to be null
-  sortOrder: number
-  createdAt: Date
-
-  // Below properties comes from applicant table
-  applicationDate: Date
-  name: string
-}
-
-type OfferWithOfferApplicants = Offer & {
-  selectedApplicants: Array<OfferApplicant>
 }
 
 const getListingWithApplicants = async (

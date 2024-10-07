@@ -1,11 +1,9 @@
 import axios, { AxiosError } from 'axios'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import {
-  ApplicantStatus,
   DetailedApplicant,
-  LeaseStatus,
   Listing,
-  Offer,
+  OfferWithOfferApplicants,
 } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
@@ -15,29 +13,6 @@ export interface ParkingSpaceListing {
 }
 
 type Params = { id: number }
-export type OfferApplicant = {
-  id: number
-  listingId: number
-  offerId: number
-  applicantId: number
-  status: ApplicantStatus
-  applicationType: 'Replace' | 'Additional'
-  queuePoints: number
-  address: string
-  hasParkingSpace: boolean
-  housingLeaseStatus: LeaseStatus
-  priority: number
-  sortOrder: number
-  createdAt: Date
-
-  // Below properties comes from applicant table
-  applicationDate: Date
-  name: string
-}
-
-type OfferWithOfferApplicants = Offer & {
-  selectedApplicants: Array<OfferApplicant>
-}
 
 type ResultType = Listing & {
   applicants: Array<DetailedApplicant>

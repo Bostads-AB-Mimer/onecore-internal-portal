@@ -1,9 +1,8 @@
 import { Chip } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
-import { ApplicantStatus } from 'onecore-types'
+import { ApplicantStatus, OfferApplicant } from 'onecore-types'
 
 import { DataGridTable } from '../../../components'
-import { OfferApplicant } from '../hooks/useParkingSpaceListing'
 
 export const OfferRound = (props: {
   numRound: number
