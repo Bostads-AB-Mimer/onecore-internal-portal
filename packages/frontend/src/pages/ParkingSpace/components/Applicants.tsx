@@ -1,6 +1,6 @@
 import { Chip, Stack, Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
-import { ApplicantStatus } from 'onecore-types'
+import { ApplicantStatus, Lease, LeaseStatus } from 'onecore-types'
 
 import { DataGridTable } from '../../../components'
 import { useParkingSpaceListing } from '../hooks/useParkingSpaceListing'
@@ -75,9 +75,16 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
       flex: 1.25,
     },
     {
-      field: 'housingLeaseStatus',
-      headerName: 'Status Boendekontrakt',
-      valueFormatter: (_v) => 'N/A',
+      ...sharedProps,
+      field: 'upcomingHousingContract',
+      headerName: 'Kontrakt',
+      valueGetter: (v) => {
+        if (v.row.upcomingHousingContract)
+          return v.row.upcomingHousingContract.status
+        else if (v.row.currentHousingContract)
+          return v.row.currentHousingContract.status
+      },
+      valueFormatter: (v) => formatLeaseStatus(v.value),
       renderCell: (v) => <Chip label={v.formattedValue} />,
       ...sharedProps,
       flex: 1,
@@ -158,3 +165,12 @@ const applicantStatusFormatMap: Record<ApplicantStatus, string> = {
 
 const formatApplicantStatus = (v: ApplicantStatus) =>
   applicantStatusFormatMap[v]
+
+const leaseStatusFormatMap: Record<LeaseStatus, string> = {
+  [LeaseStatus.Current]: 'Gällande',
+  [LeaseStatus.Upcoming]: 'Kommande',
+  [LeaseStatus.AboutToEnd]: 'Uppsagt',
+  [LeaseStatus.Ended]: 'Upphört',
+}
+
+const formatLeaseStatus = (v: LeaseStatus) => leaseStatusFormatMap[v]
