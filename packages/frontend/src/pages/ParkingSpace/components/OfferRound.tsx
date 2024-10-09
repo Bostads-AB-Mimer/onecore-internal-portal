@@ -1,17 +1,17 @@
 import { Chip } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
-import { ApplicantStatus, DetailedApplicant } from 'onecore-types'
+import { ApplicantStatus, LeaseStatus, OfferApplicant } from 'onecore-types'
 
 import { DataGridTable } from '../../../components'
 
 export const OfferRound = (props: {
   numRound: number
-  applicants: Array<DetailedApplicant>
+  applicants: Array<OfferApplicant>
 }) => {
   return (
     <>
       <DataGridTable
-        columns={columns}
+        columns={columns as any}
         rows={props.applicants}
         getRowId={(row) => row.id}
         initialState={{
@@ -47,18 +47,18 @@ const columns: GridColDef[] = [
   },
   {
     field: 'address',
-    headerName: 'Boende/Adress',
-    valueGetter: (v) => v.row.address.street,
+    headerName: 'Boendeadress',
+    valueGetter: (v) => v.row.address,
     ...sharedProps,
     flex: 1.25,
   },
   {
-    field: 'status',
-    headerName: 'Status',
-    ...sharedProps,
-    flex: 1.25,
-    valueFormatter: (v) => formatApplicantStatus(v.value),
+    field: 'housingLeaseStatus',
+    headerName: 'Status Boendekontrakt',
+    valueFormatter: (v) => formatLeaseStatus(v.value),
     renderCell: (v) => <Chip label={v.formattedValue} />,
+    ...sharedProps,
+    flex: 1,
   },
   {
     field: 'applicationDate',
@@ -67,11 +67,19 @@ const columns: GridColDef[] = [
     valueFormatter: (v) => dateFormatter.format(new Date(v.value)),
   },
   {
-    field: 'parkingSpaceContracts',
+    field: 'hasParkingSpace',
     headerName: 'Har bilplats',
-    valueFormatter: (v) => (v.value.length ? 'Ja' : 'Nej'),
+    valueFormatter: (v) => (v.value ? 'Ja' : 'Nej'),
     ...sharedProps,
     flex: 0.75,
+  },
+  {
+    field: 'status',
+    headerName: 'Status ansökan',
+    ...sharedProps,
+    flex: 1.25,
+    valueFormatter: (v) => formatApplicantStatus(v.value),
+    renderCell: (v) => <Chip label={v.formattedValue} />,
   },
   {
     field: 'foo',
@@ -83,9 +91,8 @@ const columns: GridColDef[] = [
     field: 'applicationType',
     headerName: 'Ärende',
     renderCell: (v) => {
-      const hasParkingSpace = Boolean(v.row.parkingSpaceContracts?.length)
       if (v.value === 'Additional')
-        return hasParkingSpace ? 'Hyra flera' : 'Hyra en'
+        return v.row.hasParkingSpace ? 'Hyra flera' : 'Hyra en'
       else return 'Byte'
     },
     ...sharedProps,
@@ -112,3 +119,12 @@ const applicantStatusFormatMap: Record<ApplicantStatus, string> = {
 
 const formatApplicantStatus = (v: ApplicantStatus) =>
   applicantStatusFormatMap[v]
+
+const leaseStatusFormatMap: Record<LeaseStatus, string> = {
+  [LeaseStatus.Current]: 'Aktivt',
+  [LeaseStatus.Ended]: 'Avslutat',
+  [LeaseStatus.AboutToEnd]: 'Avslutande',
+  [LeaseStatus.Upcoming]: 'Kommande',
+}
+
+const formatLeaseStatus = (v: LeaseStatus) => leaseStatusFormatMap[v]
