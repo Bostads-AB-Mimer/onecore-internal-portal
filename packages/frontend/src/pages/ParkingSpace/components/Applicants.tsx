@@ -1,6 +1,6 @@
 import { Chip, Stack, Typography } from '@mui/material'
 import type { GridColDef } from '@mui/x-data-grid'
-import { ApplicantStatus, Lease, LeaseStatus } from 'onecore-types'
+import { ApplicantStatus, LeaseStatus } from 'onecore-types'
 
 import { DataGridTable } from '../../../components'
 import { useParkingSpaceListing } from '../hooks/useParkingSpaceListing'
@@ -77,7 +77,7 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
     {
       ...sharedProps,
       field: 'upcomingHousingContract',
-      headerName: 'Kontrakt',
+      headerName: 'Status Boendekontrakt',
       valueGetter: (v) => {
         if (v.row.upcomingHousingContract)
           return v.row.upcomingHousingContract.status
