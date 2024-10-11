@@ -61,10 +61,10 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
       ...sharedProps,
       flex: 1.25,
       renderCell: (params) => (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Box style={{ display: 'flex', flexDirection: 'column' }}>
           <Box>{params.row.name}</Box>{' '}
           <Box>{params.row.nationalRegistrationNumber}</Box>
-        </div>
+        </Box>
       ),
     },
     {
