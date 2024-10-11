@@ -31,7 +31,7 @@ export const ContactInfo = (props: { tenant: Tenant | null }) => (
       flex="1"
       paddingTop="0.5rem"
     >
-      <Typography>Kontaktnummer</Typography>
+      <Typography>Kundnummer</Typography>
       <Box>
         <Typography>{props.tenant?.contactCode}</Typography>
       </Box>
