@@ -128,7 +128,10 @@ export const CreateApplicantForListing = (props: Props) => {
         TransitionProps={{ exit: false }}
       >
         {createApplicant.error ? (
-          <CreateApplicantError reset={createApplicant.reset} />
+          <CreateApplicantError
+            reset={createApplicant.reset}
+            error={createApplicant.error.message}
+          />
         ) : (
           <Box paddingTop="0.5rem">
             <Box display="flex">
@@ -337,7 +340,7 @@ const Leases = (props: { leases: Lease[] }) => (
   />
 )
 
-const CreateApplicantError = (props: { reset: () => void }) => (
+const CreateApplicantError = (props: { reset: () => void; error: string }) => (
   <Box
     padding="1rem"
     height="250px"
@@ -349,7 +352,7 @@ const CreateApplicantError = (props: { reset: () => void }) => (
     <Typography textAlign="center" variant="h1">
       Något gick fel...
     </Typography>
-    <Box>Försök igen eller kontakta support</Box>
+    <Box>{props.error}</Box>
     <Box paddingTop="2rem">
       <Button variant="dark-outlined" onClick={props.reset}>
         Försök igen

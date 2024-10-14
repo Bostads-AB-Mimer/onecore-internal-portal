@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, HttpStatusCode } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
@@ -29,5 +29,16 @@ export const useCreateApplicantForListing = (listingId: number) => {
           queryKey: ['parkingSpaceListings'],
         }),
       ]),
+    onError: (error: AxiosError) => {
+      // if (
+      //   error.response?.status === HttpStatusCode.BadRequest &&
+      //   error.response.data.error === 'internal-credit-check-failed'
+      // ) {
+      if (error.response && error.response.status === 400) {
+        error.message = 'Kreditkontroll misslyckades'
+        return error
+      }
+      error.message = 'Försök igen eller kontakta support'
+    },
   })
 }

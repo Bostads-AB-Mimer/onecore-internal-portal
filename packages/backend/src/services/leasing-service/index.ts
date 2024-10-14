@@ -181,7 +181,11 @@ export const routes = (router: KoaRouter) => {
         ...metadata,
       }
     } else {
-      ctx.status = 500
+      if (!result.ok && result.err === 'internal-credit-check-failed') {
+        ctx.status = 400
+      } else {
+        ctx.status = 500
+      }
       ctx.body = { error: result.err, ...metadata }
     }
   })

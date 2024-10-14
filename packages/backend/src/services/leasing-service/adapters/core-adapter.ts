@@ -6,7 +6,7 @@ import {
   OfferWithOfferApplicants,
   Tenant,
 } from 'onecore-types'
-import { AxiosError } from 'axios'
+import { AxiosError, HttpStatusCode } from 'axios'
 
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
@@ -166,7 +166,9 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
   parkingSpaceId: string
   applicationType: string
   contactCode: string
-}): Promise<AdapterResult<unknown, unknown>> => {
+}): Promise<
+  AdapterResult<unknown, 'internal-credit-check-failed' | 'unknown'>
+> => {
   try {
     // todo: fix type
     const response = await getFromCore<any>({
@@ -177,7 +179,14 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
 
     return { ok: true, data: response.data.content }
   } catch (err) {
-    return { ok: false, err }
+    if (
+      err instanceof AxiosError &&
+      err.response?.status === HttpStatusCode.BadRequest &&
+      err.response.data.error === 'internal-credit-check-failed'
+    ) {
+      return { ok: false, err: 'internal-credit-check-failed' }
+    }
+    return { ok: false, err: 'unknown' }
   }
 }
 
