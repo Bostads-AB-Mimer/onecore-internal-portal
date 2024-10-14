@@ -34,7 +34,10 @@ export const useCreateApplicantForListing = (listingId: number) => {
       //   error.response?.status === HttpStatusCode.BadRequest &&
       //   error.response.data.error === 'internal-credit-check-failed'
       // ) {
-      if (error.response && error.response.status === 400) {
+      if (
+        error.response &&
+        error.response.status === HttpStatusCode.BadRequest
+      ) {
         error.message = 'Kreditkontroll misslyckades'
         return error
       }
