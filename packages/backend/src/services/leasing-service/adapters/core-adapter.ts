@@ -188,10 +188,13 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
     if (
       err instanceof AxiosError &&
       err.response?.status === HttpStatusCode.BadRequest &&
-      err.response.data.content.reason ===
+      err.response.data.content.errorCode ===
         CreateNoteOfInterestErrorCodes.InternalCreditCheckFailed
     ) {
-      return { ok: false, err: 'internal-credit-check-failed' }
+      return {
+        ok: false,
+        err: CreateNoteOfInterestErrorCodes.InternalCreditCheckFailed,
+      }
     }
     return { ok: false, err: 'unknown' }
   }
