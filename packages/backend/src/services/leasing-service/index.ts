@@ -165,6 +165,12 @@ export const routes = (router: KoaRouter) => {
     }
   )
 
+  //todo: import from types when merged
+  enum CreateNoteOfInterestErrorCodes {
+    InternalCreditCheckFailed = 'internal-credit-check-failed',
+    Unknown = 'unknown',
+  }
+
   router.post('(.*)/listing/applicant', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
     const params = ctx.request.body
@@ -181,7 +187,10 @@ export const routes = (router: KoaRouter) => {
         ...metadata,
       }
     } else {
-      if (!result.ok && result.err === 'internal-credit-check-failed') {
+      if (
+        !result.ok &&
+        result.err === CreateNoteOfInterestErrorCodes.InternalCreditCheckFailed
+      ) {
         ctx.status = 400
       } else {
         ctx.status = 500

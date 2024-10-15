@@ -162,6 +162,12 @@ const validateResidentialAreaRentalRules = async (
   }
 }
 
+//todo: import from types when merged
+enum CreateNoteOfInterestErrorCodes {
+  InternalCreditCheckFailed = 'internal-credit-check-failed',
+  Unknown = 'unknown',
+}
+
 const createNoteOfInterestForInternalParkingSpace = async (params: {
   parkingSpaceId: string
   applicationType: string
@@ -182,7 +188,8 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
     if (
       err instanceof AxiosError &&
       err.response?.status === HttpStatusCode.BadRequest &&
-      err.response.data.content.reason === 'Internal check failed' //todo: update to correct format in core
+      err.response.data.content.reason ===
+        CreateNoteOfInterestErrorCodes.InternalCreditCheckFailed
     ) {
       return { ok: false, err: 'internal-credit-check-failed' }
     }

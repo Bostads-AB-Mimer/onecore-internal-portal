@@ -22,9 +22,9 @@ import { styled } from 'styled-components'
 import { GridColDef } from '@mui/x-data-grid'
 
 import {
-  CreateApplicantRequestParams,
-  useCreateApplicantForListing,
-} from '../../hooks/useCreateApplicantForListing'
+  CreateNoteOfInterestRequestParams,
+  useCreateNoteOfInterest,
+} from '../../hooks/useCreateNoteOfInterest'
 import { SearchContact } from './SearchContact'
 import { ListingInfo } from './ListingInfo'
 import { ContactSearchData } from './types'
@@ -61,7 +61,7 @@ const Tabs = styled(TabList)(() => ({
 }))
 
 export const CreateApplicantForListing = (props: Props) => {
-  const createApplicant = useCreateApplicantForListing(props.listing.id)
+  const createNoteOfInterest = useCreateNoteOfInterest(props.listing.id)
   const [open, setOpen] = useState(false)
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
@@ -77,8 +77,8 @@ export const CreateApplicantForListing = (props: Props) => {
     props.listing.rentalObjectCode
   )
 
-  const onCreate = (params: CreateApplicantRequestParams) =>
-    createApplicant.mutate(params, {
+  const onCreate = (params: CreateNoteOfInterestRequestParams) =>
+    createNoteOfInterest.mutate(params, {
       onSuccess: () => {
         onCloseModal()
         toast('Intresseanmälan skapad', {
@@ -127,10 +127,10 @@ export const CreateApplicantForListing = (props: Props) => {
         fullWidth
         TransitionProps={{ exit: false }}
       >
-        {createApplicant.error ? (
+        {createNoteOfInterest.error ? (
           <CreateApplicantError
-            reset={createApplicant.reset}
-            error={createApplicant.error.errorMessage}
+            reset={createNoteOfInterest.reset}
+            error={createNoteOfInterest.error.errorMessage}
           />
         ) : (
           <Box paddingTop="0.5rem">
@@ -240,7 +240,7 @@ export const CreateApplicantForListing = (props: Props) => {
                     disabled={
                       tenantQuery.data.validationResult === 'no-contract'
                     }
-                    loading={createApplicant.isPending}
+                    loading={createNoteOfInterest.isPending}
                     variant="dark"
                     onClick={() =>
                       onCreate({

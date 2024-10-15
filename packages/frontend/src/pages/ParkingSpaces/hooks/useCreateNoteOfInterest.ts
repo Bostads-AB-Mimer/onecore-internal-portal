@@ -1,22 +1,24 @@
 import axios, { AxiosError } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { RequestError } from '../../../types'
+
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-export type CreateApplicantRequestParams = {
+export type CreateNoteOfInterestRequestParams = {
   parkingSpaceId: string
   applicationType?: string
   contactCode: string
 }
 
-export const useCreateApplicantForListing = (listingId: number) => {
+export const useCreateNoteOfInterest = (listingId: number) => {
   const queryClient = useQueryClient()
   return useMutation<
     unknown,
-    RequestError<CreateApplicantError>,
-    CreateApplicantRequestParams
+    RequestError<CreateNoteOfInterestErrorCodes>,
+    CreateNoteOfInterestRequestParams
   >({
-    mutationFn: (params: CreateApplicantRequestParams) =>
+    mutationFn: (params: CreateNoteOfInterestRequestParams) =>
       axios
         .post<unknown>(`${backendUrl}/listing/applicant`, params, {
           headers: {
@@ -26,7 +28,7 @@ export const useCreateApplicantForListing = (listingId: number) => {
           withCredentials: true,
         })
         .catch((error) => {
-          return Promise.reject(mapCreateApplicantError(error))
+          return Promise.reject(mapCreateNoteOfInterestError(error))
         }),
     onSuccess: () =>
       Promise.all([
@@ -39,34 +41,36 @@ export const useCreateApplicantForListing = (listingId: number) => {
       ]),
   })
 
-  type CreateApplicantError = 'internal-credit-check-failed' | 'unknown'
-  type RequestError<Err> = {
-    status: number
-    errorCode: Err
-    errorMessage: string
+  //todo: import from types when merged
+  enum CreateNoteOfInterestErrorCodes {
+    InternalCreditCheckFailed = 'internal-credit-check-failed',
+    Unknown = 'unknown',
   }
 
-  function mapCreateApplicantError(
-    e: AxiosError<{ error?: CreateApplicantError; errorMessage: string }>
-  ): RequestError<CreateApplicantError> {
+  function mapCreateNoteOfInterestError(
+    e: AxiosError<{
+      error?: CreateNoteOfInterestErrorCodes
+      errorMessage: string
+    }>
+  ): RequestError<CreateNoteOfInterestErrorCodes> {
     if (!e.response?.data) {
       return {
         status: 500,
-        errorCode: 'unknown',
+        errorCode: CreateNoteOfInterestErrorCodes.Unknown,
         errorMessage: 'Försök igen eller kontakta support',
       }
     }
     switch (e.response.data?.error) {
-      case 'internal-credit-check-failed':
+      case CreateNoteOfInterestErrorCodes.InternalCreditCheckFailed:
         return {
           status: 400,
-          errorCode: 'internal-credit-check-failed',
+          errorCode: CreateNoteOfInterestErrorCodes.InternalCreditCheckFailed,
           errorMessage: 'Kreditkontroll misslyckades',
         }
       default: {
         return {
           status: 500,
-          errorCode: 'unknown',
+          errorCode: CreateNoteOfInterestErrorCodes.Unknown,
           errorMessage: 'Försök igen eller kontakta support',
         }
       }
