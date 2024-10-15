@@ -182,7 +182,7 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
     if (
       err instanceof AxiosError &&
       err.response?.status === HttpStatusCode.BadRequest &&
-      err.response.data.error === 'internal-credit-check-failed'
+      err.response.data.content.reason === 'Internal check failed' //todo: update to correct format in core
     ) {
       return { ok: false, err: 'internal-credit-check-failed' }
     }

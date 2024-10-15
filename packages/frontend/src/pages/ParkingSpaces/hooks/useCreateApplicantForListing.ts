@@ -1,4 +1,4 @@
-import axios, { AxiosError, HttpStatusCode } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
@@ -11,15 +11,23 @@ export type CreateApplicantRequestParams = {
 
 export const useCreateApplicantForListing = (listingId: number) => {
   const queryClient = useQueryClient()
-  return useMutation<unknown, AxiosError, CreateApplicantRequestParams>({
+  return useMutation<
+    unknown,
+    RequestError<CreateApplicantError>,
+    CreateApplicantRequestParams
+  >({
     mutationFn: (params: CreateApplicantRequestParams) =>
-      axios.post<unknown>(`${backendUrl}/listing/applicant`, params, {
-        headers: {
-          Accept: 'application/json',
-          'Access-Control-Allow-Credentials': true,
-        },
-        withCredentials: true,
-      }),
+      axios
+        .post<unknown>(`${backendUrl}/listing/applicant`, params, {
+          headers: {
+            Accept: 'application/json',
+            'Access-Control-Allow-Credentials': true,
+          },
+          withCredentials: true,
+        })
+        .catch((error) => {
+          return Promise.reject(mapCreateApplicantError(error))
+        }),
     onSuccess: () =>
       Promise.all([
         queryClient.refetchQueries({
@@ -29,19 +37,39 @@ export const useCreateApplicantForListing = (listingId: number) => {
           queryKey: ['parkingSpaceListings'],
         }),
       ]),
-    onError: (error: AxiosError) => {
-      // if (
-      //   error.response?.status === HttpStatusCode.BadRequest &&
-      //   error.response.data.error === 'internal-credit-check-failed'
-      // ) {
-      if (
-        error.response &&
-        error.response.status === HttpStatusCode.BadRequest
-      ) {
-        error.message = 'Kreditkontroll misslyckades'
-        return error
-      }
-      error.message = 'Försök igen eller kontakta support'
-    },
   })
+
+  type CreateApplicantError = 'internal-credit-check-failed' | 'unknown'
+  type RequestError<Err> = {
+    status: number
+    errorCode: Err
+    errorMessage: string
+  }
+
+  function mapCreateApplicantError(
+    e: AxiosError<{ error?: CreateApplicantError; errorMessage: string }>
+  ): RequestError<CreateApplicantError> {
+    if (!e.response?.data) {
+      return {
+        status: 500,
+        errorCode: 'unknown',
+        errorMessage: 'Försök igen eller kontakta support',
+      }
+    }
+    switch (e.response.data?.error) {
+      case 'internal-credit-check-failed':
+        return {
+          status: 400,
+          errorCode: 'internal-credit-check-failed',
+          errorMessage: 'Kreditkontroll misslyckades',
+        }
+      default: {
+        return {
+          status: 500,
+          errorCode: 'unknown',
+          errorMessage: 'Försök igen eller kontakta support',
+        }
+      }
+    }
+  }
 }

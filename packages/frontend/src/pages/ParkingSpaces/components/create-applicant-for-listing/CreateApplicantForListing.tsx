@@ -130,7 +130,7 @@ export const CreateApplicantForListing = (props: Props) => {
         {createApplicant.error ? (
           <CreateApplicantError
             reset={createApplicant.reset}
-            error={createApplicant.error.message}
+            error={createApplicant.error.errorMessage}
           />
         ) : (
           <Box paddingTop="0.5rem">
