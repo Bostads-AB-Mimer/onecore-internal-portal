@@ -3,28 +3,31 @@ import { useCallback, useMemo, useState } from 'react'
 import { type GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
 import { Listing, ListingStatus } from 'onecore-types'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { TabContext, TabPanel } from '@mui/lab'
 
 import { DataGridTable, SearchBar, Tab, Tabs } from '../../components'
-import { useParkingSpaceListings } from './hooks/useParkingSpaceListings'
+import {
+  GetListingWithApplicantFilterByType,
+  useParkingSpaceListings,
+} from './hooks/useParkingSpaceListings'
 import * as utils from '../../utils'
 import { CreateApplicantForListing } from './components/create-applicant-for-listing/CreateApplicantForListing'
 import { SyncInternalParkingSpaces } from './components/SyncInternalParkingSpaces'
 import { DeleteListing } from './components/DeleteListing'
 
-// TODO: Use from onecore-types
-type GetListingWithApplicantFilterByTypes =
-  | 'published'
-  | 'ready-for-offer'
-  | 'offered'
-  | 'historical'
-
 const ParkingSpaces = () => {
-  const [selectedTab, setSelectedTab] =
-    useState<GetListingWithApplicantFilterByTypes>('published')
-  const parkingSpaces = useParkingSpaceListings()
   const [searchString, setSearchString] = useState<string>()
+  const [searchParams, setSearchParams] = useSearchParams({ type: 'published' })
+
+  const currentTypeSearchParam =
+    (searchParams.get('type') as GetListingWithApplicantFilterByType) ??
+    'published'
+
+  const [selectedTab, setSelectedTab] =
+    useState<GetListingWithApplicantFilterByType>(currentTypeSearchParam)
+
+  const parkingSpaces = useParkingSpaceListings(currentTypeSearchParam)
 
   const handleSearch = useCallback((v: string) => setSearchString(v), [])
   const onSearch = useMemo(
@@ -34,8 +37,11 @@ const ParkingSpaces = () => {
 
   const handleTabChange = (
     _e: React.SyntheticEvent,
-    tab: GetListingWithApplicantFilterByTypes
-  ) => setSelectedTab(tab)
+    tab: GetListingWithApplicantFilterByType
+  ) => {
+    setSearchParams({ type: tab })
+    setSelectedTab(tab)
+  }
 
   const dateFormatter = new Intl.DateTimeFormat('sv-SE', { timeZone: 'UTC' })
   const numberFormatter = new Intl.NumberFormat('sv-SE', {

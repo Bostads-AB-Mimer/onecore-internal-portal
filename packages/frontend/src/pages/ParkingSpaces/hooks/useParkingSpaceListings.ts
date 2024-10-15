@@ -4,12 +4,14 @@ import { Listing } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-export const useParkingSpaceListings = () =>
+export const useParkingSpaceListings = (
+  type: GetListingWithApplicantFilterByType
+) =>
   useQuery<Array<Listing>, AxiosError>({
-    queryKey: ['parkingSpaceListings'],
+    queryKey: ['parkingSpaceListings', type],
     queryFn: () =>
       axios
-        .get(`${backendUrl}/leases/listings-with-applicants`, {
+        .get(`${backendUrl}/leases/listings-with-applicants?type=${type}`, {
           headers: {
             Accept: 'application/json',
             'Access-Control-Allow-Credentials': true,
@@ -25,3 +27,10 @@ export const useParkingSpaceListings = () =>
       }
     },
   })
+
+// TODO: Use from onecore-types
+export type GetListingWithApplicantFilterByType =
+  | 'published'
+  | 'ready-for-offer'
+  | 'offered'
+  | 'historical'
