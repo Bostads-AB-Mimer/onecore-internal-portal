@@ -178,13 +178,13 @@ const getColumns = (
       ...sharedColumnProps,
     },
     {
-      field: 'rentalObjectTypeCaption',
+      field: 'objectTypeCaption',
       headerName: 'Bilplatstyp',
       ...sharedColumnProps,
     },
     {
       field: 'waitingListType',
-      headerName: 'Typ',
+      headerName: 'Kötyp',
       ...sharedColumnProps,
     },
     {
