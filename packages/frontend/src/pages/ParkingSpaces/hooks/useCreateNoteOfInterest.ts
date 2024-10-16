@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { CreateNoteOfInterestErrorCodes } from 'onecore-types'
 
 import { RequestError } from '../../../types'
 
@@ -40,12 +41,6 @@ export const useCreateNoteOfInterest = (listingId: number) => {
         }),
       ]),
   })
-
-  //todo: import from types when merged
-  enum CreateNoteOfInterestErrorCodes {
-    InternalCreditCheckFailed = 'internal-credit-check-failed',
-    Unknown = 'unknown',
-  }
 
   function mapCreateNoteOfInterestError(
     e: AxiosError<{

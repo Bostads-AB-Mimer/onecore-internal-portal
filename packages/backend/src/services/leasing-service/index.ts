@@ -3,6 +3,7 @@ import KoaRouter from '@koa/router'
 import { generateRouteMetadata } from 'onecore-utilities'
 
 import * as coreAdapter from './adapters/core-adapter'
+import { CreateNoteOfInterestErrorCodes } from 'onecore-types'
 
 export const routes = (router: KoaRouter) => {
   router.get('(.*)/leases/listings-with-applicants', async (ctx) => {
@@ -164,12 +165,6 @@ export const routes = (router: KoaRouter) => {
       }
     }
   )
-
-  //todo: import from types when merged
-  enum CreateNoteOfInterestErrorCodes {
-    InternalCreditCheckFailed = 'internal-credit-check-failed',
-    Unknown = 'unknown',
-  }
 
   router.post('(.*)/listing/applicant', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)

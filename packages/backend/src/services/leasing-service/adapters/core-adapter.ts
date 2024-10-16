@@ -1,5 +1,6 @@
 import {
   Contact,
+  CreateNoteOfInterestErrorCodes,
   DetailedApplicant,
   InternalParkingSpaceSyncSuccessResponse,
   Listing,
@@ -160,12 +161,6 @@ const validateResidentialAreaRentalRules = async (
       return { ok: false, err: 'unknown' }
     }
   }
-}
-
-//todo: import from types when merged
-enum CreateNoteOfInterestErrorCodes {
-  InternalCreditCheckFailed = 'internal-credit-check-failed',
-  Unknown = 'unknown',
 }
 
 const createNoteOfInterestForInternalParkingSpace = async (params: {
