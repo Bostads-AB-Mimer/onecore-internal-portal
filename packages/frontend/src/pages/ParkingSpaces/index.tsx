@@ -2,15 +2,16 @@ import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useCallback, useMemo, useState } from 'react'
 import { type GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
-import { Listing, ListingStatus } from 'onecore-types'
+import {
+  GetListingWithApplicantFilterByType,
+  Listing,
+  ListingStatus,
+} from 'onecore-types'
 import { Link, useSearchParams } from 'react-router-dom'
 import { TabContext, TabPanel } from '@mui/lab'
 
 import { DataGridTable, SearchBar, Tab, Tabs } from '../../components'
-import {
-  GetListingWithApplicantFilterByType,
-  useParkingSpaceListings,
-} from './hooks/useParkingSpaceListings'
+import { useParkingSpaceListings } from './hooks/useParkingSpaceListings'
 import * as utils from '../../utils'
 import { CreateApplicantForListing } from './components/create-applicant-for-listing/CreateApplicantForListing'
 import { SyncInternalParkingSpaces } from './components/SyncInternalParkingSpaces'

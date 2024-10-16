@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { Listing } from 'onecore-types'
+import { GetListingWithApplicantFilterByType, Listing } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
@@ -27,10 +27,3 @@ export const useParkingSpaceListings = (
       }
     },
   })
-
-// TODO: Use from onecore-types
-export type GetListingWithApplicantFilterByType =
-  | 'published'
-  | 'ready-for-offer'
-  | 'offered'
-  | 'historical'
