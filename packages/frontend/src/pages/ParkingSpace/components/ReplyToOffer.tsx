@@ -3,7 +3,8 @@ import { Button, IconButton, MenuItem, Backdrop, Menu } from '@mui/material'
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { MoreHoriz } from '@mui/icons-material'
 
-import { useRemoveApplicantFromListing } from '../hooks/useRemoveApplicantFromListing'
+import { useReplyYesToOffer } from '../hooks/useReplyYesToOffer'
+import { useReplyNoToOffer } from '../hooks/useReplyNoToOffer'
 import { ReplyDialog } from './ReplyDialog'
 
 export interface Props {
@@ -14,20 +15,27 @@ export interface Props {
   disabled: boolean
 }
 
-export const RemoveApplicantFromListing = (props: Props) => {
-  const removeListing = useRemoveApplicantFromListing()
-  const [open, setOpen] = useState(false)
+export const ReplyToOffer = (props: Props) => {
+  const replyYes = useReplyYesToOffer()
+  const replyNo = useReplyNoToOffer()
+  const [replyYesOpen, setReplyYesOpen] = useState(false)
+  const [replyNoOpen, setReplyNoOpen] = useState(false)
 
-  const onRemove = () =>
-    removeListing.mutate(props, {
-      onSuccess: () => setOpen(false),
+  const onReplyYes = () =>
+    replyYes.mutate(props, {
+      onSuccess: () => setReplyYesOpen(false),
+    })
+
+  const onReplyNo = () =>
+    replyNo.mutate(props, {
+      onSuccess: () => setReplyYesOpen(false),
     })
 
   return (
     <>
       <PopupState
         variant="popover"
-        popupId="remove-applicant-from-listing-popup-menu"
+        popupId="reply-to-offer-popup-menu"
         disableAutoFocus={false}
         parentPopupState={null}
       >
@@ -52,7 +60,7 @@ export const RemoveApplicantFromListing = (props: Props) => {
                 <MenuItem onClick={popupState.close}>
                   <Button
                     variant="text"
-                    onClick={() => setOpen(true)}
+                    onClick={() => setReplyYesOpen(true)}
                     sx={{
                       color: 'black',
                       border: 'none',
@@ -62,7 +70,23 @@ export const RemoveApplicantFromListing = (props: Props) => {
                       },
                     }}
                   >
-                    Ta bort anmälan
+                    Tacka ja
+                  </Button>
+                </MenuItem>
+                <MenuItem onClick={popupState.close}>
+                  <Button
+                    variant="text"
+                    onClick={() => setReplyNoOpen(true)}
+                    sx={{
+                      color: 'black',
+                      border: 'none',
+                      backgroundColor: 'transparent',
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                  >
+                    Tacka nej
                   </Button>
                 </MenuItem>
               </Menu>
@@ -71,12 +95,21 @@ export const RemoveApplicantFromListing = (props: Props) => {
         )}
       </PopupState>
       <ReplyDialog
-        open={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onRemove}
-        title="Ta bort intresseanmälan"
+        open={replyYesOpen}
+        onClose={() => setReplyYesOpen(false)}
+        onConfirm={onReplyYes}
+        title="Tacka ja"
         content={`Vill du ta bort ${props.applicantName} som intressent för ${props.listingAddress}?`}
-        isPending={removeListing.isPending}
+        isPending={replyYes.isPending}
+      />
+
+      <ReplyDialog
+        open={replyNoOpen}
+        onClose={() => setReplyNoOpen(false)}
+        onConfirm={onReplyNo}
+        title="Tacka nej"
+        content={`Vill du ta bort ${props.applicantName} som intressent för ${props.listingAddress}?`}
+        isPending={replyNo.isPending}
       />
     </>
   )

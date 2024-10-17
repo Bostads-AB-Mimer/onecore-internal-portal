@@ -3,6 +3,7 @@ import type { GridColDef } from '@mui/x-data-grid'
 import { ApplicantStatus, LeaseStatus, OfferApplicant } from 'onecore-types'
 
 import { DataGridTable } from '../../../components'
+import { ReplyToOffer } from './ReplyToOffer'
 
 export const OfferRound = (props: {
   numRound: number
@@ -115,6 +116,23 @@ const columns: GridColDef[] = [
     ...sharedProps,
     valueFormatter: (v) => formatApplicantStatus(v.value),
     renderCell: (v) => v.value ?? <i>N/A</i>,
+  },
+  {
+    field: 'action',
+    headerName: '',
+    sortable: false,
+    filterable: false,
+    disableColumnMenu: true,
+    align: 'center',
+    renderCell: (v) => (
+      <ReplyToOffer
+        disabled={v.row.status !== ApplicantStatus.Offered}
+        listingId={1}
+        applicantId={v.row.id}
+        applicantName={v.row.name}
+        listingAddress={'address'}
+      />
+    ),
   },
 ]
 
