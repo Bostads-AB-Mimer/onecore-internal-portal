@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Button, IconButton, MenuItem, Backdrop, Menu } from '@mui/material'
+import { IconButton, Backdrop, Menu } from '@mui/material'
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { MoreHoriz } from '@mui/icons-material'
 
 import { useRemoveApplicantFromListing } from '../hooks/useRemoveApplicantFromListing'
-import { ReplyDialog } from './ReplyDialog'
+import { ActionDialog } from './ActionDialog'
+import { PopupMenuItem } from './PopupMenuItem'
 
 export interface Props {
   applicantId: number
@@ -49,33 +50,23 @@ export const RemoveApplicantFromListing = (props: Props) => {
                 }}
                 elevation={0}
               >
-                <MenuItem onClick={popupState.close}>
-                  <Button
-                    variant="text"
-                    onClick={() => setOpen(true)}
-                    sx={{
-                      color: 'black',
-                      border: 'none',
-                      backgroundColor: 'transparent',
-                      '&:hover': {
-                        backgroundColor: 'transparent',
-                      },
-                    }}
-                  >
-                    Ta bort anmälan
-                  </Button>
-                </MenuItem>
+                <PopupMenuItem
+                  label="Ta bort anmälan"
+                  onClick={() => setOpen(true)}
+                  closeMenu={popupState.close}
+                />
               </Menu>
             </Backdrop>
           </>
         )}
       </PopupState>
-      <ReplyDialog
+      <ActionDialog
         open={open}
         onClose={() => setOpen(false)}
         onConfirm={onRemove}
         title="Ta bort intresseanmälan"
         content={`Vill du ta bort ${props.applicantName} som intressent för ${props.listingAddress}?`}
+        submitButtonText="Ja, ta bort"
         isPending={removeListing.isPending}
       />
     </>
