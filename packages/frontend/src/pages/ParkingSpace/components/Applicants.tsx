@@ -152,6 +152,7 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
+      align: 'center',
       renderCell: (v) => (
         <RemoveApplicantFromListing
           disabled={v.row.status !== ApplicantStatus.Active}

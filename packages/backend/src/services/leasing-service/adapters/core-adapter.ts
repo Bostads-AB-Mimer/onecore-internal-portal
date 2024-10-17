@@ -251,6 +251,40 @@ const deleteListing = async (
   }
 }
 
+const acceptOffer = async (
+  offerId: string
+): Promise<AdapterResult<Array<Listing>, 'unknown'>> => {
+  try {
+    const url = `${coreBaseUrl}/offers/${offerId}/accept`
+    const response = await getFromCore({
+      method: 'post',
+      url: url,
+    })
+
+    return { ok: true, data: response.data.content }
+  } catch (err) {
+    //todo: map to errorCodes
+    return { ok: false, err: 'unknown' }
+  }
+}
+
+const denyOffer = async (
+  offerId: string
+): Promise<AdapterResult<Array<Listing>, 'unknown'>> => {
+  try {
+    const url = `${coreBaseUrl}/offers/${offerId}/deny`
+    const response = await getFromCore({
+      method: 'post',
+      url: url,
+    })
+
+    return { ok: true, data: response.data.content }
+  } catch (err) {
+    //todo: map to errorCodes
+    return { ok: false, err: 'unknown' }
+  }
+}
+
 export {
   getListingsWithApplicants,
   getListingWithApplicants,
@@ -263,4 +297,6 @@ export {
   syncInternalParkingSpacesFromXpand,
   createOffer,
   deleteListing,
+  acceptOffer,
+  denyOffer,
 }
