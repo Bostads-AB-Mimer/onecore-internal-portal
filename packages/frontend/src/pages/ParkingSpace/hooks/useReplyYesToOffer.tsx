@@ -3,13 +3,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-type Params = { listingId: number; applicantId: number }
+type Params = { offerId: number }
 
 export const useReplyYesToOffer = () => {
-  const queryClient = useQueryClient()
+  //const queryClient = useQueryClient()
   return useMutation<unknown, AxiosError, Params>({
     mutationFn: (params: Params) =>
-      axios.delete<unknown>(`${backendUrl}/applicant/${params.applicantId}`, {
+      axios.post<unknown>(`${backendUrl}/offers/${params.offerId}/accept`, {
         headers: {
           Accept: 'application/json',
           'Access-Control-Allow-Credentials': true,
@@ -17,8 +17,9 @@ export const useReplyYesToOffer = () => {
         withCredentials: true,
       }),
     onSuccess: (_, params) =>
-      queryClient.invalidateQueries({
-        queryKey: ['parkingSpaceListing', params.listingId],
-      }),
+      // queryClient.invalidateQueries({
+      //   queryKey: ['parkingSpaceListing', params.listingId],
+      // }),
+      console.log('Offer accepted, but what happens now?'),
   })
 }

@@ -130,7 +130,8 @@ const columns: GridColDef[] = [
         listingId={1}
         applicantId={v.row.id}
         applicantName={v.row.name}
-        listingAddress={'address'}
+        listingAddress={v.row.address}
+        offerId={v.row.offerId}
       />
     ),
   },

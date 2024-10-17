@@ -243,4 +243,34 @@ export const routes = (router: KoaRouter) => {
       }
     }
   })
+
+  router.post('(.*)/offers/:offerId/accept', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx, ['q'])
+
+    const result = await coreAdapter.acceptOffer(ctx.params.offerId)
+
+    if (result.ok) {
+      ctx.status = 200
+      ctx.body = { content: result.data, ...metadata }
+    } else {
+      //todo: map to errorCodes
+      ctx.status = 500
+      ctx.body = { error: 'Internal Server Error', ...metadata }
+    }
+  })
+
+  router.post('(.*)/offers/:offerId/deny', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx, ['q'])
+
+    const result = await coreAdapter.denyOffer(ctx.params.offerId)
+
+    if (result.ok) {
+      ctx.status = 200
+      ctx.body = { content: result.data, ...metadata }
+    } else {
+      //todo: map to errorCodes
+      ctx.status = 500
+      ctx.body = { error: 'Internal Server Error', ...metadata }
+    }
+  })
 }

@@ -8,12 +8,14 @@ import { useReplyNoToOffer } from '../hooks/useReplyNoToOffer'
 import { ActionDialog } from './ActionDialog'
 import { PopupMenuItem } from './PopupMenuItem'
 
+//todo: remove unused props
 export interface Props {
   applicantId: number
   applicantName: string
   listingAddress: string
   listingId: number
   disabled: boolean
+  offerId: number
 }
 
 export const ReplyToOffer = (props: Props) => {

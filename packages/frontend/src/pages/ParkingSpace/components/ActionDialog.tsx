@@ -15,15 +15,17 @@ interface ReplyDialogProps {
   onConfirm: () => void
   title: string
   content: string
+  submitButtonText: string
   isPending: boolean
 }
 
-export const ReplyDialog = ({
+export const ActionDialog = ({
   open,
   onClose,
   onConfirm,
   title,
   content,
+  submitButtonText,
   isPending,
 }: ReplyDialogProps) => {
   return (
@@ -63,7 +65,7 @@ export const ReplyDialog = ({
               Nej, avbryt
             </Button>
             <Button variant="dark" onClick={onConfirm} disabled={isPending}>
-              Ja, ta bort
+              {submitButtonText}
             </Button>
           </Box>
         </DialogContent>
