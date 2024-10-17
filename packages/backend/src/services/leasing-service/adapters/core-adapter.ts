@@ -4,6 +4,7 @@ import {
   DetailedApplicant,
   InternalParkingSpaceSyncSuccessResponse,
   Listing,
+  Offer,
   OfferWithOfferApplicants,
   ReplyToOfferErrorCodes,
   Tenant,
@@ -21,15 +22,32 @@ type AdapterResult<T, E> =
 
 const getListingsWithApplicants = async (
   querystring: string
-): Promise<AdapterResult<Array<Listing>, 'unknown'>> => {
+): Promise<
+  AdapterResult<Array<Listing | (Listing & { offer: Offer | null })>, 'unknown'>
+> => {
   try {
     const url = `${coreBaseUrl}/listings-with-applicants?${querystring}`
-    const listingsResponse = await getFromCore({
+    const listingsResponse = await getFromCore<{ content: Array<Listing> }>({
       method: 'get',
       url: url,
     })
 
-    return { ok: true, data: listingsResponse.data.content }
+    if (querystring !== 'type=offered') {
+      return { ok: true, data: listingsResponse.data.content }
+    }
+
+    const withOffers = await Promise.all(
+      listingsResponse.data.content.map(async (listing) => {
+        const offer = await getActiveOfferByListingId(listing.id)
+        if (!offer.ok) {
+          throw new Error('Failed to get offer')
+        }
+
+        return { ...listing, offer: offer.data }
+      })
+    )
+
+    return { ok: true, data: withOffers }
   } catch (err) {
     return { ok: false, err: 'unknown', statusCode: 500 }
   }
@@ -320,6 +338,21 @@ const denyOffer = async (
   }
 }
 
+const getActiveOfferByListingId = async (
+  listingId: number
+): Promise<AdapterResult<Offer | null, unknown>> => {
+  try {
+    const result = await getFromCore<{ content: Offer | null }>({
+      method: 'get',
+      url: `${coreBaseUrl}/offers/listing-id/${listingId}/active`,
+    }).then((res) => res.data)
+
+    return { ok: true, data: result.content }
+  } catch (err) {
+    return { ok: false, err, statusCode: 500 }
+  }
+}
+
 export {
   getListingsWithApplicants,
   getListingWithApplicants,
@@ -334,4 +367,5 @@ export {
   deleteListing,
   acceptOffer,
   denyOffer,
+  getActiveOfferByListingId,
 }
