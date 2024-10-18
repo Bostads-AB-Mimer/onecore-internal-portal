@@ -4,10 +4,11 @@ import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { MoreHoriz } from '@mui/icons-material'
 import { toast } from 'react-toastify'
 
-import { useReplyYesToOffer } from '../hooks/useReplyYesToOffer'
-import { useReplyNoToOffer } from '../hooks/useReplyNoToOffer'
+import { useAcceptOffer } from '../hooks/useAcceptOffer'
+import { useDenyOffer } from '../hooks/useDenyOffer'
 import { ActionDialog } from './ActionDialog'
 import { PopupMenuItem } from './PopupMenuItem'
+import { RequestError } from '../../../types'
 
 export interface Props {
   offerId: number
@@ -16,9 +17,19 @@ export interface Props {
   disabled: boolean
 }
 
+//todo: move to types
+enum AcceptOfferErrorCodes {
+  InternalError = 'internal-error',
+}
+
+// TODO: move to types
+enum DenyOfferErrorCodes {
+  InternalError = 'internal-error',
+}
+
 export const ReplyToOffer = (props: Props) => {
-  const replyYes = useReplyYesToOffer()
-  const replyNo = useReplyNoToOffer()
+  const replyYes = useAcceptOffer()
+  const replyNo = useDenyOffer()
   const [replyYesOpen, setReplyYesOpen] = useState(false)
   const [replyNoOpen, setReplyNoOpen] = useState(false)
 
@@ -31,6 +42,13 @@ export const ReplyToOffer = (props: Props) => {
           hideProgressBar: true,
         })
       },
+      onError: (error: RequestError<AcceptOfferErrorCodes>) => {
+        setReplyYesOpen(false)
+        toast(error.errorMessage, {
+          type: 'error',
+          hideProgressBar: true,
+        })
+      },
     })
 
   const onReplyNo = () =>
@@ -39,6 +57,13 @@ export const ReplyToOffer = (props: Props) => {
         setReplyNoOpen(false)
         toast('Erbjudande nekat', {
           type: 'info',
+          hideProgressBar: true,
+        })
+      },
+      onError: (error: RequestError<DenyOfferErrorCodes>) => {
+        setReplyNoOpen(false)
+        toast(error.errorMessage, {
+          type: 'error',
           hideProgressBar: true,
         })
       },
