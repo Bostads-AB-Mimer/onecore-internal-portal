@@ -191,6 +191,7 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
 
     return { ok: true, data: response.data.content }
   } catch (err) {
+    //todo: refactor to proxy error code and http status
     if (
       err instanceof AxiosError &&
       err.response?.status === HttpStatusCode.BadRequest &&
