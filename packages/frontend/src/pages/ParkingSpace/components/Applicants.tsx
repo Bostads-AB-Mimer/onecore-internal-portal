@@ -154,11 +154,7 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
       disableColumnMenu: true,
       align: 'center',
       renderCell: (v) => {
-        const isWithdrawn =
-          v.row.status === ApplicantStatus.WithdrawnByUser ||
-          v.row.status === ApplicantStatus.WithdrawnByManager
-
-        if (isWithdrawn) {
+        if (v.row.status !== ApplicantStatus.Active) {
           return null
         }
 

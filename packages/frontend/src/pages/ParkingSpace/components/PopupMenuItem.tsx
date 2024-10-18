@@ -20,6 +20,7 @@ export const PopupMenuItem = ({
           color: 'black',
           border: 'none',
           backgroundColor: 'transparent',
+          paddingRight: 8,
           '&:hover': {
             backgroundColor: 'transparent',
           },
