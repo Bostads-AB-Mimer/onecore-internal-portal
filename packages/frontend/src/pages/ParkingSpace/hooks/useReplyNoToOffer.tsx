@@ -3,10 +3,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
-type Params = { offerId: number }
+type Params = { offerId: number; listingId: number }
 
 export const useReplyNoToOffer = () => {
-  //const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
   return useMutation<unknown, AxiosError, Params>({
     mutationFn: (params: Params) =>
       axios.post<unknown>(`${backendUrl}/offers/${params.offerId}/deny`, {
@@ -16,10 +16,10 @@ export const useReplyNoToOffer = () => {
         },
         withCredentials: true,
       }),
-    onSuccess: (_, params) =>
-      // queryClient.invalidateQueries({
-      //   queryKey: ['parkingSpaceListing', params.listingId],
-      // }),
-      console.log('Offer denied, but what happens now?'),
+    onSuccess: (_, params) => {
+      queryClient.invalidateQueries({
+        queryKey: ['parkingSpaceListing', params.listingId],
+      })
+    },
   })
 }

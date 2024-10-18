@@ -8,14 +8,11 @@ import { useReplyNoToOffer } from '../hooks/useReplyNoToOffer'
 import { ActionDialog } from './ActionDialog'
 import { PopupMenuItem } from './PopupMenuItem'
 
-//todo: remove unused props
 export interface Props {
-  applicantId: number
-  applicantName: string
-  listingAddress: string
-  listingId: number
-  disabled: boolean
   offerId: number
+  listingId: number
+  applicantName: string
+  disabled: boolean
 }
 
 export const ReplyToOffer = (props: Props) => {
@@ -31,7 +28,7 @@ export const ReplyToOffer = (props: Props) => {
 
   const onReplyNo = () =>
     replyNo.mutate(props, {
-      onSuccess: () => setReplyYesOpen(false),
+      onSuccess: () => setReplyNoOpen(false),
     })
 
   return (
@@ -90,7 +87,7 @@ export const ReplyToOffer = (props: Props) => {
         onClose={() => setReplyNoOpen(false)}
         onConfirm={onReplyNo}
         title="Tacka nej"
-        content={`Tacka nej ${props.applicantName} ?`}
+        content={`Tacka nej åt ${props.applicantName} ?`}
         submitButtonText="Nej, neka erbjudande"
         isPending={replyNo.isPending}
       />
