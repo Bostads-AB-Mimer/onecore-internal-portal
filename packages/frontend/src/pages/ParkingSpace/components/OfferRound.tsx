@@ -132,7 +132,7 @@ const columns: GridColDef[] = [
       return (
         <ReplyToOffer
           disabled={v.row.status !== ApplicantStatus.Offered}
-          listingId={1}
+          listingId={v.row.listingId}
           applicantName={v.row.name}
           offerId={v.row.offerId}
         />
