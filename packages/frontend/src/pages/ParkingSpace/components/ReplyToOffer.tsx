@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { IconButton, Backdrop, Menu } from '@mui/material'
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { MoreHoriz } from '@mui/icons-material'
+import { toast } from 'react-toastify'
 
 import { useReplyYesToOffer } from '../hooks/useReplyYesToOffer'
 import { useReplyNoToOffer } from '../hooks/useReplyNoToOffer'
@@ -23,12 +24,24 @@ export const ReplyToOffer = (props: Props) => {
 
   const onReplyYes = () =>
     replyYes.mutate(props, {
-      onSuccess: () => setReplyYesOpen(false),
+      onSuccess: () => {
+        setReplyYesOpen(false)
+        toast('Erbjudande accepterat', {
+          type: 'success',
+          hideProgressBar: true,
+        })
+      },
     })
 
   const onReplyNo = () =>
     replyNo.mutate(props, {
-      onSuccess: () => setReplyNoOpen(false),
+      onSuccess: () => {
+        setReplyNoOpen(false)
+        toast('Erbjudande nekat', {
+          type: 'info',
+          hideProgressBar: true,
+        })
+      },
     })
 
   return (
@@ -76,9 +89,9 @@ export const ReplyToOffer = (props: Props) => {
         open={replyYesOpen}
         onClose={() => setReplyYesOpen(false)}
         onConfirm={onReplyYes}
-        title="Tacka ja"
-        content={`Tacka ja åt ${props.applicantName} ?`}
-        submitButtonText="Ja, acceptera erbjudande"
+        title="Svara på erbjudande"
+        content={`Tacka ja åt ${props.applicantName}?`}
+        submitButtonText="Bekfräfta tacka ja"
         isPending={replyYes.isPending}
       />
 
@@ -86,9 +99,9 @@ export const ReplyToOffer = (props: Props) => {
         open={replyNoOpen}
         onClose={() => setReplyNoOpen(false)}
         onConfirm={onReplyNo}
-        title="Tacka nej"
-        content={`Tacka nej åt ${props.applicantName} ?`}
-        submitButtonText="Nej, neka erbjudande"
+        title="Svara på erbjudande"
+        content={`Tacka nej åt ${props.applicantName}?`}
+        submitButtonText="Bekräfta tacka nej"
         isPending={replyNo.isPending}
       />
     </>

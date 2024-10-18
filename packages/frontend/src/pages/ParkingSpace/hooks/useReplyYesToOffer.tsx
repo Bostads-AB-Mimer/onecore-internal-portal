@@ -16,10 +16,9 @@ export const useReplyYesToOffer = () => {
         },
         withCredentials: true,
       }),
-    onSuccess: (_, params) => {
+    onSuccess: (_, params) =>
       queryClient.invalidateQueries({
         queryKey: ['parkingSpaceListing', params.listingId],
-      })
-    },
+      }),
   })
 }

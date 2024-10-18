@@ -16,10 +16,9 @@ export const useReplyNoToOffer = () => {
         },
         withCredentials: true,
       }),
-    onSuccess: (_, params) => {
+    onSuccess: (_, params) =>
       queryClient.invalidateQueries({
         queryKey: ['parkingSpaceListing', params.listingId],
-      })
-    },
+      }),
   })
 }

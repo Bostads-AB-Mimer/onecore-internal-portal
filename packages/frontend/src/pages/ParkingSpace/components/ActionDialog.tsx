@@ -62,9 +62,13 @@ export const ActionDialog = ({
               onClick={onClose}
               disabled={isPending}
             >
-              Nej, avbryt
+              Avbryt
             </Button>
-            <Button variant="dark" onClick={onConfirm} disabled={isPending}>
+            <Button
+              variant="dark"
+              onClick={() => onConfirm()}
+              disabled={isPending}
+            >
               {submitButtonText}
             </Button>
           </Box>

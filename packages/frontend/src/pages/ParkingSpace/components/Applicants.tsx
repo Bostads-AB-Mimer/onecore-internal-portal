@@ -153,15 +153,25 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
       filterable: false,
       disableColumnMenu: true,
       align: 'center',
-      renderCell: (v) => (
-        <RemoveApplicantFromListing
-          disabled={v.row.status !== ApplicantStatus.Active}
-          listingId={listingId}
-          applicantId={v.row.id}
-          applicantName={v.row.name}
-          listingAddress={address}
-        />
-      ),
+      renderCell: (v) => {
+        const isWithdrawn =
+          v.row.status === ApplicantStatus.WithdrawnByUser ||
+          v.row.status === ApplicantStatus.WithdrawnByManager
+
+        if (isWithdrawn) {
+          return null
+        }
+
+        return (
+          <RemoveApplicantFromListing
+            disabled={v.row.status !== ApplicantStatus.Active}
+            listingId={listingId}
+            applicantId={v.row.id}
+            applicantName={v.row.name}
+            listingAddress={address}
+          />
+        )
+      },
     },
   ]
 }

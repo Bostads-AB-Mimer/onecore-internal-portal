@@ -124,16 +124,20 @@ const columns: GridColDef[] = [
     filterable: false,
     disableColumnMenu: true,
     align: 'center',
-    renderCell: (v) => (
-      <ReplyToOffer
-        disabled={v.row.status !== ApplicantStatus.Offered}
-        listingId={1}
-        applicantId={v.row.id}
-        applicantName={v.row.name}
-        listingAddress={v.row.address}
-        offerId={v.row.offerId}
-      />
-    ),
+    renderCell: (v) => {
+      if (v.row.status !== ApplicantStatus.Offered) {
+        return null
+      }
+
+      return (
+        <ReplyToOffer
+          disabled={v.row.status !== ApplicantStatus.Offered}
+          listingId={1}
+          applicantName={v.row.name}
+          offerId={v.row.offerId}
+        />
+      )
+    },
   },
 ]
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { IconButton, Backdrop, Menu } from '@mui/material'
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { MoreHoriz } from '@mui/icons-material'
+import { toast } from 'react-toastify'
 
 import { useRemoveApplicantFromListing } from '../hooks/useRemoveApplicantFromListing'
 import { ActionDialog } from './ActionDialog'
@@ -21,7 +22,13 @@ export const RemoveApplicantFromListing = (props: Props) => {
 
   const onRemove = () =>
     removeListing.mutate(props, {
-      onSuccess: () => setOpen(false),
+      onSuccess: () => {
+        setOpen(false)
+        toast('Intresseanmälan borttagen', {
+          type: 'success',
+          hideProgressBar: true,
+        })
+      },
     })
 
   return (
