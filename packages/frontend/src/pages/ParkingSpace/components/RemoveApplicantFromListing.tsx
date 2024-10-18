@@ -1,16 +1,12 @@
 import { useState } from 'react'
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Typography,
-  Box,
-  IconButton,
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+import { IconButton, Backdrop, Menu } from '@mui/material'
+import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
+import { MoreHoriz } from '@mui/icons-material'
+import { toast } from 'react-toastify'
 
 import { useRemoveApplicantFromListing } from '../hooks/useRemoveApplicantFromListing'
+import { ActionDialog } from './ActionDialog'
+import { PopupMenuItem } from './PopupMenuItem'
 
 export interface Props {
   applicantId: number
@@ -26,69 +22,60 @@ export const RemoveApplicantFromListing = (props: Props) => {
 
   const onRemove = () =>
     removeListing.mutate(props, {
-      onSuccess: () => setOpen(false),
+      onSuccess: () => {
+        setOpen(false)
+        toast('Intresseanmälan borttagen', {
+          type: 'success',
+          hideProgressBar: true,
+        })
+      },
     })
 
   return (
     <>
-      <Button
-        disabled={props.disabled}
-        variant="dark"
-        onClick={() => setOpen(true)}
+      <PopupState
+        variant="popover"
+        popupId="remove-applicant-from-listing-popup-menu"
+        disableAutoFocus={false}
+        parentPopupState={null}
       >
-        Ta bort
-      </Button>
-      <Dialog onClose={() => setOpen(false)} open={open} maxWidth="xs">
-        <Box padding="1rem">
-          <Box display="flex">
-            <DialogTitle variant="h2" textAlign="left">
-              Ta bort intresseanmälan
-            </DialogTitle>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              marginLeft="auto"
-              marginRight="1rem"
-            >
-              <IconButton onClick={() => setOpen(false)}>
-                <CloseIcon />
-              </IconButton>
-            </Box>
-          </Box>
-          <DialogContent>
-            <Typography
-              textAlign="center"
-              paddingTop="1rem"
-              paddingBottom="2rem"
-            >
-              Vill du ta bort {props.applicantName} som intressent för{' '}
-              {props.listingAddress}?
-            </Typography>
-            <Box
-              display="flex"
-              gap="6rem"
-              justifyContent="space-between"
-              paddingTop="1rem"
-            >
-              <Button
-                variant="dark-outlined"
-                onClick={() => setOpen(false)}
-                disabled={removeListing.isPending}
+        {(popupState) => (
+          <>
+            <IconButton {...bindTrigger(popupState)} sx={{ padding: 0 }}>
+              <MoreHoriz />
+            </IconButton>
+            <Backdrop open={popupState.isOpen} onClick={popupState.close}>
+              <Menu
+                {...bindMenu(popupState)}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                elevation={0}
               >
-                Nej, avbryt
-              </Button>
-              <Button
-                variant="dark"
-                onClick={onRemove}
-                disabled={removeListing.isPending}
-              >
-                Ja, ta bort
-              </Button>
-            </Box>
-          </DialogContent>
-        </Box>
-      </Dialog>
+                <PopupMenuItem
+                  label="Ta bort anmälan"
+                  onClick={() => setOpen(true)}
+                  closeMenu={popupState.close}
+                />
+              </Menu>
+            </Backdrop>
+          </>
+        )}
+      </PopupState>
+      <ActionDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onRemove}
+        title="Ta bort intresseanmälan"
+        content={`Vill du ta bort ${props.applicantName} som intressent för ${props.listingAddress}?`}
+        submitButtonText="Ja, ta bort"
+        isPending={removeListing.isPending}
+      />
     </>
   )
 }
