@@ -5,6 +5,7 @@ import {
   InternalParkingSpaceSyncSuccessResponse,
   Listing,
   OfferWithOfferApplicants,
+  ReplyToOfferErrorCodes,
   Tenant,
 } from 'onecore-types'
 import { AxiosError, HttpStatusCode } from 'axios'
@@ -14,7 +15,9 @@ import { getFromCore } from '../../common/adapters/core-adapter'
 
 const coreBaseUrl = Config.core.url
 
-type AdapterResult<T, E> = { ok: false; err: E } | { ok: true; data: T }
+type AdapterResult<T, E> =
+  | { ok: false; err: E; statusCode: number }
+  | { ok: true; data: T }
 
 const getListingsWithApplicants = async (
   querystring: string
@@ -28,7 +31,7 @@ const getListingsWithApplicants = async (
 
     return { ok: true, data: listingsResponse.data.content }
   } catch (err) {
-    return { ok: false, err: 'unknown' }
+    return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
 
@@ -90,7 +93,7 @@ const getContactsDataBySearchQuery = async (
 
     return { ok: true, data: result.content }
   } catch (err) {
-    return { ok: false, err }
+    return { ok: false, err, statusCode: 500 }
   }
 }
 
@@ -105,7 +108,7 @@ const getTenantByContactCode = async (
 
     return { ok: true, data: result.content }
   } catch (err) {
-    return { ok: false, err }
+    return { ok: false, err, statusCode: 500 }
   }
 }
 
@@ -129,9 +132,13 @@ const validatePropertyRentalRules = async (
     return { ok: true, data: result.content }
   } catch (err) {
     if (err instanceof AxiosError && err.response?.status === 403) {
-      return { ok: false, err: 'no-contract-in-area-or-property' }
+      return {
+        ok: false,
+        err: 'no-contract-in-area-or-property',
+        statusCode: 403,
+      }
     } else {
-      return { ok: false, err: 'unknown' }
+      return { ok: false, err: 'unknown', statusCode: 500 }
     }
   }
 }
@@ -156,9 +163,13 @@ const validateResidentialAreaRentalRules = async (
     return { ok: true, data: result.content }
   } catch (err) {
     if (err instanceof AxiosError && err.response?.status === 403) {
-      return { ok: false, err: 'no-contract-in-area-or-property' }
+      return {
+        ok: false,
+        err: 'no-contract-in-area-or-property',
+        statusCode: 403,
+      }
     } else {
-      return { ok: false, err: 'unknown' }
+      return { ok: false, err: 'unknown', statusCode: 500 }
     }
   }
 }
@@ -189,9 +200,10 @@ const createNoteOfInterestForInternalParkingSpace = async (params: {
       return {
         ok: false,
         err: CreateNoteOfInterestErrorCodes.InternalCreditCheckFailed,
+        statusCode: 400,
       }
     }
-    return { ok: false, err: 'unknown' }
+    return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
 
@@ -207,7 +219,7 @@ const createOffer = async (params: {
 
     return { ok: true, data: response.data.content }
   } catch (err) {
-    return { ok: false, err }
+    return { ok: false, err, statusCode: 500 }
   }
 }
 
@@ -224,7 +236,7 @@ const syncInternalParkingSpacesFromXpand = async (): Promise<
 
     return { ok: true, data: response.data.content }
   } catch (err) {
-    return { ok: false, err: 'unknown' }
+    return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
 
@@ -243,17 +255,17 @@ const deleteListing = async (
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.status === 409) {
-        return { ok: false, err: 'conflict' }
+        return { ok: false, err: 'conflict', statusCode: 409 }
       }
     }
 
-    return { ok: false, err: 'unknown' }
+    return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
 
 const acceptOffer = async (
   offerId: string
-): Promise<AdapterResult<Array<Listing>, 'unknown'>> => {
+): Promise<AdapterResult<Array<Listing>, ReplyToOfferErrorCodes>> => {
   try {
     const url = `${coreBaseUrl}/offers/${offerId}/accept`
     const response = await getFromCore({
@@ -263,10 +275,97 @@ const acceptOffer = async (
 
     return { ok: true, data: response.data.content }
   } catch (err) {
-    //todo: map to errorCodes
-    return { ok: false, err: 'unknown' }
+    if (
+      err instanceof AxiosError &&
+      err.response?.status &&
+      err.response.data.content.errorCode
+    ) {
+      return {
+        ok: false,
+        err: err.response.data.content.errorCode,
+        statusCode: err.response.status,
+      }
+    } else {
+      return { ok: false, err: ReplyToOfferErrorCodes.Unknown, statusCode: 500 }
+    }
   }
 }
+
+// const acceptOffer = async (
+//   offerId: string
+// ): Promise<AdapterResult<Array<Listing>, ReplyToOfferErrorCodes>> => {
+//   try {
+//     const url = `${coreBaseUrl}/offers/${offerId}/accept`
+//     const response = await getFromCore({
+//       method: 'post',
+//       url: url,
+//     })
+//
+//     return { ok: true, data: response.data.content }
+//   } catch (err) {
+//     console.log('errrrrr')
+//
+//     if (
+//       err instanceof AxiosError &&
+//       err.response?.status &&
+//       err.response.data.errorCode
+//     ) {
+//       console.log('hitting')
+//       console.log('err.response.status: ', err.response.status)
+//       console.log(
+//         'err.response.data.content.errorCode: ',
+//         err.response.data.content.errorCode
+//       )
+//     }
+//     if (
+//       err instanceof AxiosError &&
+//       err.response?.status === HttpStatusCode.NotFound &&
+//       err.response.data.content.errorCode === ReplyToOfferErrorCodes.NoOffer
+//     ) {
+//       return {
+//         ok: false,
+//         err: ReplyToOfferErrorCodes.NoOffer,
+//       }
+//     }
+//
+//     if (
+//       err instanceof AxiosError &&
+//       err.response?.status === HttpStatusCode.NotFound &&
+//       err.response.data.content.errorCode === ReplyToOfferErrorCodes.NoListing
+//     ) {
+//       return {
+//         ok: false,
+//         err: ReplyToOfferErrorCodes.NoListing,
+//       }
+//     }
+//
+//     if (
+//       err instanceof AxiosError &&
+//       err.response?.status === HttpStatusCode.NotFound &&
+//       err.response.data.content.errorCode ===
+//         ReplyToOfferErrorCodes.NoActiveOffer
+//     ) {
+//       return {
+//         ok: false,
+//         err: ReplyToOfferErrorCodes.NoListing,
+//       }
+//     }
+//
+//     if (
+//       err instanceof AxiosError &&
+//       err.response?.status === HttpStatusCode.BadRequest &&
+//       err.response.data.content.errorCode ===
+//         ReplyToOfferErrorCodes.CreateLeaseFailure
+//     ) {
+//       return {
+//         ok: false,
+//         err: ReplyToOfferErrorCodes.CreateLeaseFailure,
+//       }
+//     } else {
+//       return { ok: false, err: ReplyToOfferErrorCodes.Unknown }
+//     }
+//   }
+// }
 
 const denyOffer = async (
   offerId: string
@@ -280,8 +379,19 @@ const denyOffer = async (
 
     return { ok: true, data: response.data.content }
   } catch (err) {
-    //todo: map to errorCodes
-    return { ok: false, err: 'unknown' }
+    if (
+      err instanceof AxiosError &&
+      err.response?.status &&
+      err.response.data.content.errorCode
+    ) {
+      return {
+        ok: false,
+        err: err.response.data.content.errorCode,
+        statusCode: err.response.status,
+      }
+    } else {
+      return { ok: false, err: ReplyToOfferErrorCodes.Unknown, statusCode: 500 }
+    }
   }
 }
 
