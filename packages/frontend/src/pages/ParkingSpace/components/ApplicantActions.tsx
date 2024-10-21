@@ -16,7 +16,7 @@ export interface Props {
   disabled: boolean
 }
 
-export const RemoveApplicantFromListing = (props: Props) => {
+export const ApplicantActions = (props: Props) => {
   const removeListing = useRemoveApplicantFromListing()
   const [open, setOpen] = useState(false)
 

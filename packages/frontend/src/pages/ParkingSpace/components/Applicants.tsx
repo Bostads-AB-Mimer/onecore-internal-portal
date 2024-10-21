@@ -4,7 +4,7 @@ import { ApplicantStatus, LeaseStatus } from 'onecore-types'
 
 import { DataGridTable } from '../../../components'
 import { useParkingSpaceListing } from '../hooks/useParkingSpaceListing'
-import { RemoveApplicantFromListing } from './RemoveApplicantFromListing'
+import { ApplicantActions } from './ApplicantActions'
 
 const sharedProps = {
   editable: false,
@@ -159,7 +159,7 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
         }
 
         return (
-          <RemoveApplicantFromListing
+          <ApplicantActions
             disabled={v.row.status !== ApplicantStatus.Active}
             listingId={listingId}
             applicantId={v.row.id}

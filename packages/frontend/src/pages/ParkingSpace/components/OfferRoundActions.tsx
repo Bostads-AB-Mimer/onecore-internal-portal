@@ -18,7 +18,7 @@ export interface Props {
   disabled: boolean
 }
 
-export const ReplyToOffer = (props: Props) => {
+export const OfferRoundActions = (props: Props) => {
   const replyYes = useAcceptOffer()
   const replyNo = useDenyOffer()
   const [replyYesOpen, setReplyYesOpen] = useState(false)
@@ -110,7 +110,6 @@ export const ReplyToOffer = (props: Props) => {
         submitButtonText="Bekfräfta tacka ja"
         isPending={replyYes.isPending}
       />
-
       <ActionDialog
         open={replyNoOpen}
         onClose={() => setReplyNoOpen(false)}
