@@ -340,16 +340,19 @@ const denyOffer = async (
 
 const getActiveOfferByListingId = async (
   listingId: number
-): Promise<AdapterResult<Offer | null, unknown>> => {
+): Promise<AdapterResult<Offer | null, 'not-found' | 'unknown'>> => {
   try {
-    const result = await getFromCore<{ content: Offer | null }>({
+    const result = await getFromCore<{ content: Offer }>({
       method: 'get',
       url: `${coreBaseUrl}/offers/listing-id/${listingId}/active`,
     }).then((res) => res.data)
 
     return { ok: true, data: result.content }
   } catch (err) {
-    return { ok: false, err, statusCode: 500 }
+    if (err instanceof AxiosError && err.response?.status === 404) {
+      return { ok: false, err: 'not-found', statusCode: 404 }
+    }
+    return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
 
