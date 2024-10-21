@@ -279,11 +279,11 @@ const acceptOffer = async (
     if (
       err instanceof AxiosError &&
       err.response?.status &&
-      err.response.data.error.errorCode
+      err.response.data.error
     ) {
       return {
         ok: false,
-        err: err.response.data.error.errorCode,
+        err: err.response.data.error,
         statusCode: err.response.status,
       }
     } else {
@@ -307,11 +307,11 @@ const denyOffer = async (
     if (
       err instanceof AxiosError &&
       err.response?.status &&
-      err.response.data.error.errorCode
+      err.response.data.error
     ) {
       return {
         ok: false,
-        err: err.response.data.error.errorCode,
+        err: err.response.data.error,
         statusCode: err.response.status,
       }
     } else {
