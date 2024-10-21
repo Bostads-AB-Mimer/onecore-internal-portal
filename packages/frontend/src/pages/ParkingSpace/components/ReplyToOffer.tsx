@@ -9,22 +9,13 @@ import { useDenyOffer } from '../hooks/useDenyOffer'
 import { ActionDialog } from './ActionDialog'
 import { PopupMenuItem } from './PopupMenuItem'
 import { RequestError } from '../../../types'
+import { ReplyToOfferErrorCodes } from 'onecore-types'
 
 export interface Props {
   offerId: number
   listingId: number
   applicantName: string
   disabled: boolean
-}
-
-//todo: move to types
-enum AcceptOfferErrorCodes {
-  InternalError = 'internal-error',
-}
-
-// TODO: move to types
-enum DenyOfferErrorCodes {
-  InternalError = 'internal-error',
 }
 
 export const ReplyToOffer = (props: Props) => {
@@ -42,7 +33,7 @@ export const ReplyToOffer = (props: Props) => {
           hideProgressBar: true,
         })
       },
-      onError: (error: RequestError<AcceptOfferErrorCodes>) => {
+      onError: (error: RequestError<ReplyToOfferErrorCodes>) => {
         setReplyYesOpen(false)
         toast(error.errorMessage, {
           type: 'error',
@@ -60,7 +51,7 @@ export const ReplyToOffer = (props: Props) => {
           hideProgressBar: true,
         })
       },
-      onError: (error: RequestError<DenyOfferErrorCodes>) => {
+      onError: (error: RequestError<ReplyToOfferErrorCodes>) => {
         setReplyNoOpen(false)
         toast(error.errorMessage, {
           type: 'error',
