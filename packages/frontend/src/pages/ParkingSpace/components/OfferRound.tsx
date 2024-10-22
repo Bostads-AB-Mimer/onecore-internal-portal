@@ -82,12 +82,6 @@ export const OfferRound = (props: {
       renderCell: (v) => <Chip label={v.formattedValue} />,
     },
     {
-      field: 'statusResponse',
-      headerName: 'Svar erbjudande',
-      renderCell: (v) => formatApplicantStatusResponse(v.row.status),
-      ...sharedProps,
-    },
-    {
       field: 'expiresAt',
       headerName: 'Svara senast',
       valueFormatter: (v) =>
@@ -168,20 +162,6 @@ const applicantStatusFormatMap: Record<ApplicantStatus, string> = {
 
 const formatApplicantStatus = (v: ApplicantStatus) =>
   applicantStatusFormatMap[v]
-
-const applicantStatusResponseMap: Record<ApplicantStatus, string> = {
-  [ApplicantStatus.Active]: '',
-  [ApplicantStatus.Assigned]: '',
-  [ApplicantStatus.AssignedToOther]: '',
-  [ApplicantStatus.WithdrawnByUser]: '',
-  [ApplicantStatus.WithdrawnByManager]: '',
-  [ApplicantStatus.Offered]: 'Inväntar svar',
-  [ApplicantStatus.OfferAccepted]: 'Ja',
-  [ApplicantStatus.OfferDeclined]: 'Nej',
-  [ApplicantStatus.OfferExpired]: 'Nej',
-}
-const formatApplicantStatusResponse = (v: ApplicantStatus) =>
-  applicantStatusResponseMap[v] || ''
 
 const leaseStatusFormatMap: Record<LeaseStatus, string> = {
   [LeaseStatus.Current]: 'Aktivt',

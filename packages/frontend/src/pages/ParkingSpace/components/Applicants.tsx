@@ -125,7 +125,7 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
     {
       field: 'statusResponse',
       headerName: 'Svar erbjudande',
-      renderCell: (v) => formatApplicantStatusResponse(v.row.status), // Different logic for rendering the same data
+      renderCell: (v) => formatApplicantStatusResponse(v.row.status),
       ...sharedProps,
     },
     {
