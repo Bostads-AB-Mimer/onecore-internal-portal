@@ -36,10 +36,16 @@ const ParkingSpace = () => {
 }
 
 const ParkingSpaceTabs = (props: { listingId: number }) => {
-  const [selectedTab, setSelectedTab] = useState('1')
   const { data } = useParkingSpaceListing({
     id: props.listingId,
   })
+
+  let initialTab = '1'
+  if (data.status === ListingStatus.Assigned && data.offers.length > 0) {
+    initialTab = String(data.offers[0].id)
+  }
+
+  const [selectedTab, setSelectedTab] = useState(initialTab)
 
   const handleChange = (_e: React.SyntheticEvent, tab: string) =>
     setSelectedTab(tab)
@@ -82,9 +88,10 @@ const ParkingSpaceTabs = (props: { listingId: number }) => {
         </Typography>
         <Chip label={formatStatus(data)} sx={{ marginY: 'auto' }}></Chip>
       </Box>
-
       <Tabs onChange={handleChange}>
-        <Tab disableRipple label="Alla sökande" value="1" />
+        {data.status !== ListingStatus.Assigned && (
+          <Tab disableRipple label="Alla sökande" value="1" />
+        )}
         {data.offers.map((offer, i) => (
           <Tab
             key={offer.id}
