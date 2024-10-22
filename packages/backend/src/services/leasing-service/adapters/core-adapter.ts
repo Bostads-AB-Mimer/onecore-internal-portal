@@ -2,6 +2,7 @@ import {
   Contact,
   CreateNoteOfInterestErrorCodes,
   DetailedApplicant,
+  GetActiveOfferByListingIdErrorCodes,
   InternalParkingSpaceSyncSuccessResponse,
   Listing,
   Offer,
@@ -23,7 +24,7 @@ type AdapterResult<T, E> =
 const getListingsWithApplicants = async (
   querystring: string
 ): Promise<
-  AdapterResult<Array<Listing | (Listing & { offer: Offer | null })>, 'unknown'>
+  AdapterResult<Array<Listing | (Listing & { offer: Offer })>, 'unknown'>
 > => {
   try {
     const url = `${coreBaseUrl}/listings-with-applicants?${querystring}`
@@ -340,7 +341,7 @@ const denyOffer = async (
 
 const getActiveOfferByListingId = async (
   listingId: number
-): Promise<AdapterResult<Offer | null, 'not-found' | 'unknown'>> => {
+): Promise<AdapterResult<Offer, GetActiveOfferByListingIdErrorCodes>> => {
   try {
     const result = await getFromCore<{ content: Offer }>({
       method: 'get',
@@ -349,10 +350,27 @@ const getActiveOfferByListingId = async (
 
     return { ok: true, data: result.content }
   } catch (err) {
-    if (err instanceof AxiosError && err.response?.status === 404) {
-      return { ok: false, err: 'not-found', statusCode: 404 }
+    if (!(err instanceof AxiosError)) {
+      return {
+        ok: false,
+        err: GetActiveOfferByListingIdErrorCodes.Unknown,
+        statusCode: 500,
+      }
     }
-    return { ok: false, err: 'unknown', statusCode: 500 }
+
+    if (err.response?.status === 404) {
+      return {
+        ok: false,
+        err: GetActiveOfferByListingIdErrorCodes.NotFound,
+        statusCode: 404,
+      }
+    } else {
+      return {
+        ok: false,
+        err: GetActiveOfferByListingIdErrorCodes.Unknown,
+        statusCode: 500,
+      }
+    }
   }
 }
 
