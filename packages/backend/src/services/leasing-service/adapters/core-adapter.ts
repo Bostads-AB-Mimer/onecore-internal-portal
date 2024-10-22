@@ -14,7 +14,6 @@ import { AxiosError, HttpStatusCode } from 'axios'
 
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
-import { logger } from 'onecore-utilities'
 
 const coreBaseUrl = Config.core.url
 
