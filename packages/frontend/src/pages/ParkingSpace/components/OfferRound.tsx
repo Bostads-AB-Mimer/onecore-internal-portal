@@ -75,16 +75,16 @@ export const OfferRound = (props: {
     },
     {
       field: 'status',
-      headerName: 'Status ansökan',
+      headerName: 'Status sökande',
       ...sharedProps,
       flex: 1.25,
       valueFormatter: (v) => formatApplicantStatus(v.value),
       renderCell: (v) => <Chip label={v.formattedValue} />,
     },
     {
-      field: 'statusResponse', // A unique field key that refers to the same `status` field
-      headerName: 'Svar erbj.',
-      renderCell: (v) => formatApplicantStatusResponse(v.row.status), // Different logic for rendering the same data
+      field: 'statusResponse',
+      headerName: 'Svar erbjudande',
+      renderCell: (v) => formatApplicantStatusResponse(v.row.status),
       ...sharedProps,
     },
     {

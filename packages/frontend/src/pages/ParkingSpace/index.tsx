@@ -2,7 +2,7 @@ import { Box, Chip, Typography } from '@mui/material'
 import { Suspense, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { TabContext, TabPanel } from '@mui/lab'
-import { ApplicantStatus, ListingStatus, OfferStatus } from 'onecore-types'
+import { ListingStatus, OfferStatus } from 'onecore-types'
 
 import { PageGoBackTo, Tab, Tabs } from '../../components'
 import {
@@ -44,38 +44,25 @@ const ParkingSpaceTabs = (props: { listingId: number }) => {
   const handleChange = (_e: React.SyntheticEvent, tab: string) =>
     setSelectedTab(tab)
 
+  //todo: decide on copy for these
   const listingFormatMap: Record<ListingStatus, string> = {
     [ListingStatus.Active]: 'Publicerad',
     [ListingStatus.Assigned]: 'Tilldelad',
     [ListingStatus.Deleted]: 'Borttagen',
-    //todo: what is the translation here?
-    //todo: the listing will be in the "Klara för erbjudande" tab
-    //todo: when an offer exists offerFormatMap will be used instead
     [ListingStatus.Expired]: 'Klar för erbjudande',
   }
 
+  //todo: decide on copy for these
   const offerFormatMap: Record<OfferStatus, string> = {
-    [OfferStatus.Active]: 'Aktiv',
+    [OfferStatus.Active]: 'Erbjudande',
     [OfferStatus.Accepted]: 'Tilldelad / kontrakterad',
     [OfferStatus.Declined]: 'Nekad',
     [OfferStatus.Expired]: 'Utgången',
   }
 
-  //todo do we need to be this granular?
-  const applicantStatusFormatMap: Record<ApplicantStatus, string> = {
-    [ApplicantStatus.Active]: '',
-    [ApplicantStatus.Assigned]: '',
-    [ApplicantStatus.AssignedToOther]: '',
-    [ApplicantStatus.WithdrawnByUser]: '',
-    [ApplicantStatus.WithdrawnByManager]: '',
-    [ApplicantStatus.Offered]: '',
-    [ApplicantStatus.OfferAccepted]: '',
-    [ApplicantStatus.OfferDeclined]: '',
-    [ApplicantStatus.OfferExpired]: '',
-  }
-
   const formatStatus = (v: any) => {
     console.log(data)
+    //if offers exists, the latest offer status is the overall status
     if (data.offers.length > 0) {
       return offerFormatMap[data.offers[data.offers.length - 1].status]
     }
