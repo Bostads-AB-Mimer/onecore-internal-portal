@@ -14,6 +14,7 @@ import { AxiosError, HttpStatusCode } from 'axios'
 
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
+import { logger } from 'onecore-utilities'
 
 const coreBaseUrl = Config.core.url
 
@@ -50,6 +51,7 @@ const getListingsWithApplicants = async (
 
     return { ok: true, data: withOffers }
   } catch (err) {
+    console.log(err, 'getListingsWithApplicants')
     return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
