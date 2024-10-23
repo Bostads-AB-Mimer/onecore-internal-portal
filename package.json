@@ -1,6 +1,6 @@
 {
   "name": "onecore-internal-portal",
-  "version": "1.0.65",
+  "version": "1.0.66",
   "description": "Coworker web portal",
   "main": "index.js",
   "scripts": {
