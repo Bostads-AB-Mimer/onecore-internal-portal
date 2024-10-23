@@ -50,7 +50,6 @@ const getListingsWithApplicants = async (
 
     return { ok: true, data: withOffers }
   } catch (err) {
-    console.log(err, 'getListingsWithApplicants')
     return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
