@@ -15,12 +15,33 @@ export const OfferRound = (props: {
   applicants: Array<OfferApplicant>
   offer: Offer
 }) => {
+  const columns = getColumns(props.offer.expiresAt)
+
+  return (
+    <>
+      <DataGridTable
+        columns={columns}
+        rows={props.applicants}
+        getRowId={(row) => row.id}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
+        rowHeight={72}
+        disableRowSelectionOnClick
+        autoHeight
+      />
+    </>
+  )
+}
+
+const getColumns = (expiresAt: Date): Array<GridColDef> => {
   const sharedProps = {
     editable: false,
     flex: 1,
   }
 
-  const columns: GridColDef[] = [
+  return [
     {
       field: 'name',
       headerName: 'Namn',
@@ -84,8 +105,7 @@ export const OfferRound = (props: {
     {
       field: 'expiresAt',
       headerName: 'Svara senast',
-      valueFormatter: (v) =>
-        dateFormatter.format(new Date(props.offer.expiresAt)),
+      valueFormatter: (v) => dateFormatter.format(new Date(expiresAt)),
     },
     {
       field: 'applicationType',
@@ -127,23 +147,6 @@ export const OfferRound = (props: {
       },
     },
   ]
-
-  return (
-    <>
-      <DataGridTable
-        columns={columns as any}
-        rows={props.applicants}
-        getRowId={(row) => row.id}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } },
-        }}
-        pageSizeOptions={[5, 10, 25]}
-        rowHeight={72}
-        disableRowSelectionOnClick
-        autoHeight
-      />
-    </>
-  )
 }
 
 const dateFormatter = new Intl.DateTimeFormat('sv-SE', { timeZone: 'UTC' })

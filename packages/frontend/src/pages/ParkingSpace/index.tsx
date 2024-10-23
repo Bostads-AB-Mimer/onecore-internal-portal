@@ -2,7 +2,7 @@ import { Box, Chip, Typography } from '@mui/material'
 import { Suspense, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { TabContext, TabPanel } from '@mui/lab'
-import { ListingStatus, OfferStatus } from 'onecore-types'
+import { ListingStatus, Offer, OfferStatus } from 'onecore-types'
 
 import { PageGoBackTo, Tab, Tabs } from '../../components'
 import {
@@ -40,40 +40,15 @@ const ParkingSpaceTabs = (props: { listingId: number }) => {
     id: props.listingId,
   })
 
-  let initialTab = '1'
-  if (data.status === ListingStatus.Assigned && data.offers.length > 0) {
-    initialTab = String(data.offers[0].id)
-  }
-
-  const [selectedTab, setSelectedTab] = useState(initialTab)
+  const [selectedTab, setSelectedTab] = useState(() => {
+    if (data.status === ListingStatus.Assigned && data.offers.length > 0) {
+      return String(data.offers[0].id)
+    }
+    return '1'
+  })
 
   const handleChange = (_e: React.SyntheticEvent, tab: string) =>
     setSelectedTab(tab)
-
-  //todo: decide on copy for these
-  const listingFormatMap: Record<ListingStatus, string> = {
-    [ListingStatus.Active]: 'Publicerad',
-    [ListingStatus.Assigned]: 'Tilldelad',
-    [ListingStatus.Deleted]: 'Borttagen',
-    [ListingStatus.Expired]: 'Klar för erbjudande',
-  }
-
-  //todo: decide on copy for these
-  const offerFormatMap: Record<OfferStatus, string> = {
-    [OfferStatus.Active]: 'Erbjudande',
-    [OfferStatus.Accepted]: 'Tilldelad / kontrakterad',
-    [OfferStatus.Declined]: 'Nekad',
-    [OfferStatus.Expired]: 'Utgången',
-  }
-
-  const formatStatus = (v: any) => {
-    console.log(data)
-    //if offers exists, the latest offer status is the overall status
-    if (data.offers.length > 0) {
-      return offerFormatMap[data.offers[data.offers.length - 1].status]
-    }
-    return listingFormatMap[data.status]
-  }
 
   return (
     <TabContext value={selectedTab}>
@@ -86,7 +61,10 @@ const ParkingSpaceTabs = (props: { listingId: number }) => {
         <Typography paddingBottom="0.5rem" marginRight="1rem" variant="h1">
           <span>Intresseanmälningar {data.address}</span>
         </Typography>
-        <Chip label={formatStatus(data)} sx={{ marginY: 'auto' }}></Chip>
+        <Chip
+          label={formatStatus(data.offers, data.status)}
+          sx={{ marginY: 'auto' }}
+        ></Chip>
       </Box>
       <Tabs onChange={handleChange}>
         {data.status !== ListingStatus.Assigned && (
@@ -119,4 +97,27 @@ const ParkingSpaceTabs = (props: { listingId: number }) => {
     </TabContext>
   )
 }
+
+const listingFormatMap: Record<ListingStatus, string> = {
+  [ListingStatus.Active]: 'Publicerad',
+  [ListingStatus.Assigned]: 'Tilldelad',
+  [ListingStatus.Deleted]: 'Borttagen',
+  [ListingStatus.Expired]: 'Klar för erbjudande',
+}
+
+const offerFormatMap: Record<OfferStatus, string> = {
+  [OfferStatus.Active]: 'Erbjudande',
+  [OfferStatus.Accepted]: 'Tilldelad / kontrakterad',
+  [OfferStatus.Declined]: 'Nekad',
+  [OfferStatus.Expired]: 'Utgången',
+}
+
+const formatStatus = (offers: Offer[], listingStatus: ListingStatus) => {
+  //if offers exists, the latest offer status is the overall status
+  if (offers.length > 0) {
+    return offerFormatMap[offers[offers.length - 1].status]
+  }
+  return listingFormatMap[listingStatus]
+}
+
 export default ParkingSpace
