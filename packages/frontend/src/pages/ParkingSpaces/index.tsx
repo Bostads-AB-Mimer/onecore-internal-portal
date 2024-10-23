@@ -82,6 +82,11 @@ const ParkingSpaces = () => {
           />
           <Tab disableRipple label="Erbjudna" value="offered" />
           <Tab disableRipple label="Historik" value="historical" />
+          <Tab
+            disableRipple
+            label="Behov av publicering"
+            value="needs-republish"
+          />
         </Tabs>
         <Box paddingTop="1rem">
           <TabPanel value="published" sx={{ padding: 0 }}>
@@ -114,6 +119,14 @@ const ParkingSpaces = () => {
               rows={filterListings(parkingSpaces.data ?? [], searchString)}
               loading={parkingSpaces.status === 'pending'}
               key="historical"
+            />
+          </TabPanel>
+          <TabPanel value="needs-republish" sx={{ padding: 0 }}>
+            <Listings
+              columns={getColumns(dateFormatter, numberFormatter)}
+              rows={filterListings(parkingSpaces.data ?? [], searchString)}
+              loading={parkingSpaces.status === 'pending'}
+              key="needs-republish"
             />
           </TabPanel>
         </Box>
