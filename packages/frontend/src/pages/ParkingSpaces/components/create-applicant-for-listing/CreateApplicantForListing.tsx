@@ -159,6 +159,11 @@ export const CreateApplicantForListing = (props: Props) => {
                       <ContactInfo tenant={tenantQuery.data?.tenant ?? null} />
                     )}
                     {tenantQuery.isLoading && <ContactInfoLoading />}
+                    {tenantQuery.error && (
+                      <Typography color="error">
+                        Något gick fel. Kontakta support.
+                      </Typography>
+                    )}
                     <Box>
                       <Divider />
                     </Box>
