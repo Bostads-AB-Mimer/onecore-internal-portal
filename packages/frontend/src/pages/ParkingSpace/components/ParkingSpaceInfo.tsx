@@ -54,9 +54,14 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
           justifyContent: 'space-between',
           gap: '4rem',
           height: '21rem',
+          '@media (max-width: 62.5rem)': {
+            flexDirection: 'column',
+            gap: '2rem',
+            height: 'auto',
+          },
         }}
       >
-        <Box flex="0.25" paddingX="1rem">
+        <Box flex="0.25" paddingX="1rem" sx={{ minWidth: '400px' }}>
           <Box display="flex" justifyContent="space-between" flex="1">
             <Typography>Bilplats</Typography>
             <Box>
@@ -131,7 +136,6 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
           flex="1"
           sx={{
             width: '100%',
-            height: '100%',
             cursor: 'pointer',
           }}
           onClick={() =>
@@ -146,7 +150,9 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
             src={getMapImageUrl(parkingSpaceListing.rentalObjectCode)}
             alt="parking space map image"
             sx={{
-              height: '100%',
+              objectFit: 'contain',
+              maxWidth: '100%',
+              maxHeight: '100%',
             }}
           />
         </Box>
