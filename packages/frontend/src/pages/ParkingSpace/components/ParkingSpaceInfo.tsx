@@ -48,7 +48,14 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" gap="4rem">
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: '4rem',
+          height: '21rem',
+        }}
+      >
         <Box flex="0.25" paddingX="1rem">
           <Box display="flex" justifyContent="space-between" flex="1">
             <Typography>Bilplats</Typography>
@@ -123,7 +130,8 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
         <Box
           flex="1"
           sx={{
-            height: '24rem',
+            width: '100%',
+            height: '100%',
             cursor: 'pointer',
           }}
           onClick={() =>
