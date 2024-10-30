@@ -8,6 +8,7 @@ import {
   IconButton,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import { LoadingButton } from '@mui/lab'
 
 interface ReplyDialogProps {
   open: boolean
@@ -64,9 +65,13 @@ export const ActionDialog = ({
             >
               Avbryt
             </Button>
-            <Button variant="dark" onClick={onConfirm} disabled={isPending}>
+            <LoadingButton
+              variant="dark"
+              onClick={onConfirm}
+              loading={isPending}
+            >
               {submitButtonText}
-            </Button>
+            </LoadingButton>
           </Box>
         </DialogContent>
       </Box>
