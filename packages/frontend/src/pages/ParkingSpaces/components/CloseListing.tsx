@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { toast } from 'react-toastify'
 
 import { useCloseParkingSpaceListing } from '../hooks/useCloseParkingSpaceListing'
@@ -28,17 +28,6 @@ export const CloseListing = (props: { listingId: number }) => {
       }
     )
 
-  // {closeListing.error && (
-  // <Typography
-  // color="error"
-  // textAlign="center"
-  // paddingTop="1rem"
-  // paddingBottom="2rem"
-  // >
-  // Något gick fel. Kontakta support.
-  // </Typography>
-  // )}
-
   return (
     <>
       <Button variant="dark" onClick={() => setOpen(true)}>
@@ -52,6 +41,18 @@ export const CloseListing = (props: { listingId: number }) => {
         content="Bekräfta att du publicerat denna bilplats i Xpand"
         submitButtonText="Bekräfta"
         isPending={closeListing.isPending}
+        error={
+          closeListing.error ? (
+            <Typography
+              color="error"
+              textAlign="center"
+              paddingTop="1rem"
+              paddingBottom="2rem"
+            >
+              Något gick fel. Kontakta support.
+            </Typography>
+          ) : undefined
+        }
       />
     </>
   )
