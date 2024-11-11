@@ -38,7 +38,7 @@ export const OfferRound = (props: {
           },
         }}
         getRowClassName={(params) =>
-          params.row.priority === undefined ? 'opaque-row' : ''
+          params.row.priority == null ? 'opaque-row' : ''
         }
       />
     </>
