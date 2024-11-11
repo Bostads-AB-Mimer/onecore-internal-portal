@@ -32,17 +32,17 @@ const CONFIG: Partial<session.opts<DefaultState, DefaultContext, any>> = {
 
 app.use(session(CONFIG, app))
 
-app.use(async (ctx, next) => {
-  if (ctx.request.path.match('(.*)/auth/')) {
-    return next()
-  } else {
-    if (!ctx.session?.isAuthenticated) {
-      ctx.status = 401
-    } else {
-      return next()
-    }
-  }
-})
+// app.use(async (ctx, next) => {
+//   if (ctx.request.path.match('(.*)/auth/')) {
+//     return next()
+//   } else {
+//     // if (!ctx.session?.isAuthenticated) {
+//     //   ctx.status = 401
+//     // } else {
+//     //   return next()
+//     // }
+//   }
+// })
 
 app.use(cors({ credentials: true }))
 
