@@ -41,17 +41,9 @@ const ParkingSpaceTabs = (props: { listingId: number }) => {
   return (
     <>
       {!data.offers.length ? (
-        <AllApplicantsTabContext
-          listing={data}
-          offers={data.offers}
-          status={data.status}
-        />
+        <AllApplicantsTabContext listing={data} />
       ) : (
-        <OffersTabContext
-          listing={data}
-          offers={data.offers}
-          status={data.status}
-        />
+        <OffersTabContext listing={data} offers={data.offers} />
       )}
     </>
   )

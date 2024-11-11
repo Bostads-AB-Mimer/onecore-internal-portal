@@ -1,22 +1,19 @@
 import { Box, Chip, Typography } from '@mui/material'
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import { TabContext, TabPanel } from '@mui/lab'
 import {
   Listing,
-  ListingStatus,
   Offer,
   OfferStatus,
   OfferWithOfferApplicants,
 } from 'onecore-types'
 
-import { Applicants } from './Applicants'
 import { OfferRound } from './OfferRound'
 import { Tab, Tabs } from '../../../components'
 
 const OffersTabContext = (props: {
   listing: Listing
   offers: OfferWithOfferApplicants[]
-  status: ListingStatus
 }) => {
   const [selectedTab, setSelectedTab] = useState(() => {
     if (props.offers && props.offers.length > 0) {
@@ -40,7 +37,7 @@ const OffersTabContext = (props: {
           <span>Intresseanmälningar {props.listing.address}</span>
         </Typography>
         <Chip
-          label={formatStatus(props.offers, props.status)}
+          label={formatStatus(props.offers)}
           sx={{ marginY: 'auto' }}
         ></Chip>
       </Box>
@@ -70,14 +67,6 @@ const OffersTabContext = (props: {
   )
 }
 
-const listingFormatMap: Record<ListingStatus, string> = {
-  [ListingStatus.Active]: 'Publicerad',
-  [ListingStatus.Assigned]: 'Tilldelad',
-  [ListingStatus.Closed]: 'Stängd',
-  [ListingStatus.NoApplicants]: 'Inga sökande',
-  [ListingStatus.Expired]: 'Klar för erbjudande',
-}
-
 const offerFormatMap: Record<OfferStatus, string> = {
   [OfferStatus.Active]: 'Erbjudande',
   [OfferStatus.Accepted]: 'Tilldelad / kontrakterad',
@@ -85,12 +74,8 @@ const offerFormatMap: Record<OfferStatus, string> = {
   [OfferStatus.Expired]: 'Utgången',
 }
 
-const formatStatus = (offers: Offer[], listingStatus: ListingStatus) => {
-  //if offers exists, the latest offer status is the overall status
-  if (offers.length > 0) {
-    return offerFormatMap[offers[offers.length - 1].status]
-  }
-  return listingFormatMap[listingStatus]
+const formatStatus = (offers: Offer[]) => {
+  return offerFormatMap[offers[offers.length - 1].status]
 }
 
 export default OffersTabContext

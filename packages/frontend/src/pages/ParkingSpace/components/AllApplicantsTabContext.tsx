@@ -1,22 +1,11 @@
 import { Box, Chip, Typography } from '@mui/material'
-
 import { TabContext, TabPanel } from '@mui/lab'
-import {
-  Listing,
-  ListingStatus,
-  Offer,
-  OfferStatus,
-  OfferWithOfferApplicants,
-} from 'onecore-types'
+import { Listing, ListingStatus } from 'onecore-types'
 
 import { Tab, Tabs } from '../../../components'
 import { Applicants } from './Applicants'
 
-const AllApplicantsTabContext = (props: {
-  listing: Listing
-  offers: OfferWithOfferApplicants[]
-  status: ListingStatus
-}) => {
+const AllApplicantsTabContext = (props: { listing: Listing }) => {
   return (
     <TabContext value={'1'}>
       <Box
@@ -29,7 +18,7 @@ const AllApplicantsTabContext = (props: {
           <span>Intresseanmälningar {props.listing.address}</span>
         </Typography>
         <Chip
-          label={formatStatus(props.offers, props.status)}
+          label={formatStatus(props.listing.status)}
           sx={{ marginY: 'auto' }}
         ></Chip>
       </Box>
@@ -53,18 +42,7 @@ const listingFormatMap: Record<ListingStatus, string> = {
   [ListingStatus.Expired]: 'Klar för erbjudande',
 }
 
-const offerFormatMap: Record<OfferStatus, string> = {
-  [OfferStatus.Active]: 'Erbjudande',
-  [OfferStatus.Accepted]: 'Tilldelad / kontrakterad',
-  [OfferStatus.Declined]: 'Nekad',
-  [OfferStatus.Expired]: 'Utgången',
-}
-
-const formatStatus = (offers: Offer[], listingStatus: ListingStatus) => {
-  //if offers exists, the latest offer status is the overall status
-  if (offers.length > 0) {
-    return offerFormatMap[offers[offers.length - 1].status]
-  }
+const formatStatus = (listingStatus: ListingStatus) => {
   return listingFormatMap[listingStatus]
 }
 
