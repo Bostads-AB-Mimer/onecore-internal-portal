@@ -13,6 +13,7 @@ docker-compose-local.yaml
 # Editors
 .vscode/*
 !.vscode/extensions.json
+/.idea/*
 
 # Logs
 logs
@@ -28,6 +29,4 @@ lerna-debug.log*
 .DS_Store
 Thumbs.db
 
-# Thumbnails
-packages/thumbnails/*
-!packages/thumbnails/README.md
+
