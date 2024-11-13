@@ -307,6 +307,7 @@ const Leases = (props: { leases: Lease[] }) => (
     initialState={{
       pagination: { paginationModel: { pageSize: 5 } },
     }}
+    pageSizeOptions={[5, 10, 25]}
     slots={{
       noRowsOverlay: () => (
         <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
