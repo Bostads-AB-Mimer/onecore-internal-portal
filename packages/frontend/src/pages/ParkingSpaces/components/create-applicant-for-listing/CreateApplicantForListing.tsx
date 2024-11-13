@@ -13,7 +13,7 @@ import {
   RadioGroup,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { CreateNoteOfInterestErrorCodes, Listing } from 'onecore-types'
+import { CreateNoteOfInterestErrorCodes, Listing, Tenant } from 'onecore-types'
 import { toast } from 'react-toastify'
 import { LoadingButton, TabContext, TabPanel } from '@mui/lab'
 
@@ -203,9 +203,15 @@ export const CreateApplicantForListing = (props: Props) => {
                     </Box>
                     <Box paddingX="0.5rem" paddingTop="0.5rem">
                       <Typography color="error">
-                        {translateValidationResult(
-                          tenantQuery.data.validationResult
+                        {renderWarningIfDistrictsMismatch(
+                          props.listing,
+                          tenantQuery?.data.tenant
                         )}
+                        <Box>
+                          {translateValidationResult(
+                            tenantQuery.data.validationResult
+                          )}
+                        </Box>
                       </Typography>
                     </Box>
                   </Box>
@@ -264,6 +270,21 @@ function translateValidationResult(
   }
 
   return translationMap[result]
+}
+
+function renderWarningIfDistrictsMismatch(listing: Listing, tenant: Tenant) {
+  if (
+    listing.districtCode != tenant.currentHousingContract?.residentialArea?.code
+  ) {
+    return (
+      <Box paddingBottom={'1rem'}>
+        {
+          'Observera att kunden saknar boendekontrakt i området för parkeringsplatsen'
+        }
+      </Box>
+    )
+  }
+  return null
 }
 
 const CreateApplicantError = (props: {
