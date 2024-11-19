@@ -11,13 +11,11 @@ import {
   Radio,
   FormControlLabel,
   RadioGroup,
-  Stack,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { CreateNoteOfInterestErrorCodes, Lease, Listing } from 'onecore-types'
+import { CreateNoteOfInterestErrorCodes, Listing, Tenant } from 'onecore-types'
 import { toast } from 'react-toastify'
 import { LoadingButton, TabContext, TabPanel } from '@mui/lab'
-import { GridColDef } from '@mui/x-data-grid'
 
 import {
   CreateNoteOfInterestRequestParams,
@@ -31,7 +29,7 @@ import {
   useTenantWithValidation,
 } from '../../hooks/useTenantWithValidation'
 import { ContactInfo } from './ContactInfo'
-import { DataGridTable, Tab, Tabs } from '../../../../components'
+import { Tab, Tabs } from '../../../../components'
 import { RequestError } from '../../../../types'
 import { ContactInfoLoading } from './ContactInfoLoading'
 
@@ -144,11 +142,11 @@ export const CreateApplicantForListing = (props: Props) => {
                       value="1"
                       sx={{ paddingLeft: 0 }}
                     />
-                    <Tab
-                      label={`Kontrakt (${leases.length})`}
-                      value="2"
-                      disableRipple
-                    />
+                    {/*<Tab*/}
+                    {/*  label={`Kontrakt (${leases.length})`}*/}
+                    {/*  value="2"*/}
+                    {/*  disableRipple*/}
+                    {/*/>*/}
                   </Tabs>
                   <TabPanel value="1" sx={{ padding: 0 }}>
                     <SearchContact
@@ -168,9 +166,7 @@ export const CreateApplicantForListing = (props: Props) => {
                       <Divider />
                     </Box>
                   </TabPanel>
-                  <TabPanel value="2" sx={{ padding: 0 }}>
-                    <Leases leases={leases} />
-                  </TabPanel>
+                  {/*<Contracts leases={leases} />*/}
                 </TabContext>
               </Box>
               {tenantQuery.data &&
@@ -207,9 +203,15 @@ export const CreateApplicantForListing = (props: Props) => {
                     </Box>
                     <Box paddingX="0.5rem" paddingTop="0.5rem">
                       <Typography color="error">
-                        {translateValidationResult(
-                          tenantQuery.data.validationResult
+                        {renderWarningIfDistrictsMismatch(
+                          props.listing,
+                          tenantQuery?.data.tenant
                         )}
+                        <Box>
+                          {translateValidationResult(
+                            tenantQuery.data.validationResult
+                          )}
+                        </Box>
                       </Typography>
                     </Box>
                   </Box>
@@ -270,63 +272,20 @@ function translateValidationResult(
   return translationMap[result]
 }
 
-const sharedProps = {
-  editable: false,
-  flex: 1,
+function renderWarningIfDistrictsMismatch(listing: Listing, tenant: Tenant) {
+  if (
+    listing.districtCode != tenant.currentHousingContract?.residentialArea?.code
+  ) {
+    return (
+      <Box paddingBottom={'1rem'}>
+        {
+          'Observera att kunden saknar boendekontrakt i området för parkeringsplatsen'
+        }
+      </Box>
+    )
+  }
+  return null
 }
-
-const columns: GridColDef[] = [
-  {
-    field: 'type',
-    headerName: 'Typ',
-    ...sharedProps,
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    ...sharedProps,
-    renderCell: () => 'N/A',
-  },
-  {
-    field: 'address',
-    headerName: 'Adress',
-    ...sharedProps,
-    renderCell: () => 'N/A',
-  },
-  {
-    field: 'monthlyRent',
-    headerName: 'Hyra',
-    ...sharedProps,
-    renderCell: () => 'N/A',
-  },
-]
-
-const Leases = (props: { leases: Lease[] }) => (
-  <DataGridTable
-    sx={{ paddingTop: '1rem' }}
-    initialState={{
-      pagination: { paginationModel: { pageSize: 5 } },
-    }}
-    pageSizeOptions={[5, 10, 25]}
-    slots={{
-      noRowsOverlay: () => (
-        <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
-          <Typography fontSize="14px">
-            Det finns inga kontrakt att visa...
-          </Typography>
-        </Stack>
-      ),
-    }}
-    hideFooter
-    columns={columns}
-    rows={props.leases}
-    getRowId={(row) => row.leaseId}
-    loading={false}
-    rowHeight={72}
-    disableRowSelectionOnClick
-    autoHeight
-  />
-)
 
 const CreateApplicantError = (props: {
   reset: () => void
