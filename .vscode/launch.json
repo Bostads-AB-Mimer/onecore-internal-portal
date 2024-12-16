@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Frontend",
+      "name": "Launch Internal Portal Frontend",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "program": "${workspaceFolder}/frontend/src/index.ts",
@@ -12,7 +12,7 @@
       "type": "node",
     },
     {
-      "name": "Launch Backend",
+      "name": "Launch Internal Portal Backend",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "program": "${workspaceFolder}/backend/src/index.ts",
