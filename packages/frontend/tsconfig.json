@@ -19,11 +19,11 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "emitDeclarationOnly": true,
     "jsx": "react-jsx",
   },
   "include": [
-    "src"
+    "./src/**/*",
   ],
   "references": [
     {
