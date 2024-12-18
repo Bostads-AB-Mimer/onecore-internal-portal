@@ -290,5 +290,15 @@ export const mdTheme = createTheme(theme, {
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottom: 'none',
+          padding: 8,
+          paddingLeft: 0,
+          paddingRight: 0,
+        },
+      },
+    },
   },
 })
