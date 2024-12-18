@@ -5,6 +5,7 @@ import {
   Divider,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -82,7 +83,9 @@ const ResidencesPage: React.FC = () => {
           </FormControl>
         </Grid>
 
-        <Divider />
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
 
         <Grid item xs={12}>
           <Typography variant="h2">Ange status boendereferens</Typography>
