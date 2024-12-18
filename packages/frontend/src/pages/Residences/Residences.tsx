@@ -51,12 +51,12 @@ const ResidencesPage: React.FC = () => {
             </TableBody>
           </Table>
 
-          <Box paddingBottom={1}>
-            <Typography variant="h2">Nuvarande boendeform</Typography>
-          </Box>
+          <Typography paddingBottom={1} variant="h2">
+            Nuvarande boendeform
+          </Typography>
           <FormControl fullWidth>
             <InputLabel>Välj</InputLabel>
-            <Select id="current-type-of-housing" label="Välj">
+            <Select id="current-type-of-housing" label="Välj" size="small">
               <MenuItem value="villa">Villa</MenuItem>
               <MenuItem value="lägenhet">Lägenhet</MenuItem>
               <MenuItem value="radhus">Radhus</MenuItem>
@@ -65,20 +65,30 @@ const ResidencesPage: React.FC = () => {
         </Grid>
 
         <Grid item xs={12} sm={6} margin={0}>
-          <Box paddingBottom={1}>
-            <Typography variant="h2">Antal vuxna i hushåll</Typography>
-          </Box>
+          <Typography paddingBottom={1} variant="h2">
+            Antal vuxna i hushåll
+          </Typography>
           <FormControl fullWidth>
-            <TextField type="number" id="adult-count" variant="outlined" />
+            <TextField
+              type="number"
+              id="adult-count"
+              variant="outlined"
+              size="small"
+            />
           </FormControl>
         </Grid>
 
         <Grid item xs={12} sm={6} margin={0}>
-          <Box paddingBottom={1}>
-            <Typography variant="h2">Antal barn i hushåll</Typography>
-          </Box>
+          <Typography paddingBottom={1} variant="h2">
+            Antal barn i hushåll
+          </Typography>
           <FormControl fullWidth>
-            <TextField type="number" id="children-count" variant="outlined" />
+            <TextField
+              type="number"
+              id="children-count"
+              variant="outlined"
+              size="small"
+            />
           </FormControl>
         </Grid>
 
@@ -132,16 +142,17 @@ const ResidencesPage: React.FC = () => {
             </TableBody>
           </Table>
 
-          <Box paddingBottom={1}>
-            <Typography variant="h2">Notering/kommentar</Typography>
-          </Box>
+          <Typography variant="h2" paddingBottom={1}>
+            Notering/kommentar
+          </Typography>
+
           <FormControl fullWidth>
             <TextareaAutosize id="notes" minRows={3}></TextareaAutosize>
           </FormControl>
+        </Grid>
 
-          <Box paddingY={2}>
-            <Button type="submit">Spara/uppdatera boendereferens</Button>
-          </Box>
+        <Grid item container justifyContent="center" xs={12} marginTop={4}>
+          <Button type="submit">Spara/uppdatera boendereferens</Button>
         </Grid>
       </Grid>
     </form>
