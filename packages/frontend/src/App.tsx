@@ -17,6 +17,7 @@ import MaterialChoiceDetails from './pages/MaterialChoiceDetails/MaterialChoiceD
 import ParkingSpaces from './pages/ParkingSpaces'
 import ParkingSpace from './pages/ParkingSpace'
 import { mdTheme } from './theme'
+import Residences from './pages/Residences/Residences'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,6 +65,7 @@ function App() {
                   path="/materialval/utskrift"
                   element={<MaterialChoiceDetails />}
                 />
+                <Route path="/bostader" element={<Residences />} />
                 <Route path="/logout" element={<Login />} />
               </Route>
             </Routes>
