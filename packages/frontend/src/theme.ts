@@ -148,9 +148,9 @@ export const mdTheme = createTheme(theme, {
     MuiRadio: {
       styleOverrides: {
         root: {
-          color: 'black',
+          color: '#007BC4',
           [`&.${radioClasses.checked}`]: {
-            color: 'black',
+            color: '#007BC4',
           },
         },
       },
