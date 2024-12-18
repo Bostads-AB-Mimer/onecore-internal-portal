@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "./packages/backend"
+    },
+    {
+      "path": "./packages/frontend"
+    }
+  ]
+}

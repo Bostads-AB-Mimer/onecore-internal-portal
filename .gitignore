@@ -11,8 +11,6 @@ node_modules/
 docker-compose-local.yaml
 
 # Editors
-.vscode/*
-!.vscode/extensions.json
 /.idea/*
 
 # Logs
@@ -28,5 +26,3 @@ lerna-debug.log*
 # OS metadata
 .DS_Store
 Thumbs.db
-
-
