@@ -54,11 +54,10 @@ const ResidencesPage: React.FC = () => {
           </Table>
 
           <Typography paddingBottom={1} variant="h2">
-            Nuvarande boendeform
+            Boendeform
           </Typography>
           <FormControl fullWidth>
-            <InputLabel>Välj</InputLabel>
-            <Select id="current-type-of-housing" label="Välj" size="small">
+            <InputLabel>Nuvarande boendeform</InputLabel>
             <Select
               id="current-type-of-housing"
               label="Nuvarande boendeform"
