@@ -17,9 +17,12 @@ import {
   TextareaAutosize,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material'
 
 const ResidencesPage: React.FC = () => {
+  const isMinWidth600 = useMediaQuery('(min-width:600px)')
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
   }
@@ -97,7 +100,11 @@ const ResidencesPage: React.FC = () => {
 
         <Grid item xs={12}>
           <Typography variant="h2">Ange status boendereferens</Typography>
-          <RadioGroup id="status-housing-reference" defaultValue="default" row>
+          <RadioGroup
+            id="status-housing-reference"
+            defaultValue="default"
+            row={isMinWidth600}
+          >
             <FormControlLabel
               value="approved"
               control={<Radio />}
