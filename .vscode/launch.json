@@ -15,11 +15,14 @@
       "name": "Launch Internal Portal Backend",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "program": "${workspaceFolder}/backend/src/index.ts",
+      "program": "${workspaceFolder}/packages/backend/src/index.ts",
       "request": "launch",
       "restart": true,
-      "runtimeExecutable": "${workspaceFolder}/backend/node_modules/nodemon/bin/nodemon.js",
+      "runtimeExecutable": "${workspaceFolder}/packages/backend/node_modules/nodemon/bin/nodemon.js",
       "type": "node",
-    }
+      "env": {
+        "PORT": "7001"
+      },
+    },
   ]
 }
