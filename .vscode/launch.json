@@ -2,14 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Internal Portal Frontend",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "program": "${workspaceFolder}/frontend/src/index.ts",
+      "type": "chrome",
       "request": "launch",
-      "restart": true,
-      "runtimeExecutable": "${workspaceFolder}/frontend/node_modules/vite/bin/vite.js",
-      "type": "node",
+      "name": "Launch Internal Portal Frontend",
+      "url": "http://localhost:7003",
+      "webRoot": "${workspaceFolder}/packages/frontend/src",
+      "preLaunchTask": "Launch Internal Portal Frontend",
     },
     {
       "name": "Launch Internal Portal Backend",
