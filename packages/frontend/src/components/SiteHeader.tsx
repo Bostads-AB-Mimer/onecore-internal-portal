@@ -66,6 +66,9 @@ const SiteHeader = () => (
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
                 <MenuLink href="/materialval" title="Materialval" />
               </MenuItem>
+              <MenuItem onClick={popupState.close}>
+                <MenuLink href="/bostader" title="Bostäder" />
+              </MenuItem>
             </Menu>
           </Backdrop>
         </>
