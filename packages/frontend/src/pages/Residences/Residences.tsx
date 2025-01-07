@@ -59,6 +59,12 @@ const ResidencesPage: React.FC = () => {
           <FormControl fullWidth>
             <InputLabel>Välj</InputLabel>
             <Select id="current-type-of-housing" label="Välj" size="small">
+            <Select
+              id="current-type-of-housing"
+              label="Nuvarande boendeform"
+              size="small"
+              defaultValue=""
+            >
               <MenuItem value="villa">Villa</MenuItem>
               <MenuItem value="lägenhet">Lägenhet</MenuItem>
               <MenuItem value="radhus">Radhus</MenuItem>
