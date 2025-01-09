@@ -91,6 +91,7 @@ const theme = createTheme({
     warmGrey: {
       main: 'rgba(73, 72, 69, 1)',
     },
+    primary: { main: '#000000' },
   },
   typography: {
     title: {
