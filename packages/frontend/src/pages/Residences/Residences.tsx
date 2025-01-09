@@ -22,6 +22,8 @@ import {
   useMediaQuery,
 } from '@mui/material'
 
+import { SearchBar } from '../../components'
+
 const ResidencesPage: React.FC = () => {
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
@@ -29,9 +31,19 @@ const ResidencesPage: React.FC = () => {
     e.preventDefault()
   }
 
+  const handleSearch = (searchString: string) => {
+    console.log(searchString)
+  }
+
   return (
     <Stack spacing={4}>
       <Typography variant="h1">Bostäder - sökandeuppgifter</Typography>
+
+      <SearchBar
+        onChange={handleSearch}
+        placeholder="Sök på person eller kundnummer"
+      />
+
       <Paper elevation={3}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2} padding={2}>
