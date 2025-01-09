@@ -41,15 +41,21 @@ const SiteMenu = () => (
               <CloseIcon />
             </IconButton>
 
-            <Typography variant="hMenu">Aktuellt</Typography>
+            <MenuItem
+              onClick={popupState.close}
+              sx={{ width: '200px' }}
+              disabled
+            >
+              <Typography variant="h1">Aktuellt</Typography>
+            </MenuItem>
 
-            <MenuItem onClick={popupState.close} sx={styles.menuItem}>
+            <MenuItem onClick={popupState.close}>
               <MenuLink href="/parkingspaces" title="Parkeringsplatser" />
             </MenuItem>
 
             <Divider />
 
-            <MenuItem onClick={popupState.close} sx={styles.menuItem}>
+            <MenuItem onClick={popupState.close}>
               <MenuLink href="/materialval" title="Materialval" />
             </MenuItem>
 
@@ -62,12 +68,5 @@ const SiteMenu = () => (
     )}
   </PopupState>
 )
-
-const styles = {
-  menuItem: {
-    minHeight: 20,
-    marginRight: 20,
-  },
-}
 
 export default SiteMenu
