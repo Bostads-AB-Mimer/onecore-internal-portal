@@ -48,7 +48,7 @@ const ResidencesPage: React.FC = () => {
           />
 
           <Paper elevation={3}>
-            <form onSubmit={handleSubmit} name="residence-form">
+            <form onSubmit={handleSubmit}>
               <Grid container spacing={2} padding={2}>
                 <Grid item xs={12}>
                   <Typography variant="h1">Kundinformation</Typography>
