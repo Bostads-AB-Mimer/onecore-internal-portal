@@ -33,6 +33,10 @@ const CONFIG: Partial<session.opts<DefaultState, DefaultContext, unknown>> = {
 app.use(session(CONFIG, app))
 
 app.use(async (ctx, next) => {
+  if (process.env.DISABLE_AUTHENTICATION) {
+    return next()
+  }
+
   if (ctx.request.path.match('(.*)/auth/')) {
     return next()
   } else {
@@ -41,6 +45,7 @@ app.use(async (ctx, next) => {
     } else {
       return next()
     }
+    return next()
   }
 })
 
