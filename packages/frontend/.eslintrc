@@ -4,7 +4,7 @@
     "plugin:import/recommended"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./packages/frontend/tsconfig.eslint.json"
   },
   "rules": {
     "react/prop-types": "off",
