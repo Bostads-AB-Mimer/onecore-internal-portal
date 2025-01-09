@@ -79,7 +79,7 @@ const ResidencesPage: React.FC = () => {
                   <FormControl fullWidth>
                     <InputLabel>Nuvarande boendeform</InputLabel>
                     <Select
-                      id="current-type-of-housing"
+                      name="current-type-of-housing"
                       label="Nuvarande boendeform"
                       size="small"
                       defaultValue=""
@@ -98,7 +98,7 @@ const ResidencesPage: React.FC = () => {
                   <FormControl fullWidth>
                     <TextField
                       type="number"
-                      id="adult-count"
+                      name="adult-count"
                       variant="outlined"
                       size="small"
                     />
@@ -112,7 +112,7 @@ const ResidencesPage: React.FC = () => {
                   <FormControl fullWidth>
                     <TextField
                       type="number"
-                      id="children-count"
+                      name="children-count"
                       variant="outlined"
                       size="small"
                     />
@@ -128,7 +128,7 @@ const ResidencesPage: React.FC = () => {
                     Ange status boendereferens
                   </Typography>
                   <RadioGroup
-                    id="status-housing-reference"
+                    name="status-housing-reference"
                     defaultValue="default"
                     row={isMinWidth600}
                   >
@@ -180,9 +180,11 @@ const ResidencesPage: React.FC = () => {
                   <Typography variant="h2" paddingBottom={1}>
                     Notering/kommentar
                   </Typography>
-
                   <FormControl fullWidth>
-                    <TextareaAutosize id="notes" minRows={3}></TextareaAutosize>
+                    <TextareaAutosize
+                      name="notes"
+                      minRows={3}
+                    ></TextareaAutosize>
                   </FormControl>
                 </Grid>
 
