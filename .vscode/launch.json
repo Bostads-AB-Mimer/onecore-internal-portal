@@ -7,7 +7,7 @@
       "name": "Launch Internal Portal Frontend",
       "url": "http://localhost:7003",
       "webRoot": "${workspaceFolder}/packages/frontend/src",
-      "preLaunchTask": "Launch Internal Portal Frontend",
+      "preLaunchTask": "Launch Internal Portal Frontend (dev server)",
     },
     {
       "name": "Launch Internal Portal Backend",

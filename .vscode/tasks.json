@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Launch Internal Portal Frontend",
+      "label": "Launch Internal Portal Frontend (dev server)",
       "type": "npm",
       "script": "dev",
       "problemMatcher": {
@@ -18,6 +18,6 @@
       },
       "path": "./packages/frontend",
       "isBackground": true
-    }
+    },
   ]
 }
