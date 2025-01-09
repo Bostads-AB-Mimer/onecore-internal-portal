@@ -40,7 +40,7 @@ const ResidencesPage: React.FC = () => {
     <Stack spacing={4} padding={0}>
       <Typography variant="h1">Bostäder - sökandeuppgifter</Typography>
 
-      <Container maxWidth="md">
+      <Container maxWidth="md" disableGutters>
         <Stack spacing={2}>
           <SearchBar
             onChange={handleSearch}
