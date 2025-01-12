@@ -6,18 +6,41 @@
       "type": "npm",
       "script": "dev",
       "problemMatcher": {
-        "owner": "npm",
+        "owner": "typescript",
+        "fileLocation": "relative",
         "pattern": {
-          "regexp": "^$"
+          "regexp": "^$",
         },
         "background": {
           "activeOnStart": true,
           "beginsPattern": ".*",
           "endsPattern": ".*",
-        }
+        },
       },
       "path": "./packages/frontend",
-      "isBackground": true
+      "isBackground": true,
+      "presentation": {
+        "reveal": "silent",
+        "focus": false,
+      }
     },
+    {
+      "label": "Stop Internal Portal Backend",
+      "type": "shell",
+      "command": "echo ${input:terminate}",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "close": true,
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminate",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "Launch Internal Portal Frontend (dev server)"
+    }
   ]
 }

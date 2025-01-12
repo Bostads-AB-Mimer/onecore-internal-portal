@@ -8,6 +8,7 @@
       "url": "http://localhost:7003",
       "webRoot": "${workspaceFolder}/packages/frontend/src",
       "preLaunchTask": "Launch Internal Portal Frontend (dev server)",
+      "postDebugTask": "Stop Internal Portal Backend",
     },
     {
       "name": "Launch Internal Portal Backend",
@@ -22,5 +23,5 @@
         "PORT": "7001"
       },
     },
-  ]
+  ],
 }
