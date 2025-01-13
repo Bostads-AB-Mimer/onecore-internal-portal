@@ -6,7 +6,6 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  InputLabel,
   MenuItem,
   Paper,
   Radio,
@@ -76,19 +75,19 @@ const ResidencesPage: React.FC = () => {
                   <Typography paddingBottom={1} variant="h2">
                     Boendeform
                   </Typography>
-                  <FormControl fullWidth>
-                    <InputLabel>Nuvarande boendeform</InputLabel>
-                    <Select
-                      name="current-type-of-housing"
-                      label="Nuvarande boendeform"
-                      size="small"
-                      defaultValue=""
-                    >
-                      <MenuItem value="villa">Villa</MenuItem>
-                      <MenuItem value="lägenhet">Lägenhet</MenuItem>
-                      <MenuItem value="radhus">Radhus</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <Select
+                    name="current-type-of-housing"
+                    size="small"
+                    defaultValue="0"
+                    fullWidth
+                  >
+                    <MenuItem key={0} value={'0'}>
+                      Välj ur lista
+                    </MenuItem>
+                    <MenuItem value="villa">Villa</MenuItem>
+                    <MenuItem value="lägenhet">Lägenhet</MenuItem>
+                    <MenuItem value="radhus">Radhus</MenuItem>
+                  </Select>
                 </Grid>
 
                 <Grid item xs={12} sm={6} margin={0}>
