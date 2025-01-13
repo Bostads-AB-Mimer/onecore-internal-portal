@@ -28,8 +28,8 @@ import { SearchBar } from '../../components'
 const ResidencesPage: React.FC = () => {
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
   }
 
   const handleSearch = (searchString: string) => {
