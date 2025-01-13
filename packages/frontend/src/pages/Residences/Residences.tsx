@@ -73,7 +73,7 @@ const ResidencesPage: React.FC = () => {
                   </Table>
 
                   <Typography paddingBottom={1} variant="h2">
-                    Boendeform
+                    Boendeform *
                   </Typography>
                   <FormControl fullWidth>
                     <Select
@@ -93,7 +93,7 @@ const ResidencesPage: React.FC = () => {
 
                 <Grid item xs={12} sm={6} margin={0}>
                   <Typography paddingBottom={1} variant="h2">
-                    Antal vuxna i hushåll
+                    Antal vuxna i hushåll *
                   </Typography>
                   <FormControl fullWidth>
                     <TextField
@@ -108,7 +108,7 @@ const ResidencesPage: React.FC = () => {
 
                 <Grid item xs={12} sm={6} margin={0}>
                   <Typography paddingBottom={1} variant="h2">
-                    Antal barn i hushåll
+                    Antal barn i hushåll *
                   </Typography>
                   <FormControl fullWidth>
                     <TextField
@@ -127,7 +127,7 @@ const ResidencesPage: React.FC = () => {
 
                 <Grid item xs={12}>
                   <Typography variant="h2">
-                    Ange status boendereferens
+                    Ange status boendereferens *
                   </Typography>
                   <RadioGroup
                     name="status-housing-reference"
