@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Container,
@@ -24,7 +24,21 @@ import {
 
 import { SearchBar } from '../../components'
 
+const ComponentA: React.FC = () => <div>A</div>
+const ComponentB: React.FC = () => <div>B</div>
+
+const components: {
+  [key: string]: JSX.Element | null
+} = {
+  approved: <ComponentA />,
+  'not-approved': <ComponentB />,
+  'contacted-no-response': null,
+  'no-reference-required': null,
+}
+
 const ResidencesPage: React.FC = () => {
+  const [selected, setSelected] = useState<string>('')
+
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -33,6 +47,13 @@ const ResidencesPage: React.FC = () => {
 
   const handleSearch = (searchString: string) => {
     console.log(searchString)
+  }
+
+  const handleRadioGroupChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    value: string
+  ) => {
+    setSelected(value)
   }
 
   return (
@@ -129,32 +150,37 @@ const ResidencesPage: React.FC = () => {
                   <Typography variant="h2">
                     Ange status boendereferens *
                   </Typography>
-                  <RadioGroup
-                    name="status-housing-reference"
-                    defaultValue="default"
-                    row={isMinWidth600}
-                  >
-                    <FormControlLabel
-                      value="approved"
-                      control={<Radio />}
-                      label="Godkänd"
-                    />
-                    <FormControlLabel
-                      value="not-approved"
-                      control={<Radio />}
-                      label="Ej godkänd"
-                    />
-                    <FormControlLabel
-                      value="contacted-no-response"
-                      control={<Radio />}
-                      label="Kontaktad - ej svar"
-                    />
-                    <FormControlLabel
-                      value="no-reference-required"
-                      control={<Radio />}
-                      label="Referens krävs ej"
-                    />
-                  </RadioGroup>
+                  <FormControl>
+                    <RadioGroup
+                      name="status-housing-reference"
+                      defaultValue="default"
+                      row={isMinWidth600}
+                      onChange={handleRadioGroupChange}
+                    >
+                      <FormControlLabel
+                        value="approved"
+                        control={<Radio />}
+                        label="Godkänd"
+                      />
+                      <FormControlLabel
+                        value="not-approved"
+                        control={<Radio />}
+                        label="Ej godkänd"
+                      />
+                      <FormControlLabel
+                        value="contacted-no-response"
+                        control={<Radio />}
+                        label="Kontaktad - ej svar"
+                      />
+                      <FormControlLabel
+                        value="no-reference-required"
+                        control={<Radio />}
+                        label="Referens krävs ej"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  {selected && components[selected]}
 
                   <Table>
                     <TableBody>
