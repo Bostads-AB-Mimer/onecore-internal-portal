@@ -101,6 +101,7 @@ const ResidencesPage: React.FC = () => {
                       name="adult-count"
                       variant="outlined"
                       size="small"
+                      defaultValue={1}
                     />
                   </FormControl>
                 </Grid>
@@ -115,6 +116,7 @@ const ResidencesPage: React.FC = () => {
                       name="children-count"
                       variant="outlined"
                       size="small"
+                      defaultValue={0}
                     />
                   </FormControl>
                 </Grid>
