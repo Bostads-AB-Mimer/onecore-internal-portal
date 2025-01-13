@@ -75,19 +75,20 @@ const ResidencesPage: React.FC = () => {
                   <Typography paddingBottom={1} variant="h2">
                     Boendeform
                   </Typography>
-                  <Select
-                    name="current-type-of-housing"
-                    size="small"
-                    defaultValue="0"
-                    fullWidth
-                  >
-                    <MenuItem key={0} value={'0'}>
-                      Välj ur lista
-                    </MenuItem>
-                    <MenuItem value="villa">Villa</MenuItem>
-                    <MenuItem value="lägenhet">Lägenhet</MenuItem>
-                    <MenuItem value="radhus">Radhus</MenuItem>
-                  </Select>
+                  <FormControl fullWidth>
+                    <Select
+                      name="current-type-of-housing"
+                      size="small"
+                      defaultValue="0"
+                    >
+                      <MenuItem key={0} value={'0'}>
+                        Välj ur lista
+                      </MenuItem>
+                      <MenuItem value="villa">Villa</MenuItem>
+                      <MenuItem value="lägenhet">Lägenhet</MenuItem>
+                      <MenuItem value="radhus">Radhus</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
 
                 <Grid item xs={12} sm={6} margin={0}>
