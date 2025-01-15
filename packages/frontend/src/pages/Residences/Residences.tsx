@@ -15,7 +15,7 @@ import CustomerInformation from './components/CustomerInformation'
 import TypeOfHousingForm from './components/TypeOfHousingForm'
 import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
-import CustomerReferenceForm from './components/CustomerReferenceForm'
+import CustomerReference from './components/CustomerReference'
 
 const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] = useState<
@@ -61,7 +61,7 @@ const ResidencesPage: React.FC = () => {
                 <Grid item xs={12}>
                   <HousingReferenceStatusForm />
 
-                  <CustomerReferenceForm
+                  <CustomerReference
                     customerReferenceReceivedAt="2024-01-01"
                     housingReferenceUpdatedAt="2024-01-01"
                     updatedBy="MaS"
