@@ -48,17 +48,11 @@ const ResidencesPage: React.FC = () => {
                     customerNumber="P123456"
                     phoneNumber="0720-123 45 67"
                   />
-                </Grid>
 
-                <Grid item xs={12}>
                   <TypeOfHousingForm />
-                </Grid>
 
-                <Grid item xs={12}>
                   <Divider />
-                </Grid>
 
-                <Grid item xs={12}>
                   <HousingReferenceStatusForm />
 
                   <CustomerReference
