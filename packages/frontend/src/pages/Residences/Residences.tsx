@@ -38,7 +38,7 @@ const components: {
 }
 
 const ResidencesPage: React.FC = () => {
-  const [selected, setSelected] = useState<string>('')
+  const [selected, setSelected] = useState<string>()
 
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
