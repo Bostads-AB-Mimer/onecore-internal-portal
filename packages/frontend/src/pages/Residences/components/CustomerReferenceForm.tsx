@@ -21,14 +21,17 @@ const CustomerReferenceForm = ({
           <TableCell>Referensuppgifter från kund</TableCell>
           <TableCell align="right">{customerReferenceReceivedAt}</TableCell>
         </TableRow>
+
         <TableRow>
           <TableCell>Boendereferens hanterad/uppdaterad</TableCell>
           <TableCell align="right">{housingReferenceUpdatedAt}</TableCell>
         </TableRow>
+
         <TableRow>
           <TableCell>Senast uppdaterad av</TableCell>
           <TableCell align="right">{updatedBy}</TableCell>
         </TableRow>
+
         {validUntil && (
           <TableRow>
             <TableCell>Giltig till</TableCell>

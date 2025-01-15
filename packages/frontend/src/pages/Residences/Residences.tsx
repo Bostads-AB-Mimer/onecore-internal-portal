@@ -13,8 +13,6 @@ import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
 import CustomerInformationForm from './components/CustomerInformationForm'
 import TypeOfHousingForm from './components/TypeOfHousingForm'
-import AdultCountForm from './components/AdultCountForm'
-import ChildrenCountForm from './components/ChildrenCountForm'
 import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
 import CustomerReferenceForm from './components/CustomerReferenceForm'
@@ -50,16 +48,10 @@ const ResidencesPage: React.FC = () => {
                     customerNumber="P123456"
                     phoneNumber="0720-123 45 67"
                   />
+                </Grid>
 
+                <Grid item xs={12}>
                   <TypeOfHousingForm />
-                </Grid>
-
-                <Grid item xs={12} sm={6} margin={0}>
-                  <AdultCountForm />
-                </Grid>
-
-                <Grid item xs={12} sm={6} margin={0}>
-                  <ChildrenCountForm />
                 </Grid>
 
                 <Grid item xs={12}>
