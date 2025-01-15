@@ -11,7 +11,7 @@ import {
 
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
-import CustomerInformationForm from './components/CustomerInformationForm'
+import CustomerInformation from './components/CustomerInformation'
 import TypeOfHousingForm from './components/TypeOfHousingForm'
 import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
@@ -42,7 +42,7 @@ const ResidencesPage: React.FC = () => {
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2} padding={2}>
                 <Grid item xs={12}>
-                  <CustomerInformationForm
+                  <CustomerInformation
                     name="John Applebaum"
                     socialSecurityNumber="111122334444"
                     customerNumber="P123456"
