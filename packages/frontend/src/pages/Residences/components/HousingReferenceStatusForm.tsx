@@ -38,10 +38,13 @@ const NotApproved: React.FC = () => (
   </>
 )
 
-const components: {
-  [key: string]: JSX.Element
+const tabs: {
+  [key: string]: JSX.Element | undefined
 } = {
+  approved: undefined,
   'not-approved': <NotApproved />,
+  'contacted-no-response': undefined,
+  'no-reference-required': undefined,
 }
 
 type HousingReferenceStatusFormProps = {
@@ -89,7 +92,7 @@ const HousingReferenceStatusForm = ({
         </RadioGroup>
       </FormControl>
 
-      {components[selected]}
+      {tabs[selected]}
     </>
   )
 }
