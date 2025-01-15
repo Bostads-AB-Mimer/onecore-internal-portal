@@ -7,7 +7,6 @@ import {
   Paper,
   Stack,
   Typography,
-  useMediaQuery,
 } from '@mui/material'
 
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
@@ -20,36 +19,13 @@ import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
 import CustomerReferenceForm from './components/CustomerReferenceForm'
 
-const ComponentA: React.FC = () => <div>A</div>
-const ComponentB: React.FC = () => <div>B</div>
-
-const components: {
-  [key: string]: JSX.Element | null
-} = {
-  approved: <ComponentA />,
-  'not-approved': <ComponentB />,
-  'contacted-no-response': null,
-  'no-reference-required': null,
-}
-
 const ResidencesPage: React.FC = () => {
-  const [selected, setSelected] = useState<string>()
-
-  const isMinWidth600 = useMediaQuery('(min-width:600px)')
-
   const [selectedContact, setSelectedContact] = useState<
     ContactSearchData | undefined
   >(undefined)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-  }
-
-  const handleRadioGroupChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    value: string
-  ) => {
-    setSelected(value)
   }
 
   return (
@@ -91,12 +67,7 @@ const ResidencesPage: React.FC = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <HousingReferenceStatusForm
-                    isMinWidth600={isMinWidth600}
-                    handleRadioGroupChange={handleRadioGroupChange}
-                  />
-
-                  {selected && components[selected]}
+                  <HousingReferenceStatusForm />
 
                   <CustomerReferenceForm
                     customerReferenceReceivedAt="2024-01-01"
