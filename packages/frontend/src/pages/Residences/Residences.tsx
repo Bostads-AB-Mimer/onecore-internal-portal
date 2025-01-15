@@ -22,7 +22,8 @@ import {
   useMediaQuery,
 } from '@mui/material'
 
-import { SearchBar } from '../../components'
+import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
+import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
 
 const ComponentA: React.FC = () => <div>A</div>
 const ComponentB: React.FC = () => <div>B</div>
@@ -41,12 +42,12 @@ const ResidencesPage: React.FC = () => {
 
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
+  const [selectedContact, setSelectedContact] = useState<
+    ContactSearchData | undefined
+  >(undefined)
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-  }
-
-  const handleSearch = (searchString: string) => {
-    console.log(searchString)
   }
 
   const handleRadioGroupChange = (
@@ -62,9 +63,10 @@ const ResidencesPage: React.FC = () => {
 
       <Container maxWidth="md" disableGutters>
         <Stack spacing={2}>
-          <SearchBar
-            onChange={handleSearch}
+          <SearchContact
             placeholder="Sök på person eller kundnummer"
+            contact={selectedContact}
+            onSelect={setSelectedContact}
           />
 
           <Paper elevation={3}>
