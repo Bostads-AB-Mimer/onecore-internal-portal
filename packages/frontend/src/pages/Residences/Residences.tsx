@@ -12,7 +12,7 @@ import {
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
 import CustomerInformation from './components/CustomerInformation'
-import TypeOfHousingForm from './components/TypeOfHousingForm'
+import CurrentTypeOfHousingForm from './components/CurrentTypeOfHousingForm'
 import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
 import CustomerReference from './components/CustomerReference'
@@ -49,7 +49,7 @@ const ResidencesPage: React.FC = () => {
                     phoneNumber="0720-123 45 67"
                   />
 
-                  <TypeOfHousingForm />
+                  <CurrentTypeOfHousingForm />
 
                   <Divider />
 
