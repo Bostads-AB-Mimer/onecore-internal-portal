@@ -44,7 +44,7 @@ const CurrentTypeOfHousingForm: React.FC = () => {
           <MenuItem value="owns-villa">Äger villa</MenuItem>
           <MenuItem value="owns-condominium">Äger bostadsrätt</MenuItem>
           <MenuItem value="owns-townhouse">Äger radhus</MenuItem>
-          <MenuItem value="other">Annat/övrigt</MenuItem>
+          <MenuItem value="other">Övrigt/annat</MenuItem>
         </Select>
       </FormControl>
 
