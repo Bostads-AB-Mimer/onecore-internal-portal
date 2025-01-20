@@ -56,7 +56,7 @@ const HousingReferenceStatusForm = ({
   defaultValue = 'not-approved',
 }: HousingReferenceStatusFormProps) => {
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
-  const [selected, setSelected] = useState<string>(defaultValue)
+  const [selectedTab, setSelectedTab] = useState<string>(defaultValue)
 
   return (
     <>
@@ -67,7 +67,7 @@ const HousingReferenceStatusForm = ({
           name="status-housing-reference"
           defaultValue={defaultValue}
           row={isMinWidth600}
-          onChange={(_, value) => setSelected(value)}
+          onChange={(_, value) => setSelectedTab(value)}
         >
           <FormControlLabel
             value="approved"
@@ -92,7 +92,7 @@ const HousingReferenceStatusForm = ({
         </RadioGroup>
       </FormControl>
 
-      {tabs[selected]}
+      {tabs[selectedTab]}
     </>
   )
 }
