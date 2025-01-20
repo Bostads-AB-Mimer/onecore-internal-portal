@@ -7,7 +7,8 @@ const AdditionalNotesForm: React.FC = () => {
       <Typography variant="h2" paddingBottom={1}>
         Notering/kommentar
       </Typography>
-      <TextareaAutosize name="notes" minRows={3}></TextareaAutosize>
+
+      <TextareaAutosize name="notes" minRows={3} />
     </FormControl>
   )
 }
