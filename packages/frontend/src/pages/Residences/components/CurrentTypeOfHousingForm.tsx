@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 
-const Villa: React.FC = () => {
+const OwnsVilla: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} margin={0}>
@@ -51,13 +51,19 @@ const Villa: React.FC = () => {
 const tabs: {
   [key: string]: JSX.Element | undefined
 } = {
-  villa: <Villa />,
-  apartment: undefined,
-  townhouse: undefined,
+  'rental-apartment': undefined,
+  'sublet-apartment': undefined,
+  'lives-with-parents': undefined,
+  'living-with-tenant': undefined,
+  'owns-villa': <OwnsVilla />,
+  'owns-condominium': undefined,
+  'owns-townhouse': undefined,
+  other: undefined,
 }
 
 const CurrentTypeOfHousingForm: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<string>('villa')
+  const [selectedTab, setSelectedTab] = useState<string>('0')
+
   return (
     <>
       <FormControl fullWidth>
@@ -74,9 +80,7 @@ const CurrentTypeOfHousingForm: React.FC = () => {
           <MenuItem key={0} value={0}>
             Välj ur lista
           </MenuItem>
-          <MenuItem value="villa">Villa</MenuItem>
-          <MenuItem value="apartment">Lägenhet</MenuItem>
-          <MenuItem value="townhouse">Radhus</MenuItem>
+          <MenuItem value="owns-villa">Äger villa</MenuItem>
         </Select>
       </FormControl>
 
