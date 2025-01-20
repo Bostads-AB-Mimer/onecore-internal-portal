@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 import IsRenter from './IsRenter'
 import IsOwner from './IsOwner'
+import IsOther from './IsOther'
 
 const tabs: {
   [key: string]: JSX.Element | undefined
@@ -14,7 +15,7 @@ const tabs: {
   'owns-villa': <IsOwner />,
   'owns-condominium': <IsOwner />,
   'owns-townhouse': <IsOwner />,
-  other: undefined,
+  other: <IsOther />,
 }
 
 const CurrentTypeOfHousingForm: React.FC = () => {
