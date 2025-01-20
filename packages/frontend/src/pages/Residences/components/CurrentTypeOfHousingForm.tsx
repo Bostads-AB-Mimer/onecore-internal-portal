@@ -80,7 +80,15 @@ const CurrentTypeOfHousingForm: React.FC = () => {
           <MenuItem key={0} value={0}>
             Välj ur lista
           </MenuItem>
+
+          <MenuItem value="rental-apartment">Hyresrätt</MenuItem>
+          <MenuItem value="sublet-apartment">Andrahand</MenuItem>
+          <MenuItem value="lives-with-parents">Bor hos förälder</MenuItem>
+          <MenuItem value="living-with-tenant">Inneboende</MenuItem>
           <MenuItem value="owns-villa">Äger villa</MenuItem>
+          <MenuItem value="owns-condominium">Äger bostadsrätt</MenuItem>
+          <MenuItem value="owns-townhouse">Äger radhus</MenuItem>
+          <MenuItem value="other">Annat/övrigt</MenuItem>
         </Select>
       </FormControl>
 
