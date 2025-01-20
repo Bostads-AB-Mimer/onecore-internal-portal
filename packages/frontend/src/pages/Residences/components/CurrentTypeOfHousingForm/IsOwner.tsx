@@ -1,6 +1,6 @@
 import { Grid, FormControl, Typography, TextField } from '@mui/material'
 
-const OwnsVilla: React.FC = () => {
+const IsOwner: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} margin={0}>
@@ -40,4 +40,4 @@ const OwnsVilla: React.FC = () => {
   )
 }
 
-export default OwnsVilla
+export default IsOwner

@@ -2,17 +2,18 @@ import { FormControl, MenuItem, Select, Typography } from '@mui/material'
 import React, { useState } from 'react'
 
 import IsRenter from './IsRenter'
+import IsOwner from './IsOwner'
 
 const tabs: {
   [key: string]: JSX.Element | undefined
 } = {
   'rental-apartment': <IsRenter />,
   'sublet-apartment': <IsRenter />,
-  'lives-with-parents': undefined,
-  'living-with-tenant': undefined,
-  'owns-villa': <OwnsVilla />,
-  'owns-condominium': undefined,
-  'owns-townhouse': undefined,
+  'lives-with-parents': <IsOwner />,
+  'living-with-tenant': <IsOwner />,
+  'owns-villa': <IsOwner />,
+  'owns-condominium': <IsOwner />,
+  'owns-townhouse': <IsOwner />,
   other: undefined,
 }
 
