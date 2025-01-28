@@ -1,15 +1,27 @@
 import { FormControl, TextareaAutosize, Typography } from '@mui/material'
 import React from 'react'
+import { Control, Controller } from 'react-hook-form'
 
-const AdditionalNotesForm: React.FC = () => {
+interface AdditionalNotesFormProps {
+  control: Control<any>
+}
+
+const AdditionalNotesForm: React.FC<AdditionalNotesFormProps> = ({
+  control,
+}) => {
   return (
-    <FormControl fullWidth>
-      <Typography variant="h2" paddingBottom={1}>
-        Notering/kommentar
-      </Typography>
-
-      <TextareaAutosize name="notes" minRows={3} />
-    </FormControl>
+    <Controller
+      name="notes"
+      control={control}
+      render={({ field }) => (
+        <FormControl fullWidth>
+          <Typography variant="h2" paddingBottom={1}>
+            Notering/kommentar
+          </Typography>
+          <TextareaAutosize {...field} minRows={3} />
+        </FormControl>
+      )}
+    />
   )
 }
 

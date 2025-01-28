@@ -22,6 +22,7 @@ export type Inputs = {
   currentTypeOfHousing: string
   housingReferenceStatus: string
   notApprovedReason: string
+  notes: string
 }
 
 const ResidencesPage: React.FC = () => {
@@ -31,9 +32,10 @@ const ResidencesPage: React.FC = () => {
 
   const { handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
-      currentTypeOfHousing: '0',
+      currentTypeOfHousing: '-1',
       housingReferenceStatus: 'not-approved',
-      notApprovedReason: '0',
+      notApprovedReason: '-1',
+      notes: '',
     },
   })
 
@@ -75,7 +77,7 @@ const ResidencesPage: React.FC = () => {
                     validUntil="2024-07-01"
                   />
 
-                  <AdditionalNotesForm />
+                  <AdditionalNotesForm control={control} />
                 </Grid>
 
                 <Grid

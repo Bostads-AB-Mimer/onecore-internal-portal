@@ -20,7 +20,7 @@ const NotApproved = ({ control }: Props) => (
           </Typography>
 
           <Select size="small" {...field}>
-            <MenuItem key={0} value={'0'}>
+            <MenuItem key={0} value={-1}>
               Välj anledning
             </MenuItem>
             <MenuItem value="foo">Foo</MenuItem>
