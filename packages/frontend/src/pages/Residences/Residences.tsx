@@ -8,6 +8,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
@@ -17,14 +18,26 @@ import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
 import CustomerReference from './components/CustomerReference'
 
+export type Inputs = {
+  currentTypeOfHousing: string
+  housingReferenceStatus: string
+  notApprovedReason: string
+}
+
 const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] = useState<
     ContactSearchData | undefined
   >(undefined)
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-  }
+  const { handleSubmit, control } = useForm<Inputs>({
+    defaultValues: {
+      currentTypeOfHousing: '0',
+      housingReferenceStatus: 'not-approved',
+      notApprovedReason: '0',
+    },
+  })
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
   return (
     <Stack spacing={4} padding={0}>
@@ -39,7 +52,7 @@ const ResidencesPage: React.FC = () => {
           />
 
           <Paper elevation={3}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={2} padding={2}>
                 <Grid item xs={12}>
                   <CustomerInformation
@@ -49,11 +62,11 @@ const ResidencesPage: React.FC = () => {
                     phoneNumber="0720-123 45 67"
                   />
 
-                  <CurrentTypeOfHousingForm />
+                  <CurrentTypeOfHousingForm control={control} />
 
                   <Divider />
 
-                  <HousingReferenceStatusForm />
+                  <HousingReferenceStatusForm control={control} />
 
                   <CustomerReference
                     customerReferenceReceivedAt="2024-01-01"
