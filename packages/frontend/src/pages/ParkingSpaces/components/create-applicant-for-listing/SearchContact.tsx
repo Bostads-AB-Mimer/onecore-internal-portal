@@ -10,11 +10,12 @@ import { useState, useMemo, useCallback } from 'react'
 import * as utils from '../../../../utils'
 import { useSearchContacts } from '../../hooks/useSearchContacts'
 import { ContactSearchData } from './types'
+import { mdTheme } from '../../../../theme'
 
 type SearchContactProps = {
   placeholder?: string
-  onSelect: (contact: ContactSearchData | undefined) => void
-  contact?: ContactSearchData
+  onSelect: (contact: ContactSearchData | null) => void
+  contact: ContactSearchData | null
 }
 
 export const SearchContact = ({
@@ -49,7 +50,7 @@ export const SearchContact = ({
         filterOptions={(v) => v}
         options={contactsQuery.data ?? []}
         onInputChange={(_, v) => handleSearch(v)}
-        onChange={(_, v) => onSelect(v || undefined)}
+        onChange={(_, v) => onSelect(v || null)}
         getOptionKey={(v) => v.contactCode}
         value={contact}
         ListboxProps={{ style: { maxHeight: 125 } }}
@@ -69,6 +70,29 @@ export const SearchContact = ({
             fullWidth
           />
         )}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            fontSize: '16px',
+            paddingTop: '2px',
+            paddingBottom: '2px',
+            color: '#000',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: mdTheme.palette.warmGrey.main,
+              borderRadius: '6px',
+              borderWidth: '1.5px',
+            },
+            '&.Mui-focused': {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderWidth: '1.5px',
+                borderColor: '#2e2e2e',
+              },
+            },
+            '& .MuiInputLabel-outlined': {
+              color: '#2e2e2e',
+              '&.Mui-focused': {},
+            },
+          },
+        }}
       />
     </Box>
   )

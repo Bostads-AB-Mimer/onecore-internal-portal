@@ -26,9 +26,8 @@ export type Inputs = {
 }
 
 const ResidencesPage: React.FC = () => {
-  const [selectedContact, setSelectedContact] = useState<
-    ContactSearchData | undefined
-  >(undefined)
+  const [selectedContact, setSelectedContact] =
+    useState<ContactSearchData | null>(null)
 
   const { handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
