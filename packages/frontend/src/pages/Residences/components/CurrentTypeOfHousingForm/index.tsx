@@ -26,22 +26,26 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
   }
 
   return (
-    <Controller
-      name="housingType"
-      control={control}
-      shouldUnregister={true}
-      defaultValue=""
-      render={({ field }) => (
-        <>
-          <FormControl fullWidth>
-            <Typography paddingBottom={1} variant="h2">
-              Boendeform *
-            </Typography>
+    <>
+      <Typography paddingBottom={1} variant="h2">
+        Boendeform *
+      </Typography>
 
+      <Controller
+        name="housingType"
+        control={control}
+        shouldUnregister={true}
+        defaultValue=""
+        rules={{
+          required: { value: true, message: 'Du behöver välja en boendeform' },
+        }}
+        render={({ field }) => (
+          <FormControl fullWidth>
             <Select fullWidth size="small" displayEmpty {...field}>
               <MenuItem value="" disabled>
                 Välj ur lista
               </MenuItem>
+
               <MenuItem value={HousingTypes.RENTAL}>Hyresrätt</MenuItem>
               <MenuItem value={HousingTypes.SUB_RENTAL}>Andrahand</MenuItem>
               <MenuItem value={HousingTypes.LIVES_WITH_FAMILY}>
@@ -57,12 +61,12 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
               </MenuItem>
               <MenuItem value={HousingTypes.OTHER}>Övrigt/annat</MenuItem>
             </Select>
-          </FormControl>
 
-          {tabs[field.value]}
-        </>
-      )}
-    />
+            {tabs[field.value]}
+          </FormControl>
+        )}
+      />
+    </>
   )
 }
 
