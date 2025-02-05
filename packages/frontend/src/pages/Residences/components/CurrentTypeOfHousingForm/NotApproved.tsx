@@ -38,7 +38,7 @@ const Rejected = ({ control }: Props) => (
             {...field}
           >
             <MenuItem value="" disabled>
-              Välj
+              Välj ur lista
             </MenuItem>
 
             <MenuItem value={RejectedReasons.DEBT_TO_LANDLORD}>Skuld</MenuItem>
