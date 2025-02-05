@@ -23,7 +23,7 @@ const Rejected = ({ control }: Props) => (
     <Controller
       name="rejectedReason"
       control={control}
-      shouldUnregister={true}
+      shouldUnregister
       defaultValue=""
       rules={{
         required: { value: true, message: 'Du behöver välja en anledning' },
