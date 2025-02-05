@@ -20,7 +20,6 @@ import CommentForm from './components/AdditionalNotesForm'
 import CustomerReference from './components/CustomerReference'
 
 export enum RejectedReasons {
-  DEFAULT_VALUE = 'Välj anledning',
   DISTURBANCE = 'DISTURBANCE',
   LATE_RENT_PAYMENT = 'LATE_RENT_PAYMENT',
   DEBT_TO_LANDLORD = 'DEBT_TO_LANDLORD',
@@ -55,7 +54,7 @@ export type Inputs = {
   email: string
   comment: string
   reviewStatus: ReviewStatus
-  rejectedReason: RejectedReasons | null
+  rejectedReason: RejectedReasons | ''
   expiresAt: dayjs.Dayjs
 }
 
@@ -69,7 +68,6 @@ const ResidencesPage: React.FC = () => {
       numChildren: 0,
       housingType: HousingTypes.LODGER,
       reviewStatus: ReviewStatus.REJECTED,
-      rejectedReason: RejectedReasons.DEFAULT_VALUE,
       comment: 'Henlo this is the default comment',
       expiresAt: dayjs().add(1, 'month'),
     },

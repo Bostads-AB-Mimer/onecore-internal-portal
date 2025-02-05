@@ -1,6 +1,7 @@
 import {
   FormControl,
   FormHelperText,
+  InputLabel,
   MenuItem,
   Select,
   Typography,
@@ -19,13 +20,10 @@ const Rejected = ({ control }: Props) => (
     <Controller
       name="rejectedReason"
       control={control}
+      shouldUnregister={true}
+      defaultValue=""
       rules={{
-        // Since the design dictates we need to display the label as the first
-        // value in the <Select> we need this ugly hack...
-        pattern: {
-          value: RegExp(`^(?!${RejectedReasons.DEFAULT_VALUE}).*`),
-          message: 'Du behöver välja en anledning för att gå vidare',
-        },
+        required: { value: true, message: 'Du behöver välja en anledning' },
       }}
       render={({ field, fieldState }) => (
         <FormControl fullWidth>
@@ -33,9 +31,14 @@ const Rejected = ({ control }: Props) => (
             Anledning ej godkänd *
           </Typography>
 
-          <Select size="small" error={fieldState.invalid} {...field}>
-            <MenuItem value={RejectedReasons.DEFAULT_VALUE}>
-              Välj anledning
+          <Select
+            size="small"
+            error={fieldState.invalid}
+            displayEmpty
+            {...field}
+          >
+            <MenuItem value="" disabled>
+              Välj
             </MenuItem>
 
             <MenuItem value={RejectedReasons.DEBT_TO_LANDLORD}>Skuld</MenuItem>
