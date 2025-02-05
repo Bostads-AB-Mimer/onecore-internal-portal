@@ -16,9 +16,11 @@ import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-
 import CustomerInformation from './components/CustomerInformation'
 import CurrentTypeOfHousingForm from './components/CurrentTypeOfHousingForm'
 import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
-import AdditionalNotesForm from './components/AdditionalNotesForm'
+import CommentForm from './components/AdditionalNotesForm'
 import CustomerReference from './components/CustomerReference'
+
 export enum RejectedReasons {
+  DEFAULT_VALUE = 'Välj anledning',
   DISTURBANCE = 'DISTURBANCE',
   LATE_RENT_PAYMENT = 'LATE_RENT_PAYMENT',
   DEBT_TO_LANDLORD = 'DEBT_TO_LANDLORD',
@@ -53,7 +55,7 @@ export type Inputs = {
   email: string
   comment: string
   reviewStatus: ReviewStatus
-  rejectedReason: RejectedReasons
+  rejectedReason: RejectedReasons | null
   expiresAt: dayjs.Dayjs
 }
 
@@ -67,8 +69,8 @@ const ResidencesPage: React.FC = () => {
       numChildren: 0,
       housingType: HousingTypes.LODGER,
       reviewStatus: ReviewStatus.REJECTED,
-      rejectedReason: RejectedReasons.DEBT_TO_LANDLORD,
-      comment: 'hello',
+      rejectedReason: RejectedReasons.DEFAULT_VALUE,
+      comment: 'Henlo this is the default comment',
       expiresAt: dayjs().add(1, 'month'),
     },
   })
@@ -111,7 +113,7 @@ const ResidencesPage: React.FC = () => {
                     validUntil="2024-07-01"
                   />
 
-                  <AdditionalNotesForm control={control} />
+                  <CommentForm control={control} />
                 </Grid>
 
                 <Grid

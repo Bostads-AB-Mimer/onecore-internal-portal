@@ -1,4 +1,10 @@
-import { FormControl, MenuItem, Select, Typography } from '@mui/material'
+import {
+  FormControl,
+  FormHelperText,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { Control, Controller } from 'react-hook-form'
 
@@ -10,17 +16,26 @@ type Props = {
 
 const Rejected = ({ control }: Props) => (
   <>
-    <FormControl fullWidth>
-      <Typography paddingBottom={1} variant="h2">
-        Anledning ej godkänd *
-      </Typography>
+    <Controller
+      name="rejectedReason"
+      control={control}
+      rules={{
+        pattern: {
+          value: RegExp(`^(?!${RejectedReasons.DEFAULT_VALUE}).*`),
+          message: 'Du behöver välja en anledning för att gå vidare',
+        },
+      }}
+      render={({ field, fieldState }) => (
+        <FormControl fullWidth>
+          <Typography paddingBottom={1} variant="h2">
+            Anledning ej godkänd *
+          </Typography>
 
-      <Controller
-        name="rejectedReason"
-        control={control}
-        render={({ field }) => (
-          <Select size="small" {...field}>
-            <MenuItem value="">Välj anledning</MenuItem>
+          <Select size="small" error={fieldState.invalid} {...field}>
+            <MenuItem value={RejectedReasons.DEFAULT_VALUE}>
+              Välj anledning
+            </MenuItem>
+
             <MenuItem value={RejectedReasons.DEBT_TO_LANDLORD}>Skuld</MenuItem>
             <MenuItem value={RejectedReasons.DISTURBANCE}>Störningar</MenuItem>
             <MenuItem value={RejectedReasons.LATE_RENT_PAYMENT}>
@@ -28,21 +43,27 @@ const Rejected = ({ control }: Props) => (
             </MenuItem>
             <MenuItem value={RejectedReasons.MISMANAGEMENT}>Vanvård</MenuItem>
           </Select>
-        )}
-      />
-    </FormControl>
 
-    <FormControl fullWidth>
-      <Typography paddingBottom={1} variant="h2">
-        Ej godkänd till och med *
-      </Typography>
+          <FormHelperText>{fieldState.error?.message}</FormHelperText>
+        </FormControl>
+      )}
+    />
 
-      <Controller
-        name="expiresAt"
-        control={control}
-        render={({ field }) => <DatePicker format="YYYY-MM-DD" {...field} />}
-      />
-    </FormControl>
+    <Controller
+      name="expiresAt"
+      control={control}
+      render={({ field, fieldState }) => (
+        <FormControl fullWidth>
+          <Typography paddingBottom={1} variant="h2">
+            Ej godkänd till och med *
+          </Typography>
+
+          <DatePicker format="YYYY-MM-DD" {...field} />
+
+          <FormHelperText>{fieldState.error?.message}</FormHelperText>
+        </FormControl>
+      )}
+    />
   </>
 )
 

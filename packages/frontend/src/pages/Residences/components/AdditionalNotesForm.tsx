@@ -2,16 +2,14 @@ import { FormControl, TextareaAutosize, Typography } from '@mui/material'
 import React from 'react'
 import { Control, Controller } from 'react-hook-form'
 
-interface AdditionalNotesFormProps {
+interface CommentFormProps {
   control: Control<any>
 }
 
-const AdditionalNotesForm: React.FC<AdditionalNotesFormProps> = ({
-  control,
-}) => {
+const CommentForm: React.FC<CommentFormProps> = ({ control }) => {
   return (
     <Controller
-      name="notes"
+      name="comment"
       control={control}
       render={({ field }) => (
         <FormControl fullWidth>
@@ -25,4 +23,4 @@ const AdditionalNotesForm: React.FC<AdditionalNotesFormProps> = ({
   )
 }
 
-export default AdditionalNotesForm
+export default CommentForm
