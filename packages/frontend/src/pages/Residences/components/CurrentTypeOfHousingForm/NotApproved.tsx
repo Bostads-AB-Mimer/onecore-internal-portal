@@ -1,7 +1,6 @@
 import {
   FormControl,
   FormHelperText,
-  InputLabel,
   MenuItem,
   Select,
   Typography,
@@ -17,6 +16,10 @@ type Props = {
 
 const Rejected = ({ control }: Props) => (
   <>
+    <Typography paddingBottom={1} variant="h2">
+      Anledning ej godkänd *
+    </Typography>
+
     <Controller
       name="rejectedReason"
       control={control}
@@ -27,10 +30,6 @@ const Rejected = ({ control }: Props) => (
       }}
       render={({ field, fieldState }) => (
         <FormControl fullWidth>
-          <Typography paddingBottom={1} variant="h2">
-            Anledning ej godkänd *
-          </Typography>
-
           <Select
             size="small"
             error={fieldState.invalid}
@@ -54,15 +53,15 @@ const Rejected = ({ control }: Props) => (
       )}
     />
 
+    <Typography paddingBottom={1} variant="h2">
+      Ej godkänd till och med *
+    </Typography>
+
     <Controller
       name="expiresAt"
       control={control}
       render={({ field, fieldState }) => (
         <FormControl fullWidth>
-          <Typography paddingBottom={1} variant="h2">
-            Ej godkänd till och med *
-          </Typography>
-
           <DatePicker format="YYYY-MM-DD" {...field} />
 
           <FormHelperText>{fieldState.error?.message}</FormHelperText>
