@@ -41,12 +41,7 @@ const Rejected = ({ control }: Props) => (
       <Controller
         name="expiresAt"
         control={control}
-        render={({ field }) => (
-          <DatePicker
-            // defaultValue={dayjs('2022-01-04')} // why no workie?
-            {...field}
-          />
-        )}
+        render={({ field }) => <DatePicker format="YYYY-MM-DD" {...field} />}
       />
     </FormControl>
   </>

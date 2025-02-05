@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import dayjs from 'dayjs'
 
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
@@ -17,7 +18,6 @@ import CurrentTypeOfHousingForm from './components/CurrentTypeOfHousingForm'
 import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
 import CustomerReference from './components/CustomerReference'
-
 export enum RejectedReasons {
   DISTURBANCE = 'DISTURBANCE',
   LATE_RENT_PAYMENT = 'LATE_RENT_PAYMENT',
@@ -54,7 +54,7 @@ export type Inputs = {
   comment: string
   reviewStatus: ReviewStatus
   rejectedReason: RejectedReasons
-  expiresAt: string
+  expiresAt: dayjs.Dayjs
 }
 
 const ResidencesPage: React.FC = () => {
@@ -68,7 +68,8 @@ const ResidencesPage: React.FC = () => {
       housingType: HousingTypes.LODGER,
       reviewStatus: ReviewStatus.REJECTED,
       rejectedReason: RejectedReasons.DEBT_TO_LANDLORD,
-      comment: '',
+      comment: 'hello',
+      expiresAt: dayjs().add(1, 'month'),
     },
   })
 
