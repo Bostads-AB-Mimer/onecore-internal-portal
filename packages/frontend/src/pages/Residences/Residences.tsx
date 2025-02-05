@@ -49,7 +49,7 @@ export type Inputs = {
   numAdults: number
   numChildren: number
   landlord: string
-  housingType: HousingTypes
+  housingType: HousingTypes | ''
   phone: string
   email: string
   comment: string
@@ -66,7 +66,6 @@ const ResidencesPage: React.FC = () => {
     defaultValues: {
       numAdults: 2,
       numChildren: 0,
-      housingType: HousingTypes.LODGER,
       reviewStatus: ReviewStatus.REJECTED,
       comment: 'Henlo this is the default comment',
       expiresAt: dayjs().add(1, 'month'),

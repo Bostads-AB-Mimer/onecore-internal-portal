@@ -29,6 +29,8 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
     <Controller
       name="housingType"
       control={control}
+      shouldUnregister={true}
+      defaultValue=""
       render={({ field }) => (
         <>
           <FormControl fullWidth>
@@ -36,8 +38,10 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
               Boendeform *
             </Typography>
 
-            <Select fullWidth size="small" {...field}>
-              <MenuItem value="">Välj ur lista</MenuItem>
+            <Select fullWidth size="small" displayEmpty {...field}>
+              <MenuItem value="" disabled>
+                Välj ur lista
+              </MenuItem>
               <MenuItem value={HousingTypes.RENTAL}>Hyresrätt</MenuItem>
               <MenuItem value={HousingTypes.SUB_RENTAL}>Andrahand</MenuItem>
               <MenuItem value={HousingTypes.LIVES_WITH_FAMILY}>
