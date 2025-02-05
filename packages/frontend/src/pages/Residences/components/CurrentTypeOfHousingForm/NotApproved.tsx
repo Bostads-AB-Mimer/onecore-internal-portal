@@ -20,6 +20,8 @@ const Rejected = ({ control }: Props) => (
       name="rejectedReason"
       control={control}
       rules={{
+        // Since the design dictates we need to display the label as the first
+        // value in the <Select> we need this ugly hack...
         pattern: {
           value: RegExp(`^(?!${RejectedReasons.DEFAULT_VALUE}).*`),
           message: 'Du behöver välja en anledning för att gå vidare',
