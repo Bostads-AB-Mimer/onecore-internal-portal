@@ -18,11 +18,43 @@ import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
 import AdditionalNotesForm from './components/AdditionalNotesForm'
 import CustomerReference from './components/CustomerReference'
 
+export enum RejectedReasons {
+  DISTURBANCE = 'DISTURBANCE',
+  LATE_RENT_PAYMENT = 'LATE_RENT_PAYMENT',
+  DEBT_TO_LANDLORD = 'DEBT_TO_LANDLORD',
+  MISMANAGEMENT = 'MISMANAGEMENT',
+}
+
+export enum HousingTypes {
+  LIVES_WITH_FAMILY = 'LIVES_WITH_FAMILY',
+  LODGER = 'LODGER',
+  RENTAL = 'RENTAL',
+  SUB_RENTAL = 'SUB_RENTAL',
+  OWNS_HOUSE = 'OWNS_HOUSE',
+  OWNS_FLAT = 'OWNS_FLAT',
+  OWNS_ROW_HOUSE = 'OWNS_ROW_HOUSE',
+  OTHER = 'OTHER',
+}
+
+export enum ReviewStatus {
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  CONTACTED_UNREACHABLE = 'CONTACTED_UNREACHABLE',
+  PENDING = 'PENDING',
+  REFERENCE_NOT_REQUIRED = 'REFERENCE_NOT_REQUIRED',
+}
+
 export type Inputs = {
-  currentTypeOfHousing: string
-  housingReferenceStatus: string
-  notApprovedReason: string
-  notes: string
+  numAdults: number
+  numChildren: number
+  landlord: string
+  housingType: HousingTypes
+  phone: string
+  email: string
+  comment: string
+  reviewStatus: ReviewStatus
+  rejectedReason: RejectedReasons
+  expiresAt: string
 }
 
 const ResidencesPage: React.FC = () => {
@@ -31,10 +63,12 @@ const ResidencesPage: React.FC = () => {
 
   const { handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
-      currentTypeOfHousing: '-1',
-      housingReferenceStatus: 'not-approved',
-      notApprovedReason: '-1',
-      notes: '',
+      numAdults: 2,
+      numChildren: 0,
+      housingType: HousingTypes.LODGER,
+      reviewStatus: ReviewStatus.REJECTED,
+      rejectedReason: RejectedReasons.DEBT_TO_LANDLORD,
+      comment: '',
     },
   })
 

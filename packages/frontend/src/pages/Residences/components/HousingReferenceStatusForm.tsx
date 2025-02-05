@@ -9,7 +9,7 @@ import {
 import React from 'react'
 import { Control, Controller } from 'react-hook-form'
 
-import { Inputs } from '../Residences'
+import { Inputs, ReviewStatus } from '../Residences'
 import NotApproved from './CurrentTypeOfHousingForm/NotApproved'
 
 type Props = {
@@ -22,15 +22,15 @@ const HousingReferenceStatusForm = ({ control }: Props) => {
   const tabs: {
     [key: string]: JSX.Element | undefined
   } = {
-    approved: undefined,
-    'not-approved': <NotApproved control={control} />,
-    'contacted-no-response': undefined,
-    'no-reference-required': undefined,
+    [ReviewStatus.APPROVED]: undefined,
+    [ReviewStatus.REJECTED]: <NotApproved control={control} />,
+    [ReviewStatus.CONTACTED_UNREACHABLE]: undefined,
+    [ReviewStatus.REFERENCE_NOT_REQUIRED]: undefined,
   }
 
   return (
     <Controller
-      name="housingReferenceStatus"
+      name="reviewStatus"
       control={control}
       render={({ field }) => (
         <>
@@ -39,22 +39,22 @@ const HousingReferenceStatusForm = ({ control }: Props) => {
 
             <RadioGroup row={isMinWidth600} {...field}>
               <FormControlLabel
-                value="approved"
+                value={ReviewStatus.APPROVED}
                 control={<Radio />}
                 label="Godkänd"
               />
               <FormControlLabel
-                value="not-approved"
+                value={ReviewStatus.REJECTED}
                 control={<Radio />}
                 label="Ej godkänd"
               />
               <FormControlLabel
-                value="contacted-no-response"
+                value={ReviewStatus.CONTACTED_UNREACHABLE}
                 control={<Radio />}
                 label="Kontaktad - ej svar"
               />
               <FormControlLabel
-                value="no-reference-required"
+                value={ReviewStatus.REFERENCE_NOT_REQUIRED}
                 control={<Radio />}
                 label="Referens krävs ej"
               />

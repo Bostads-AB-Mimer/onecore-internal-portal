@@ -5,7 +5,7 @@ import { Control, Controller } from 'react-hook-form'
 import IsRenter from './IsRenter'
 import IsOwner from './IsOwner'
 import IsOther from './IsOther'
-import { Inputs } from '../../Residences'
+import { HousingTypes, Inputs } from '../../Residences'
 
 type Props = {
   control: Control<Inputs, any>
@@ -15,19 +15,19 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
   const tabs: {
     [key: string]: JSX.Element | undefined
   } = {
-    'rental-apartment': <IsRenter />,
-    'sublet-apartment': <IsRenter />,
-    'lives-with-parents': <IsOwner />,
-    'living-with-tenant': <IsOwner />,
-    'owns-villa': <IsOwner />,
-    'owns-condominium': <IsOwner />,
-    'owns-townhouse': <IsOwner />,
-    other: <IsOther />,
+    [HousingTypes.RENTAL]: <IsRenter control={control} />,
+    [HousingTypes.SUB_RENTAL]: <IsRenter control={control} />,
+    [HousingTypes.LIVES_WITH_FAMILY]: <IsOwner />,
+    [HousingTypes.LODGER]: <IsOwner />,
+    [HousingTypes.OWNS_HOUSE]: <IsOwner />,
+    [HousingTypes.OWNS_FLAT]: <IsOwner />,
+    [HousingTypes.OWNS_ROW_HOUSE]: <IsOwner />,
+    [HousingTypes.OTHER]: <IsOther />,
   }
 
   return (
     <Controller
-      name="currentTypeOfHousing"
+      name="housingType"
       control={control}
       render={({ field }) => (
         <>
@@ -36,19 +36,22 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
               Boendeform *
             </Typography>
 
-            <Select size="small" {...field}>
-              <MenuItem key={0} value={-1}>
-                Välj ur lista
+            <Select fullWidth size="small" {...field}>
+              <MenuItem value="">Välj ur lista</MenuItem>
+              <MenuItem value={HousingTypes.RENTAL}>Hyresrätt</MenuItem>
+              <MenuItem value={HousingTypes.SUB_RENTAL}>Andrahand</MenuItem>
+              <MenuItem value={HousingTypes.LIVES_WITH_FAMILY}>
+                Bor hos förälder
               </MenuItem>
-
-              <MenuItem value="rental-apartment">Hyresrätt</MenuItem>
-              <MenuItem value="sublet-apartment">Andrahand</MenuItem>
-              <MenuItem value="lives-with-parents">Bor hos förälder</MenuItem>
-              <MenuItem value="living-with-tenant">Inneboende</MenuItem>
-              <MenuItem value="owns-villa">Äger villa</MenuItem>
-              <MenuItem value="owns-condominium">Äger bostadsrätt</MenuItem>
-              <MenuItem value="owns-townhouse">Äger radhus</MenuItem>
-              <MenuItem value="other">Övrigt/annat</MenuItem>
+              <MenuItem value={HousingTypes.LODGER}>Inneboende</MenuItem>
+              <MenuItem value={HousingTypes.OWNS_HOUSE}>Äger villa</MenuItem>
+              <MenuItem value={HousingTypes.OWNS_FLAT}>
+                Äger bostadsrätt
+              </MenuItem>
+              <MenuItem value={HousingTypes.OWNS_ROW_HOUSE}>
+                Äger radhus
+              </MenuItem>
+              <MenuItem value={HousingTypes.OTHER}>Övrigt/annat</MenuItem>
             </Select>
           </FormControl>
 

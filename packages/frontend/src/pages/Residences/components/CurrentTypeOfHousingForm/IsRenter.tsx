@@ -1,6 +1,13 @@
 import { Grid, FormControl, Typography, TextField } from '@mui/material'
+import { Control, Controller } from 'react-hook-form'
 
-const OwnsVilla: React.FC = () => {
+import { Inputs } from '../../Residences'
+
+type Props = {
+  control: Control<Inputs, any>
+}
+
+const IsRenter: React.FC<Props> = ({ control }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -9,7 +16,17 @@ const OwnsVilla: React.FC = () => {
             Hyresvärd *
           </Typography>
 
-          <TextField size="small" placeholder="Namn på nuvarande hyresvärd" />
+          <Controller
+            name="landlord"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                size="small"
+                placeholder="Namn på nuvarande hyresvärd"
+                {...field}
+              />
+            )}
+          />
         </FormControl>
       </Grid>
 
@@ -19,12 +36,18 @@ const OwnsVilla: React.FC = () => {
             Antal vuxna i hushåll *
           </Typography>
 
-          <TextField
-            type="number"
-            name="adult-count"
-            size="small"
-            defaultValue={1}
-            InputProps={{ inputProps: { min: 1 } }}
+          <Controller
+            name="numAdults"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                type="number"
+                size="small"
+                defaultValue={field.value}
+                InputProps={{ inputProps: { min: 1 } }}
+                {...field}
+              />
+            )}
           />
         </FormControl>
       </Grid>
@@ -35,12 +58,18 @@ const OwnsVilla: React.FC = () => {
             Antal barn i hushåll *
           </Typography>
 
-          <TextField
-            type="number"
-            name="children-count"
-            size="small"
-            defaultValue={0}
-            InputProps={{ inputProps: { min: 0 } }}
+          <Controller
+            name="numChildren"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                type="number"
+                size="small"
+                defaultValue={0}
+                InputProps={{ inputProps: { min: 0 } }}
+                {...field}
+              />
+            )}
           />
         </FormControl>
       </Grid>
@@ -51,7 +80,13 @@ const OwnsVilla: React.FC = () => {
             Telefonnummer hyresvärd *
           </Typography>
 
-          <TextField size="small" type="tel" />
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <TextField size="small" type="tel" {...field} />
+            )}
+          />
         </FormControl>
       </Grid>
 
@@ -61,11 +96,17 @@ const OwnsVilla: React.FC = () => {
             Mejladress hyresvärd
           </Typography>
 
-          <TextField size="small" type="email" />
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <TextField size="small" type="email" {...field} />
+            )}
+          />
         </FormControl>
       </Grid>
     </Grid>
   )
 }
 
-export default OwnsVilla
+export default IsRenter
