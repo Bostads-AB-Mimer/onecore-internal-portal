@@ -1,7 +1,6 @@
 import { FormControl, MenuItem, Select, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { Control, Controller } from 'react-hook-form'
-import dayjs from 'dayjs'
 
 import { Inputs, RejectedReasons } from '../../Residences'
 
