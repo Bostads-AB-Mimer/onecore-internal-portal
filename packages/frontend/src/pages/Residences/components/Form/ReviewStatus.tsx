@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   FormControl,
   FormControlLabel,
@@ -6,22 +7,21 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material'
-import React from 'react'
 import { Control, Controller } from 'react-hook-form'
 
-import { Inputs, ReviewStatus } from '../Residences'
-import { default as RejectedReasonField } from './Form/RejectedReason'
-import { default as ExpiresAtField } from './Form/ExpiresAt'
+import { Inputs, ReviewStatus as ReviewStatusEnum } from '../../Residences'
+import { default as RejectedReasonField } from './RejectedReason'
+import { default as ExpiresAtField } from './ExpiresAt'
 
 type Props = {
   control: Control<Inputs, any>
 }
 
-const HousingReferenceStatusForm = ({ control }: Props) => {
+const ReviewStatus = ({ control }: Props) => {
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
   const tabs: { [key: string]: JSX.Element } = {
-    [ReviewStatus.REJECTED]: (
+    [ReviewStatusEnum.REJECTED]: (
       <>
         <RejectedReasonField control={control} />
         <ExpiresAtField control={control} />
@@ -40,22 +40,22 @@ const HousingReferenceStatusForm = ({ control }: Props) => {
 
           <RadioGroup row={isMinWidth600} {...field}>
             <FormControlLabel
-              value={ReviewStatus.APPROVED}
+              value={ReviewStatusEnum.APPROVED}
               control={<Radio />}
               label="Godkänd"
             />
             <FormControlLabel
-              value={ReviewStatus.REJECTED}
+              value={ReviewStatusEnum.REJECTED}
               control={<Radio />}
               label="Ej godkänd"
             />
             <FormControlLabel
-              value={ReviewStatus.CONTACTED_UNREACHABLE}
+              value={ReviewStatusEnum.CONTACTED_UNREACHABLE}
               control={<Radio />}
               label="Kontaktad - ej svar"
             />
             <FormControlLabel
-              value={ReviewStatus.REFERENCE_NOT_REQUIRED}
+              value={ReviewStatusEnum.REFERENCE_NOT_REQUIRED}
               control={<Radio />}
               label="Referens krävs ej"
             />
@@ -68,4 +68,4 @@ const HousingReferenceStatusForm = ({ control }: Props) => {
   )
 }
 
-export default HousingReferenceStatusForm
+export default ReviewStatus

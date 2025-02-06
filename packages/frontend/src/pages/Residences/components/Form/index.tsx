@@ -28,7 +28,7 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
     [HousingTypes.OWNS_HOUSE]: <IsOwner control={control} />,
     [HousingTypes.OWNS_FLAT]: <IsOwner control={control} />,
     [HousingTypes.OWNS_ROW_HOUSE]: <IsOwner control={control} />,
-    [HousingTypes.OTHER]: <IsOther />,
+    [HousingTypes.OTHER]: <IsOther control={control} />,
   }
 
   return (
