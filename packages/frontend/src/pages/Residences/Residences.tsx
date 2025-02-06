@@ -71,7 +71,7 @@ const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
 
-  const { handleSubmit, watch, ...formMethods } = useForm<Inputs>()
+  const { handleSubmit, ...formMethods } = useForm<Inputs>()
 
   return (
     <Stack spacing={4} padding={0}>
@@ -86,11 +86,7 @@ const ResidencesPage: React.FC = () => {
           />
 
           <Paper elevation={3}>
-            <FormProvider
-              handleSubmit={handleSubmit}
-              watch={watch}
-              {...formMethods}
-            >
+            <FormProvider handleSubmit={handleSubmit} {...formMethods}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} padding={2}>
                   <Grid item xs={12}>
