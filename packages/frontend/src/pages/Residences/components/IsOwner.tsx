@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material'
 
-import NumAdults from './NumAdults'
-import NumChildren from './NumChildrent'
+import NumAdults from './Form/NumAdults'
+import NumChildren from './Form/NumChildrent'
 
 const IsOwner: React.FC = () => {
   return (

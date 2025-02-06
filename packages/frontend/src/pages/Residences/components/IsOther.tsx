@@ -1,9 +1,9 @@
 import { Grid } from '@mui/material'
 
-import NumAdults from './NumAdults'
-import NumChildren from './NumChildrent'
-import HousingReferencePhone from './HousingReferencePhone'
-import HousingTypeDescription from './HousingTypeDescription'
+import NumAdults from './Form/NumAdults'
+import NumChildren from './Form/NumChildrent'
+import HousingReferencePhone from './Form/HousingReferencePhone'
+import HousingTypeDescription from './Form/HousingTypeDescription'
 
 const IsOther: React.FC = () => (
   <Grid container spacing={2}>

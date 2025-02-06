@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material'
 
-import Landlord from './Landlord'
-import NumAdults from './NumAdults'
-import NumChildren from './NumChildrent'
-import HousingReferencePhone from './HousingReferencePhone'
-import HousingReferenceEmail from './HousingReferenceEmail'
+import Landlord from './Form/Landlord'
+import NumAdults from './Form/NumAdults'
+import NumChildren from './Form/NumChildrent'
+import HousingReferencePhone from './Form/HousingReferencePhone'
+import HousingReferenceEmail from './Form/HousingReferenceEmail'
 
 const IsRenter: React.FC = () => {
   return (
