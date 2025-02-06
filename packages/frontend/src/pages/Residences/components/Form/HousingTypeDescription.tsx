@@ -1,31 +1,26 @@
 import { FormControl, Typography, TextField } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
 
-const NumChildren: React.FC = () => {
+const HousingTypeDescription: React.FC = () => {
   const { control } = useFormContext()
 
   return (
     <Controller
-      name="numChildren"
+      name="housingTypeDescription"
       control={control}
-      defaultValue={0}
+      shouldUnregister
+      defaultValue=""
       render={({ field }) => (
         <FormControl fullWidth>
           <Typography paddingBottom={1} variant="h2">
-            Antal barn i hushåll *
+            Beskriv boende *
           </Typography>
 
-          <TextField
-            type="number"
-            variant="outlined"
-            size="small"
-            InputProps={{ inputProps: { min: 0 } }}
-            {...field}
-          />
+          <TextField size="small" {...field} />
         </FormControl>
       )}
     />
   )
 }
 
-export default NumChildren
+export default HousingTypeDescription

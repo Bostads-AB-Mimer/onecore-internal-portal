@@ -7,24 +7,22 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material'
-import { Control, Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
-import { Inputs, ReviewStatus as ReviewStatusEnum } from '../../Residences'
-import { default as RejectedReasonField } from './RejectedReason'
-import { default as ExpiresAtField } from './ExpiresAt'
+import { ReviewStatus as ReviewStatusEnum } from '../../Residences'
+import RejectedReason from './RejectedReason'
+import ExpiresAt from './ExpiresAt'
 
-type Props = {
-  control: Control<Inputs, any>
-}
+const ReviewStatus = () => {
+  const { control } = useFormContext()
 
-const ReviewStatus = ({ control }: Props) => {
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
   const tabs: { [key: string]: JSX.Element } = {
     [ReviewStatusEnum.REJECTED]: (
       <>
-        <RejectedReasonField control={control} />
-        <ExpiresAtField control={control} />
+        <RejectedReason />
+        <ExpiresAt />
       </>
     ),
   }

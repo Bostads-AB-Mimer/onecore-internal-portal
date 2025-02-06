@@ -1,13 +1,9 @@
 import { FormControl, Typography, TextField } from '@mui/material'
-import { Control, Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
-import { Inputs } from '../../Residences'
+const Landlord: React.FC = () => {
+  const { control } = useFormContext()
 
-type Props = {
-  control: Control<Inputs, any>
-}
-
-const Landlord: React.FC<Props> = ({ control }) => {
   return (
     <Controller
       name="landlord"

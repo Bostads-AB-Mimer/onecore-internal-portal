@@ -1,16 +1,14 @@
 import { FormControl, Typography, TextField } from '@mui/material'
-import { Controller, Control } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
-import { Inputs } from '../../Residences'
+const NumAdults: React.FC = () => {
+  const { control } = useFormContext()
 
-type Props = {
-  control: Control<Inputs, any>
-}
-
-const NumAdults: React.FC<Props> = () => {
   return (
     <Controller
       name="numAdults"
+      control={control}
+      defaultValue={1}
       render={({ field }) => (
         <FormControl fullWidth>
           <Typography paddingBottom={1} variant="h2">
