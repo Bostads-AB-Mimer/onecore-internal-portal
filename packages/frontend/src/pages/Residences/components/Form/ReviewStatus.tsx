@@ -10,28 +10,18 @@ import {
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { ReviewStatus as ReviewStatusEnum } from '../../Residences'
-import RejectedReason from './RejectedReason'
-import ExpiresAt from './ExpiresAt'
 
 const ReviewStatus = () => {
   const { control } = useFormContext()
 
   const isMinWidth600 = useMediaQuery('(min-width:600px)')
 
-  const tabs: { [key: string]: JSX.Element } = {
-    [ReviewStatusEnum.REJECTED]: (
-      <>
-        <RejectedReason />
-        <ExpiresAt />
-      </>
-    ),
-  }
-
   return (
     <Controller
       name="housingReference.reviewStatus"
       control={control}
       shouldUnregister
+      defaultValue={ReviewStatusEnum.REJECTED}
       render={({ field }) => (
         <FormControl fullWidth>
           <Typography variant="h2">Ange status boendereferens *</Typography>
@@ -58,8 +48,6 @@ const ReviewStatus = () => {
               label="Referens krävs ej"
             />
           </RadioGroup>
-
-          {tabs[field.value]}
         </FormControl>
       )}
     />

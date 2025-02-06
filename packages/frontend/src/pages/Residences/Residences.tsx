@@ -21,6 +21,8 @@ import CustomerReference from './components/CustomerReference'
 import IsRenter from './components/Form/IsRenter'
 import IsOther from './components/Form/IsOther'
 import IsOwner from './components/Form/IsOwner'
+import RejectedReason from './components/Form/RejectedReason'
+import ExpiresAt from './components/Form/ExpiresAt'
 
 export enum RejectedReasons {
   DISTURBANCE = 'DISTURBANCE',
@@ -66,7 +68,7 @@ export type Inputs = {
   numChildren: number
 }
 
-const _renderHousingTypeTab = (tab: string) => {
+const _renderHousingTypeTab = (tab: HousingTypes | '') => {
   switch (tab) {
     case HousingTypes.RENTAL:
       return <IsRenter />
@@ -89,28 +91,25 @@ const _renderHousingTypeTab = (tab: string) => {
   }
 }
 
+const _renderReviewStatusTab = (tab: ReviewStatus) => {
+  switch (tab) {
+    case ReviewStatus.REJECTED:
+      return (
+        <React.Fragment>
+          <RejectedReason />
+          <ExpiresAt />
+        </React.Fragment>
+      )
+    default:
+      return null
+  }
+}
+
 const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
 
-  const methods = useForm<Inputs>({
-    defaultValues: {
-      housingType: '',
-      housingTypeDescription: '',
-      housingReference: {
-        reviewStatus: ReviewStatus.REJECTED,
-        expiresAt: dayjs().add(1, 'month'),
-        email: '',
-        phone: '',
-        comment: '',
-        lastAdminUpdatedAt: dayjs(),
-        lastApplicantUpdatedAt: dayjs(),
-        reasonRejected: '',
-      },
-    },
-  })
-
-  const selectedHousingTypeTab = methods.watch('housingType')
+  const { handleSubmit, watch, ...formMethods } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
@@ -127,8 +126,12 @@ const ResidencesPage: React.FC = () => {
           />
 
           <Paper elevation={3}>
-            <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <FormProvider
+              handleSubmit={handleSubmit}
+              watch={watch}
+              {...formMethods}
+            >
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} padding={2}>
                   <Grid item xs={12}>
                     <CustomerInformation
@@ -140,11 +143,15 @@ const ResidencesPage: React.FC = () => {
 
                     <CurrentTypeOfHousing />
 
-                    {_renderHousingTypeTab(selectedHousingTypeTab)}
+                    {_renderHousingTypeTab(watch('housingType'))}
 
                     <Divider />
 
                     <HousingReferenceStatus />
+
+                    {_renderReviewStatusTab(
+                      watch('housingReference.reviewStatus')
+                    )}
 
                     <CustomerReference
                       customerReferenceReceivedAt="2024-01-01"
@@ -153,7 +160,7 @@ const ResidencesPage: React.FC = () => {
                       validUntil="2024-07-01"
                     />
 
-                    <Comment control={methods.control} />
+                    <Comment />
                   </Grid>
 
                   <Grid
