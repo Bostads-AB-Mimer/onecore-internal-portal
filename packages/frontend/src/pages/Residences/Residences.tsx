@@ -15,7 +15,7 @@ import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
 import CustomerInformation from './components/CustomerInformation'
 import CurrentTypeOfHousingForm from './components/Form'
-import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
+import HousingReferenceStatusForm from './components/Form/ReviewStatus'
 import Comment from './components/Form/Comment'
 import CustomerReference from './components/CustomerReference'
 
