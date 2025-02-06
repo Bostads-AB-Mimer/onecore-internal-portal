@@ -2,7 +2,7 @@ import { FormControl, TextareaAutosize, Typography } from '@mui/material'
 import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-const Comment: React.FC = () => {
+const HousingReferenceComment: React.FC = () => {
   const { control } = useFormContext()
 
   return (
@@ -16,6 +16,7 @@ const Comment: React.FC = () => {
           <Typography variant="h2" paddingBottom={1}>
             Notering/kommentar
           </Typography>
+
           <TextareaAutosize {...field} minRows={3} />
         </FormControl>
       )}
@@ -23,4 +24,4 @@ const Comment: React.FC = () => {
   )
 }
 
-export default Comment
+export default HousingReferenceComment

@@ -14,15 +14,13 @@ import dayjs from 'dayjs'
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
 import CustomerInformation from './components/CustomerInformation'
-import CurrentTypeOfHousing from './components/Form/HousingType'
-import HousingReferenceStatus from './components/Form/ReviewStatus'
-import Comment from './components/Form/Comment'
+import HousingType from './components/Form/HousingType'
+import HousingReferenceReviewStatus from './components/Form/ReviewStatus'
+import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
-import ApplicantIsRenter from './components/ApplicantIsRenter'
-import ApplicantIsOther from './components/ApplicantIsOther'
-import ApplicantIsOwner from './components/ApplicantIsOwner'
 import RejectedReason from './components/Form/RejectedReason'
 import ExpiresAt from './components/Form/ExpiresAt'
+import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
 
 export enum RejectedReasons {
   DISTURBANCE = 'DISTURBANCE',
@@ -68,30 +66,7 @@ export type Inputs = {
   numChildren: number
 }
 
-const _renderHousingTypeTab = (tab: HousingTypes | '') => {
-  switch (tab) {
-    case HousingTypes.RENTAL:
-      return <ApplicantIsRenter />
-    case HousingTypes.SUB_RENTAL:
-      return <ApplicantIsRenter />
-    case HousingTypes.LIVES_WITH_FAMILY:
-      return <ApplicantIsOwner />
-    case HousingTypes.LODGER:
-      return <ApplicantIsOwner />
-    case HousingTypes.OWNS_HOUSE:
-      return <ApplicantIsOwner />
-    case HousingTypes.OWNS_FLAT:
-      return <ApplicantIsOwner />
-    case HousingTypes.OWNS_ROW_HOUSE:
-      return <ApplicantIsOwner />
-    case HousingTypes.OTHER:
-      return <ApplicantIsOther />
-    default:
-      return null
-  }
-}
-
-const _renderReviewStatusTab = (tab: ReviewStatus) => {
+const renderReviewStatusTab = (tab: ReviewStatus) => {
   switch (tab) {
     case ReviewStatus.REJECTED:
       return (
@@ -105,13 +80,13 @@ const _renderReviewStatusTab = (tab: ReviewStatus) => {
   }
 }
 
+const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
 const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
 
   const { handleSubmit, watch, ...formMethods } = useForm<Inputs>()
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
   return (
     <Stack spacing={4} padding={0}>
@@ -141,15 +116,14 @@ const ResidencesPage: React.FC = () => {
                       phoneNumber="0720-123 45 67"
                     />
 
-                    <CurrentTypeOfHousing />
-
-                    {_renderHousingTypeTab(watch('housingType'))}
+                    <HousingType />
+                    <HousingTypeComponentSwitcher />
 
                     <Divider />
 
-                    <HousingReferenceStatus />
+                    <HousingReferenceReviewStatus />
 
-                    {_renderReviewStatusTab(
+                    {renderReviewStatusTab(
                       watch('housingReference.reviewStatus')
                     )}
 
@@ -160,7 +134,7 @@ const ResidencesPage: React.FC = () => {
                       validUntil="2024-07-01"
                     />
 
-                    <Comment />
+                    <HousingReferenceComment />
                   </Grid>
 
                   <Grid
