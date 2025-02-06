@@ -18,9 +18,8 @@ import HousingType from './components/Form/HousingType'
 import HousingReferenceReviewStatus from './components/Form/ReviewStatus'
 import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
-import RejectedReason from './components/Form/RejectedReason'
-import ExpiresAt from './components/Form/ExpiresAt'
 import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
+import HousingReferenceReviewStatusComponentSwitcher from './components/HousingReferenceReviewStatusComponentSwitcher'
 
 export enum RejectedReasons {
   DISTURBANCE = 'DISTURBANCE',
@@ -66,20 +65,6 @@ export type Inputs = {
   numChildren: number
 }
 
-const renderReviewStatusTab = (tab: ReviewStatus) => {
-  switch (tab) {
-    case ReviewStatus.REJECTED:
-      return (
-        <React.Fragment>
-          <RejectedReason />
-          <ExpiresAt />
-        </React.Fragment>
-      )
-    default:
-      return null
-  }
-}
-
 const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
 const ResidencesPage: React.FC = () => {
@@ -122,10 +107,7 @@ const ResidencesPage: React.FC = () => {
                     <Divider />
 
                     <HousingReferenceReviewStatus />
-
-                    {renderReviewStatusTab(
-                      watch('housingReference.reviewStatus')
-                    )}
+                    <HousingReferenceReviewStatusComponentSwitcher />
 
                     <CustomerReference
                       customerReferenceReceivedAt="2024-01-01"
