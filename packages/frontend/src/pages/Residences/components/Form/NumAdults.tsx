@@ -8,6 +8,7 @@ const NumAdults: React.FC = () => {
     <Controller
       name="numAdults"
       control={control}
+      shouldUnregister
       defaultValue={1}
       render={({ field }) => (
         <FormControl fullWidth>
