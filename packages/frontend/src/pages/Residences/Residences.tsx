@@ -18,9 +18,9 @@ import CurrentTypeOfHousing from './components/Form/HousingType'
 import HousingReferenceStatus from './components/Form/ReviewStatus'
 import Comment from './components/Form/Comment'
 import CustomerReference from './components/CustomerReference'
-import IsRenter from './components/IsRenter'
-import IsOther from './components/IsOther'
-import IsOwner from './components/IsOwner'
+import ApplicantIsRenter from './components/ApplicantIsRenter'
+import ApplicantIsOther from './components/ApplicantIsOther'
+import ApplicantIsOwner from './components/ApplicantIsOwner'
 import RejectedReason from './components/Form/RejectedReason'
 import ExpiresAt from './components/Form/ExpiresAt'
 
@@ -71,21 +71,21 @@ export type Inputs = {
 const _renderHousingTypeTab = (tab: HousingTypes | '') => {
   switch (tab) {
     case HousingTypes.RENTAL:
-      return <IsRenter />
+      return <ApplicantIsRenter />
     case HousingTypes.SUB_RENTAL:
-      return <IsRenter />
+      return <ApplicantIsRenter />
     case HousingTypes.LIVES_WITH_FAMILY:
-      return <IsOwner />
+      return <ApplicantIsOwner />
     case HousingTypes.LODGER:
-      return <IsOwner />
+      return <ApplicantIsOwner />
     case HousingTypes.OWNS_HOUSE:
-      return <IsOwner />
+      return <ApplicantIsOwner />
     case HousingTypes.OWNS_FLAT:
-      return <IsOwner />
+      return <ApplicantIsOwner />
     case HousingTypes.OWNS_ROW_HOUSE:
-      return <IsOwner />
+      return <ApplicantIsOwner />
     case HousingTypes.OTHER:
-      return <IsOther />
+      return <ApplicantIsOther />
     default:
       return null
   }
