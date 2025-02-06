@@ -14,9 +14,9 @@ import dayjs from 'dayjs'
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
 import CustomerInformation from './components/CustomerInformation'
-import CurrentTypeOfHousingForm from './components/CurrentTypeOfHousingForm'
+import CurrentTypeOfHousingForm from './components/Form'
 import HousingReferenceStatusForm from './components/HousingReferenceStatusForm'
-import CommentForm from './components/AdditionalNotesForm'
+import Comment from './components/Form/Comment'
 import CustomerReference from './components/CustomerReference'
 
 export enum RejectedReasons {
@@ -114,7 +114,7 @@ const ResidencesPage: React.FC = () => {
                     validUntil="2024-07-01"
                   />
 
-                  <CommentForm control={control} />
+                  <Comment control={control} />
                 </Grid>
 
                 <Grid

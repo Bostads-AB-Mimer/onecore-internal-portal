@@ -10,8 +10,8 @@ import React from 'react'
 import { Control, Controller } from 'react-hook-form'
 
 import { Inputs, ReviewStatus } from '../Residences'
-import { default as RejectedReasonField } from './CurrentTypeOfHousingForm/RejectedReason'
-import { default as ExpiresAtField } from './CurrentTypeOfHousingForm/ExpiresAt'
+import { default as RejectedReasonField } from './Form/RejectedReason'
+import { default as ExpiresAtField } from './Form/ExpiresAt'
 
 type Props = {
   control: Control<Inputs, any>

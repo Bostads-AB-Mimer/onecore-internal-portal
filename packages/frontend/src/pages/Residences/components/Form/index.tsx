@@ -23,11 +23,11 @@ const CurrentTypeOfHousingForm = ({ control }: Props) => {
   } = {
     [HousingTypes.RENTAL]: <IsRenter control={control} />,
     [HousingTypes.SUB_RENTAL]: <IsRenter control={control} />,
-    [HousingTypes.LIVES_WITH_FAMILY]: <IsOwner />,
-    [HousingTypes.LODGER]: <IsOwner />,
-    [HousingTypes.OWNS_HOUSE]: <IsOwner />,
-    [HousingTypes.OWNS_FLAT]: <IsOwner />,
-    [HousingTypes.OWNS_ROW_HOUSE]: <IsOwner />,
+    [HousingTypes.LIVES_WITH_FAMILY]: <IsOwner control={control} />,
+    [HousingTypes.LODGER]: <IsOwner control={control} />,
+    [HousingTypes.OWNS_HOUSE]: <IsOwner control={control} />,
+    [HousingTypes.OWNS_FLAT]: <IsOwner control={control} />,
+    [HousingTypes.OWNS_ROW_HOUSE]: <IsOwner control={control} />,
     [HousingTypes.OTHER]: <IsOther />,
   }
 
