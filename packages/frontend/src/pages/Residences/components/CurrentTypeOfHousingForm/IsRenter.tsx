@@ -19,6 +19,7 @@ const IsRenter: React.FC<Props> = ({ control }) => {
           name="landlord"
           control={control}
           shouldUnregister
+          defaultValue=""
           render={({ field }) => (
             <FormControl fullWidth>
               <TextField
@@ -40,12 +41,12 @@ const IsRenter: React.FC<Props> = ({ control }) => {
           name="numAdults"
           control={control}
           shouldUnregister
+          defaultValue={1}
           render={({ field }) => (
             <FormControl fullWidth>
               <TextField
                 type="number"
                 size="small"
-                defaultValue={field.value}
                 InputProps={{ inputProps: { min: 1 } }}
                 {...field}
               />
@@ -63,12 +64,12 @@ const IsRenter: React.FC<Props> = ({ control }) => {
           name="numChildren"
           control={control}
           shouldUnregister
+          defaultValue={0}
           render={({ field }) => (
             <FormControl fullWidth>
               <TextField
                 type="number"
                 size="small"
-                defaultValue={0}
                 InputProps={{ inputProps: { min: 0 } }}
                 {...field}
               />
@@ -83,9 +84,10 @@ const IsRenter: React.FC<Props> = ({ control }) => {
         </Typography>
 
         <Controller
-          name="phone"
+          name="housingReference.phone"
           control={control}
           shouldUnregister
+          defaultValue=""
           render={({ field }) => (
             <FormControl fullWidth>
               <TextField size="small" type="tel" {...field} />
@@ -100,9 +102,10 @@ const IsRenter: React.FC<Props> = ({ control }) => {
         </Typography>
 
         <Controller
-          name="email"
+          name="housingReference.email"
           control={control}
           shouldUnregister
+          defaultValue=""
           render={({ field }) => (
             <FormControl fullWidth>
               <TextField size="small" type="email" {...field} />

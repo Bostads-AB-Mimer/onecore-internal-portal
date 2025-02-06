@@ -46,16 +46,21 @@ export enum ReviewStatus {
 }
 
 export type Inputs = {
+  housingType: HousingTypes | ''
+  housingTypeDescription: string
+  housingReference: {
+    comment: string
+    email: string
+    expiresAt: dayjs.Dayjs
+    lastAdminUpdatedAt: Date
+    lastApplicantUpdatedAt: Date
+    phone: string
+    reasonRejected: RejectedReasons | ''
+    reviewStatus: ReviewStatus
+  }
+  landlord: string
   numAdults: number
   numChildren: number
-  landlord: string
-  housingType: HousingTypes | ''
-  phone: string
-  email: string
-  comment: string
-  reviewStatus: ReviewStatus
-  rejectedReason: RejectedReasons | ''
-  expiresAt: dayjs.Dayjs
 }
 
 const ResidencesPage: React.FC = () => {
@@ -64,11 +69,10 @@ const ResidencesPage: React.FC = () => {
 
   const { handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
-      numAdults: 2,
-      numChildren: 0,
-      reviewStatus: ReviewStatus.REJECTED,
-      comment: 'Henlo this is the default comment',
-      expiresAt: dayjs().add(1, 'month'),
+      housingReference: {
+        reviewStatus: ReviewStatus.REJECTED,
+        expiresAt: dayjs().add(1, 'month'),
+      },
     },
   })
 

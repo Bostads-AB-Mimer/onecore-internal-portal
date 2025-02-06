@@ -9,7 +9,7 @@ interface CommentFormProps {
 const CommentForm: React.FC<CommentFormProps> = ({ control }) => {
   return (
     <Controller
-      name="comment"
+      name="housingReference.comment"
       control={control}
       render={({ field }) => (
         <FormControl fullWidth>
