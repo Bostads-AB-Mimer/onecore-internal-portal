@@ -71,7 +71,25 @@ const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
 
-  const { handleSubmit, ...formMethods } = useForm<Inputs>()
+  const { handleSubmit, ...formMethods } = useForm<Inputs>({
+    defaultValues: {
+      housingType: '',
+      housingTypeDescription: '',
+      housingReference: {
+        comment: '',
+        email: '',
+        expiresAt: dayjs(),
+        lastAdminUpdatedAt: dayjs(),
+        lastApplicantUpdatedAt: dayjs(),
+        phone: '',
+        reasonRejected: '',
+        reviewStatus: ReviewStatus.REJECTED,
+      },
+      landlord: '',
+      numAdults: 0,
+      numChildren: 0,
+    },
+  })
 
   return (
     <Stack spacing={4} padding={0}>
