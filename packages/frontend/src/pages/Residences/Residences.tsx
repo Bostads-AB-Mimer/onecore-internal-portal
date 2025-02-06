@@ -66,7 +66,7 @@ export type Inputs = {
   numChildren: number
 }
 
-const _renderHousingTypeTab = (control: Control<Inputs, any>, tab: string) => {
+const _renderHousingTypeTab = (tab: string) => {
   switch (tab) {
     case HousingTypes.RENTAL:
       return <IsRenter />
@@ -140,10 +140,7 @@ const ResidencesPage: React.FC = () => {
 
                     <CurrentTypeOfHousing />
 
-                    {_renderHousingTypeTab(
-                      methods.control,
-                      selectedHousingTypeTab
-                    )}
+                    {_renderHousingTypeTab(selectedHousingTypeTab)}
 
                     <Divider />
 
