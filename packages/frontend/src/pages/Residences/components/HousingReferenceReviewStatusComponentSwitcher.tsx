@@ -1,9 +1,9 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { ReviewStatus } from '../Residences'
 import RejectedReason from './Form/RejectedReason'
 import ExpiresAt from './Form/ExpiresAt'
+import { ReviewStatus } from '../constants'
 
 const HousingReferenceReviewStatusComponentSwitcher = () => {
   const reviewStatus: ReviewStatus = useFormContext().watch(

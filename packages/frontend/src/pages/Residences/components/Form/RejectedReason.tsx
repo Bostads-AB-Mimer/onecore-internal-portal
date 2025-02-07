@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { RejectedReasons } from '../../Residences'
+import { RejectedReasons } from '../../constants'
 
 const RejectedReason = () => {
   const { control } = useFormContext()

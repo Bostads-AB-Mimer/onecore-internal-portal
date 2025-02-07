@@ -1,10 +1,10 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { HousingTypes } from '../Residences'
 import ApplicantIsRenter from './ApplicantIsRenter'
 import ApplicantIsOwner from './ApplicantIsOwner'
 import ApplicantIsOther from './ApplicantIsOther'
+import { HousingTypes } from '../constants'
 
 const HousingTypeComponentSwitcher = () => {
   const housingType: HousingTypes = useFormContext().watch('housingType')

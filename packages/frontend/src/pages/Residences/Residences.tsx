@@ -20,32 +20,7 @@ import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
 import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
 import HousingReferenceReviewStatusComponentSwitcher from './components/HousingReferenceReviewStatusComponentSwitcher'
-
-export enum RejectedReasons {
-  DISTURBANCE = 'DISTURBANCE',
-  LATE_RENT_PAYMENT = 'LATE_RENT_PAYMENT',
-  DEBT_TO_LANDLORD = 'DEBT_TO_LANDLORD',
-  MISMANAGEMENT = 'MISMANAGEMENT',
-}
-
-export enum HousingTypes {
-  LIVES_WITH_FAMILY = 'LIVES_WITH_FAMILY',
-  LODGER = 'LODGER',
-  RENTAL = 'RENTAL',
-  SUB_RENTAL = 'SUB_RENTAL',
-  OWNS_HOUSE = 'OWNS_HOUSE',
-  OWNS_FLAT = 'OWNS_FLAT',
-  OWNS_ROW_HOUSE = 'OWNS_ROW_HOUSE',
-  OTHER = 'OTHER',
-}
-
-export enum ReviewStatus {
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
-  CONTACTED_UNREACHABLE = 'CONTACTED_UNREACHABLE',
-  PENDING = 'PENDING',
-  REFERENCE_NOT_REQUIRED = 'REFERENCE_NOT_REQUIRED',
-}
+import { HousingTypes, RejectedReasons, ReviewStatus } from './constants'
 
 export type Inputs = {
   housingType: HousingTypes | ''
