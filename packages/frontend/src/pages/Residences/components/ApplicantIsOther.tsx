@@ -5,7 +5,7 @@ import NumChildren from './Form/NumChildrent'
 import HousingReferencePhone from './Form/HousingReferencePhone'
 import HousingTypeDescription from './Form/HousingTypeDescription'
 
-const IsOther: React.FC = () => (
+const ApplicantIsOther: React.FC = () => (
   <Grid container spacing={2}>
     <Grid item xs={12}>
       <HousingTypeDescription />
@@ -25,4 +25,4 @@ const IsOther: React.FC = () => (
   </Grid>
 )
 
-export default IsOther
+export default ApplicantIsOther

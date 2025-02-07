@@ -6,7 +6,7 @@ import NumChildren from './Form/NumChildrent'
 import HousingReferencePhone from './Form/HousingReferencePhone'
 import HousingReferenceEmail from './Form/HousingReferenceEmail'
 
-const IsRenter: React.FC = () => (
+const ApplicantIsRenter: React.FC = () => (
   <Grid container spacing={2}>
     <Grid item xs={12}>
       <Landlord />
@@ -30,4 +30,4 @@ const IsRenter: React.FC = () => (
   </Grid>
 )
 
-export default IsRenter
+export default ApplicantIsRenter
