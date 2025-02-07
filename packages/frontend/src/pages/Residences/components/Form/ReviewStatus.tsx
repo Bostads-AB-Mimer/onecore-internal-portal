@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { ReviewStatus as ReviewStatusEnum } from '../../Residences'
+import { ReviewStatus as ReviewStatusEnum } from '../../constants'
 
 const ReviewStatus = () => {
   const { control } = useFormContext()

@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { HousingTypes } from '../../Residences'
+import { HousingTypes } from '../../constants'
 
 const HousingType = () => {
   const { control } = useFormContext()
