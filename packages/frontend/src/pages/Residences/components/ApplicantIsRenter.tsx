@@ -2,7 +2,7 @@ import { Grid } from '@mui/material'
 
 import Landlord from './Form/Landlord'
 import NumAdults from './Form/NumAdults'
-import NumChildren from './Form/NumChildrent'
+import NumChildren from './Form/NumChildren'
 import HousingReferencePhone from './Form/HousingReferencePhone'
 import HousingReferenceEmail from './Form/HousingReferenceEmail'
 

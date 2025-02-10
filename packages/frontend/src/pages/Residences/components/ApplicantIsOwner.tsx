@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material'
 
 import NumAdults from './Form/NumAdults'
-import NumChildren from './Form/NumChildrent'
+import NumChildren from './Form/NumChildren'
 
 const ApplicantIsOwner: React.FC = () => (
   <Grid container spacing={2}>
