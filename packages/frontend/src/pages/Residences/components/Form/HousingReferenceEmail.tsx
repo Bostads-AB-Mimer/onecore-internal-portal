@@ -8,8 +8,8 @@ const HousingReferenceEmail: React.FC = () => {
     <Controller
       name="housingReference.email"
       control={control}
-      shouldUnregister
       defaultValue=""
+      shouldUnregister
       render={({ field }) => (
         <FormControl fullWidth>
           <Typography paddingBottom={1} variant="h2">

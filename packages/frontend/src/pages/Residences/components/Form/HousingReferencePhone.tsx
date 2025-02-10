@@ -3,12 +3,13 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 const HousingReferencePhone: React.FC = () => {
   const { control } = useFormContext()
+
   return (
     <Controller
       name="housingReference.phone"
       control={control}
-      shouldUnregister
       defaultValue=""
+      shouldUnregister
       render={({ field }) => (
         <FormControl fullWidth>
           <Typography paddingBottom={1} variant="h2">
