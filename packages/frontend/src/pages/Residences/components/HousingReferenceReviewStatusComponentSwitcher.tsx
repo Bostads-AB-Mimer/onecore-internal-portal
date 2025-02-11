@@ -1,16 +1,21 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
+import { schemas } from 'onecore-types'
+import { z } from 'zod'
 
 import RejectedReason from './Form/RejectedReason'
 import ExpiresAt from './Form/ExpiresAt'
-import { ReviewStatus } from '../constants'
+
+type ReviewStatus = z.infer<
+  typeof schemas.v1.HousingReferenceReviewStatusSchema
+>
 
 const HousingReferenceReviewStatusComponentSwitcher = () => {
   const reviewStatus: ReviewStatus = useFormContext().watch(
     'housingReference.reviewStatus'
   )
 
-  if (reviewStatus === ReviewStatus.REJECTED) {
+  if (reviewStatus === 'REJECTED') {
     return (
       <React.Fragment>
         <RejectedReason />

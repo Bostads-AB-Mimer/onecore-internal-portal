@@ -10,6 +10,8 @@ import {
 } from '@mui/material'
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
 import dayjs from 'dayjs'
+import { schemas } from 'onecore-types'
+import { z } from 'zod'
 
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
@@ -20,7 +22,18 @@ import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
 import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
 import HousingReferenceReviewStatusComponentSwitcher from './components/HousingReferenceReviewStatusComponentSwitcher'
-import { HousingTypes, RejectedReasons, ReviewStatus } from './constants'
+
+type HousingTypes = z.infer<
+  typeof schemas.v1.ApplicationProfileHousingTypeSchema
+>
+
+type RejectedReasons = z.infer<
+  typeof schemas.v1.HousingReferenceReasonRejectedSchema
+>
+
+type ReviewStatus = z.infer<
+  typeof schemas.v1.HousingReferenceReviewStatusSchema
+>
 
 export type Inputs = {
   housingType: HousingTypes | ''
@@ -58,7 +71,7 @@ const ResidencesPage: React.FC = () => {
         lastApplicantUpdatedAt: dayjs(),
         phone: '',
         reasonRejected: '',
-        reviewStatus: ReviewStatus.REJECTED,
+        reviewStatus: 'REJECTED',
       },
       landlord: '',
       numAdults: 1,
