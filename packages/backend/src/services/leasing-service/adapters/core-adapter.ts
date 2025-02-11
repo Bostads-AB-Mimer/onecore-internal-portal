@@ -10,9 +10,10 @@ import {
   OfferWithOfferApplicants,
   ReplyToOfferErrorCodes,
   Tenant,
+  schemas,
 } from 'onecore-types'
 import { AxiosError, HttpStatusCode } from 'axios'
-
+import { z } from 'zod'
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
 
@@ -391,6 +392,23 @@ const getActiveOfferByListingId = async (
   }
 }
 
+type ApplicationProfile = z.infer<typeof schemas.v1.ApplicationProfileSchema>
+
+type CustomerCard = {
+  applicationProfile: ApplicationProfile
+}
+
+const getContactCard = async (
+  contactCode: number
+): Promise<AdapterResult<CustomerCard, unknown>> => {
+  const result = await getFromCore<{ content: ApplicationProfile }>({
+    method: 'get',
+    url: `${coreBaseUrl}/contact/${contactCode}/application-profile`,
+  }).then((res) => res.data)
+
+  return { ok: true, data: { applicationProfile: result.content } }
+}
+
 export {
   getListingsWithApplicants,
   getListingWithApplicants,
@@ -407,4 +425,5 @@ export {
   acceptOffer,
   denyOffer,
   getActiveOfferByListingId,
+  getContactCard,
 }
