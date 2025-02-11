@@ -61,7 +61,7 @@ const ResidencesPage: React.FC = () => {
         reviewStatus: ReviewStatus.REJECTED,
       },
       landlord: '',
-      numAdults: 0,
+      numAdults: 1,
       numChildren: 0,
     },
   })
