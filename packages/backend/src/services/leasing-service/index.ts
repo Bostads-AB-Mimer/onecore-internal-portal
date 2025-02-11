@@ -281,4 +281,18 @@ export const routes = (router: KoaRouter) => {
       ctx.body = { error: result.err, ...metadata }
     }
   })
+
+  router.get('(.*)/contacts/:contactCode/customer-card', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx, ['q'])
+
+    const result = await coreAdapter.denyOffer(ctx.params.offerId)
+
+    if (result.ok) {
+      ctx.status = 200
+      ctx.body = { content: result.data, ...metadata }
+    } else {
+      ctx.status = result.statusCode
+      ctx.body = { error: result.err, ...metadata }
+    }
+  })
 }
