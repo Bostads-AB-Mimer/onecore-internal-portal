@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -152,11 +152,22 @@ export const CreateApplicantForListing = (props: Props) => {
                       <ContactInfo tenant={tenantQuery.data?.tenant ?? null} />
                     )}
                     {tenantQuery.isLoading && <ContactInfoLoading />}
-                    {tenantQuery.error && (
-                      <Typography color="error">
-                        Något gick fel. Kontakta support.
-                      </Typography>
-                    )}
+                    {tenantQuery.error &&
+                      tenantQuery.error?.response?.data?.type ===
+                        'no-valid-housing-contract' && (
+                        <Typography color="error">
+                          Kunden saknar giltigt bostadskontrakt. Det går endast
+                          att söka bilplats med gällande och kommande
+                          bostadskontrakt
+                        </Typography>
+                      )}
+                    {tenantQuery.error &&
+                      tenantQuery.error?.response?.data?.type !=
+                        'no-valid-housing-contract' && (
+                        <Typography color="error">
+                          Något gick fel. Kontakta support.
+                        </Typography>
+                      )}
                     <Box>
                       <Divider />
                     </Box>

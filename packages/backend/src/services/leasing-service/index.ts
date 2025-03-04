@@ -84,6 +84,19 @@ export const routes = (router: KoaRouter) => {
       const getTenant = await coreAdapter.getTenantByContactCode(
         ctx.params.contactCode
       )
+      if (!getTenant.ok && getTenant.err === 'no-valid-housing-contract') {
+        ctx.status = 403
+        ctx.body = {
+          // reason: 'no-valid-housing-contract',
+          // error: 'Valid housing contaract not found',
+          type: 'no-valid-housing-contract',
+          title: 'No valid housing contract found',
+          status: 403,
+          detail:
+            'A housing contract needs to be current or upcoming to be a valid contract when applying for a parking space.',
+        }
+        return
+      }
 
       if (!getTenant.ok) {
         ctx.status = 500
@@ -157,7 +170,7 @@ export const routes = (router: KoaRouter) => {
       })
 
       if (!validate.ok) {
-        ctx.status = 500
+        ctx.status = 403
         return
       }
 
