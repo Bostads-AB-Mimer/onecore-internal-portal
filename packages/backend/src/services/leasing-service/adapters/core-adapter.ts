@@ -134,9 +134,7 @@ const getTenantByContactCode = async (
     return { ok: true, data: result.content }
   } catch (err) {
     if (err instanceof AxiosError && err.response?.status === 500) {
-      if (err.response.data.type) {
-        return { ok: false, err: err.response.data.type, statusCode: 500 }
-      }
+      return { ok: false, err: err.response?.data?.type, statusCode: 500 }
     }
 
     return { ok: false, err, statusCode: 500 }

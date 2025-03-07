@@ -2,7 +2,7 @@ import KoaRouter from '@koa/router'
 import { generateRouteMetadata } from 'onecore-utilities'
 
 import * as coreAdapter from './adapters/core-adapter'
-import { LeaseStatus } from 'onecore-types'
+import { LeaseStatus, RouteErrorResponse } from 'onecore-types'
 
 export const routes = (router: KoaRouter) => {
   router.get('(.*)/leases/listings-with-applicants', async (ctx) => {
@@ -81,20 +81,21 @@ export const routes = (router: KoaRouter) => {
   router.get(
     '(.*)/get-and-validate-tenant/:contactCode/:districtCode/:rentalObjectCode',
     async (ctx) => {
+      const metadata = generateRouteMetadata(ctx)
+
       const getTenant = await coreAdapter.getTenantByContactCode(
         ctx.params.contactCode
       )
       if (!getTenant.ok && getTenant.err === 'no-valid-housing-contract') {
         ctx.status = 403
         ctx.body = {
-          // reason: 'no-valid-housing-contract',
-          // error: 'Valid housing contaract not found',
           type: 'no-valid-housing-contract',
           title: 'No valid housing contract found',
           status: 403,
           detail:
             'A housing contract needs to be current or upcoming to be a valid contract when applying for a parking space.',
-        }
+          ...metadata,
+        } satisfies RouteErrorResponse
         return
       }
 
