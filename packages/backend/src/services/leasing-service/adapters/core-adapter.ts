@@ -11,6 +11,7 @@ import {
   ReplyToOfferErrorCodes,
   Tenant,
   schemas,
+  GetCustomerCardByContactCodeErrorCodes,
 } from 'onecore-types'
 import { AxiosError, HttpStatusCode } from 'axios'
 import { z } from 'zod'
@@ -398,15 +399,47 @@ type CustomerCard = {
   applicationProfile: ApplicationProfile
 }
 
-const getContactCard = async (
-  contactCode: number
+const getCustomerCardByContactCode = async (
+  contactCode: string
 ): Promise<AdapterResult<CustomerCard, unknown>> => {
-  const result = await getFromCore<{ content: ApplicationProfile }>({
-    method: 'get',
-    url: `${coreBaseUrl}/contact/${contactCode}/application-profile`,
-  }).then((res) => res.data)
+  try {
+    const {
+      data: { content: applicationProfile },
+    } = await getFromCore<{
+      content: ApplicationProfile
+    }>({
+      method: 'get',
+      url: `${coreBaseUrl}/contacts/${contactCode}/application-profile`,
+    })
 
-  return { ok: true, data: { applicationProfile: result.content } }
+    return {
+      ok: true,
+      data: {
+        applicationProfile,
+      },
+    }
+  } catch (error) {
+    if (!(error instanceof AxiosError)) {
+      return {
+        ok: false,
+        err: GetCustomerCardByContactCodeErrorCodes.Unknown,
+        statusCode: 500,
+      }
+    }
+    if (error.response?.status === 404) {
+      return {
+        ok: false,
+        err: GetCustomerCardByContactCodeErrorCodes.NotFound,
+        statusCode: 404,
+      }
+    } else {
+      return {
+        ok: false,
+        err: GetCustomerCardByContactCodeErrorCodes.Unknown,
+        statusCode: 500,
+      }
+    }
+  }
 }
 
 export {
@@ -425,5 +458,5 @@ export {
   acceptOffer,
   denyOffer,
   getActiveOfferByListingId,
-  getContactCard,
+  getCustomerCardByContactCode,
 }
