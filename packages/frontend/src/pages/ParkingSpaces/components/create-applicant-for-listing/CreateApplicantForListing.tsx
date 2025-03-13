@@ -90,14 +90,12 @@ export const CreateApplicantForListing = (props: Props) => {
     )
   }
 
-  const validLeaseMissingError = () => {
-    return (
+  const ValidLeaseMissingError = () => (
       <Typography color="error">
         Kunden saknar giltigt bostadskontrakt. Det går endast att söka bilplats
         med gällande och kommande bostadskontrakt
       </Typography>
     )
-  }
 
   return (
     <>
