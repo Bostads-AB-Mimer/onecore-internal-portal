@@ -1,12 +1,13 @@
 import { AxiosError } from 'axios'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
-import { schemas } from 'onecore-types'
+import { Contact, schemas } from 'onecore-types'
 import { z } from 'zod'
 
 import apiClient from '../../../utils/api-client'
 
-type CustomerCard = {
+export type CustomerCard = {
   applicationProfile: z.infer<typeof schemas.v1.ApplicationProfileSchema>
+  contact: Contact
 }
 
 export const useCustomerCard = (
@@ -16,9 +17,12 @@ export const useCustomerCard = (
     queryKey: ['customer-card', contactCode],
     enabled: Boolean(contactCode),
     queryFn: async () => {
-      const f = await apiClient.get(`/contacts/${contactCode}/customer-card`)
-      return f.data.content
+      return await apiClient
+        .get(`/contacts/${contactCode}/customer-card`)
+        .then((response) => response.data.content)
     },
     retry: (failureCount: number, error: AxiosError) =>
-      error.response?.status === 401 ? false : failureCount < 3,
+      error.response?.status === 401 || error.response?.status === 500
+        ? false
+        : failureCount < 3,
   })
