@@ -22,6 +22,7 @@ import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
 import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
 import HousingReferenceReviewStatusComponentSwitcher from './components/HousingReferenceReviewStatusComponentSwitcher'
+import { Account, useProfile } from '../../common/hooks/useProfile'
 
 type HousingTypes = z.infer<
   typeof schemas.v1.ApplicationProfileHousingTypeSchema
@@ -47,6 +48,7 @@ export type Inputs = {
     phone: string
     reasonRejected: RejectedReasons | ''
     reviewStatus: ReviewStatus
+    updatedBy: string
   }
   landlord: string
   numAdults: number
@@ -58,6 +60,9 @@ const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
+
+  const { data: profile } = useProfile()
+  const account = profile?.account as Account
 
   const { handleSubmit, ...formMethods } = useForm<Inputs>({
     defaultValues: {
@@ -71,7 +76,8 @@ const ResidencesPage: React.FC = () => {
         lastApplicantUpdatedAt: dayjs(),
         phone: '',
         reasonRejected: '',
-        reviewStatus: 'REJECTED',
+        reviewStatus: 'PENDING',
+        updatedBy: account?.username ? account?.username : '',
       },
       landlord: '',
       numAdults: 1,
