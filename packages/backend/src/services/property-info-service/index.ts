@@ -2,7 +2,7 @@ import KoaRouter from '@koa/router'
 import {
   getMaterialChoices,
   getMaterialChoiceStatuses,
-} from './adapters/core-adapter'
+} from '../../common/adapters/core-adapter'
 import { generateRouteMetadata } from 'onecore-utilities'
 
 export const routes = (router: KoaRouter) => {

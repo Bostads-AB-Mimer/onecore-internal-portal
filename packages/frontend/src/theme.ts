@@ -115,7 +115,8 @@ const theme = createTheme({
       paddingTop: 10,
     },
     h3: {
-      fontSize: 14,
+      fontSize: 16,
+      textTransform: 'uppercase',
       fontFamily: 'graphikRegular',
       paddingTop: 10,
       fontWeight: 900,

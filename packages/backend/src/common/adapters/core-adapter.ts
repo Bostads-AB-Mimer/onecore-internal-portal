@@ -1,5 +1,6 @@
-import Config from '../../../common/config'
-import { getFromCore } from '../../common/adapters/core-adapter'
+import Config from '../config'
+import { getFromCore } from '../../services/common/adapters/core-adapter'
+import { Contact } from 'onecore-types'
 
 const coreBaseUrl = Config.core.url
 
@@ -27,6 +28,33 @@ const getMaterialChoices = async (apartmentId: string, contractId?: string) => {
   })
 
   return committedChoicesResponse.data.content
+}
+
+export const getContact = async (contactCode: string) => {
+  const contactResponse = await getFromCore({
+    method: 'GET',
+    url: `${coreBaseUrl}/contact/contactCode/${contactCode}`,
+  })
+
+  return contactResponse.data.content
+}
+
+export const getLease = async (leaseId: string) => {
+  const contactResponse = await getFromCore({
+    method: 'GET',
+    url: `${coreBaseUrl}/leases/${encodeURIComponent(leaseId)}`,
+  })
+
+  return contactResponse.data.content
+}
+
+export const getInvoicesForContact = async (contact: Contact) => {
+  const invoicesResponse = await getFromCore({
+    method: 'GET',
+    url: `${coreBaseUrl}/invoices/by-contact-code/${contact.contactCode}`,
+  })
+
+  return invoicesResponse.data.content
 }
 
 export { getMaterialChoiceStatuses, getMaterialChoices }

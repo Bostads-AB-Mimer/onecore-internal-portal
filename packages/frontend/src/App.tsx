@@ -18,6 +18,7 @@ import Login from './pages/Login/Login'
 import MaterialChoiceDetails from './pages/MaterialChoiceDetails/MaterialChoiceDetails'
 import ParkingSpaces from './pages/ParkingSpaces'
 import ParkingSpace from './pages/ParkingSpace'
+import Contact from './pages/Contact'
 import { mdTheme } from './theme'
 import Residences from './pages/Residences/Residences'
 
@@ -69,6 +70,7 @@ function App() {
                     element={<MaterialChoiceDetails />}
                   />
                   <Route path="/bostader" element={<Residences />} />
+                  <Route path="/contacts/contact/:id" element={<Contact />} />
                   <Route path="/logout" element={<Login />} />
                 </Route>
               </Routes>

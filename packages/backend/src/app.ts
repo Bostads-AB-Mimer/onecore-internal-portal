@@ -45,6 +45,8 @@ app.use(async (ctx, next) => {
     } else {
       return next()
     }
+
+    return next()
   }
 })
 
