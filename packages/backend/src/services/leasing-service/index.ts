@@ -294,13 +294,13 @@ export const routes = (router: KoaRouter) => {
     )
 
     if (!customerCardResult.ok) {
-      ctx.status = 500
+      ctx.status = customerCardResult.statusCode
       ctx.body = { error: customerCardResult.err, ...metadata }
       return
     }
 
     if (!contactResult.ok) {
-      ctx.status = 500
+      ctx.status = contactResult.statusCode
       ctx.body = { error: contactResult.err, ...metadata }
       return
     }
