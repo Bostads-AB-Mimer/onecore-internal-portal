@@ -2,6 +2,7 @@ import KoaRouter from '@koa/router'
 import { generateRouteMetadata } from 'onecore-utilities'
 
 import * as coreAdapter from './adapters/core-adapter'
+import { LeaseStatus, RouteErrorResponse } from 'onecore-types'
 
 export const routes = (router: KoaRouter) => {
   router.get('(.*)/leases/listings-with-applicants', async (ctx) => {
@@ -80,9 +81,34 @@ export const routes = (router: KoaRouter) => {
   router.get(
     '(.*)/get-and-validate-tenant/:contactCode/:districtCode/:rentalObjectCode',
     async (ctx) => {
+      const metadata = generateRouteMetadata(ctx)
+
       const getTenant = await coreAdapter.getTenantByContactCode(
         ctx.params.contactCode
       )
+      if (!getTenant.ok && getTenant.err === 'no-valid-housing-contract') {
+        ctx.status = 403
+        ctx.body = {
+          type: 'no-valid-housing-contract',
+          title: 'No valid housing contract found',
+          status: 403,
+          detail: 'No active or upcoming contract found.',
+          ...metadata,
+        } satisfies RouteErrorResponse
+        return
+      }
+
+      if (!getTenant.ok && getTenant.err === 'contact-not-tenant') {
+        ctx.status = 403
+        ctx.body = {
+          type: getTenant.err,
+          title: 'Contact is not a tenant',
+          status: 403,
+          detail: 'No active or upcoming contract found.',
+          ...metadata,
+        } satisfies RouteErrorResponse
+        return
+      }
 
       if (!getTenant.ok) {
         ctx.status = 500
@@ -136,7 +162,11 @@ export const routes = (router: KoaRouter) => {
 
         if (
           getTenant.data.parkingSpaceContracts &&
-          getTenant.data.parkingSpaceContracts.length > 0
+          getTenant.data.parkingSpaceContracts.filter(
+            (l) =>
+              l.status == LeaseStatus.Current ||
+              l.status == LeaseStatus.Upcoming
+          ).length > 0
         )
           return {
             ok: true,
@@ -152,7 +182,7 @@ export const routes = (router: KoaRouter) => {
       })
 
       if (!validate.ok) {
-        ctx.status = 500
+        ctx.status = 403
         return
       }
 

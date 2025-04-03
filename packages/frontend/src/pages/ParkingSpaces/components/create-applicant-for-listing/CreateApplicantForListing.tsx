@@ -75,6 +75,19 @@ export const CreateApplicantForListing = (props: Props) => {
   const handleChange = (_e: React.SyntheticEvent, tab: string) =>
     setSelectedTab(tab)
 
+  const renderTenantQueryError = (error: any) => {
+    if (!error) return null
+
+    if (
+      error?.response?.data?.type === 'no-valid-housing-contract' ||
+      error?.response?.data?.type === 'contact-not-tenant'
+    ) {
+      return <ValidLeaseMissingError />
+    }
+
+    return <DefaultError />
+  }
+
   return (
     <>
       <Button
@@ -152,11 +165,12 @@ export const CreateApplicantForListing = (props: Props) => {
                       <ContactInfo tenant={tenantQuery.data?.tenant ?? null} />
                     )}
                     {tenantQuery.isLoading && <ContactInfoLoading />}
-                    {tenantQuery.error && (
-                      <Typography color="error">
-                        Något gick fel. Kontakta support.
-                      </Typography>
-                    )}
+                    {renderTenantQueryError(tenantQuery.error)}
+                    {tenantQuery.data &&
+                      tenantQuery.data.validationResult == 'ok' &&
+                      tenantQuery.data.tenant.isAboutToLeave && (
+                        <ValidLeaseMissingError />
+                      )}
                     <Box>
                       <Divider />
                     </Box>
@@ -198,10 +212,6 @@ export const CreateApplicantForListing = (props: Props) => {
                     </Box>
                     <Box paddingX="0.5rem" paddingTop="0.5rem">
                       <Typography color="error">
-                        {renderWarningIfDistrictsMismatch(
-                          props.listing,
-                          tenantQuery?.data.tenant
-                        )}
                         <Box>
                           {translateValidationResult(
                             tenantQuery.data.validationResult
@@ -211,6 +221,16 @@ export const CreateApplicantForListing = (props: Props) => {
                     </Box>
                   </Box>
                 )}
+              {tenantQuery.data && (
+                <Box paddingX="0.5rem" paddingTop="1rem">
+                  <Typography color="error">
+                    {renderWarningIfDistrictsMismatch(
+                      props.listing,
+                      tenantQuery?.data.tenant
+                    )}
+                  </Typography>
+                </Box>
+              )}
               <Box
                 paddingTop="2rem"
                 display="flex"
@@ -222,7 +242,11 @@ export const CreateApplicantForListing = (props: Props) => {
                 {tenantQuery.data ? (
                   <LoadingButton
                     disabled={
-                      tenantQuery.data.validationResult === 'no-contract'
+                      tenantQuery.data.validationResult === 'no-contract' ||
+                      !tenantHasValidContractForTheDiscrict(
+                        tenantQuery.data.tenant,
+                        props.listing
+                      )
                     }
                     loading={createNoteOfInterest.isPending}
                     variant="dark"
@@ -267,10 +291,22 @@ function translateValidationResult(
   return translationMap[result]
 }
 
+function tenantHasValidContractForTheDiscrict(
+  tenant: Tenant,
+  listing: Listing
+) {
+  const hasUpComingContractInThisDistrict =
+    tenant.upcomingHousingContract?.residentialArea?.code ===
+    listing.districtCode
+  const hasCurrentContractInThisDistrict =
+    tenant.currentHousingContract?.residentialArea?.code ===
+    listing.districtCode
+
+  return hasCurrentContractInThisDistrict || hasUpComingContractInThisDistrict
+}
+
 function renderWarningIfDistrictsMismatch(listing: Listing, tenant: Tenant) {
-  if (
-    listing.districtCode != tenant.currentHousingContract?.residentialArea?.code
-  ) {
+  if (!tenantHasValidContractForTheDiscrict(tenant, listing)) {
     return (
       <Box paddingBottom={'1rem'}>
         {
@@ -304,4 +340,17 @@ const CreateApplicantError = (props: {
       </Button>
     </Box>
   </Box>
+)
+
+const ValidLeaseMissingError = () => (
+  <Typography color="error">
+    Kunden saknar giltigt bostadskontrakt. Det går endast att söka bilplats med
+    gällande och kommande bostadskontrakt
+  </Typography>
+)
+
+const DefaultError = () => (
+  <Typography color="error">
+    Något gick fel. Försök igen eller kontakta support
+  </Typography>
 )

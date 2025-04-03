@@ -71,7 +71,7 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
       field: 'contactCode',
       headerName: 'Kundnummer',
       ...sharedProps,
-      flex: 1.25,
+      flex: 1,
     },
     {
       field: 'queuePoints',
@@ -109,10 +109,16 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
     },
     {
       field: 'parkingSpaceContracts',
-      headerName: 'Har bilplats',
-      valueFormatter: (v) => (v.value.length ? 'Ja' : 'Nej'),
+      headerName: 'Har bilplats (G/K)',
+      valueFormatter: (v) =>
+        v.value.filter(
+          (l: any) =>
+            l.status == LeaseStatus.Current || l.status == LeaseStatus.Upcoming
+        ).length
+          ? 'Ja'
+          : 'Nej',
       ...sharedProps,
-      flex: 0.75,
+      flex: 1,
     },
     {
       field: 'status',
@@ -132,7 +138,13 @@ const getColumns = (listingId: number, address: string): Array<GridColDef> => {
       field: 'applicationType',
       headerName: 'Ärende',
       renderCell: (v) => {
-        const hasParkingSpace = Boolean(v.row.parkingSpaceContracts?.length)
+        const hasParkingSpace = Boolean(
+          v.row.parkingSpaceContracts?.filter(
+            (l: any) =>
+              l.status == LeaseStatus.Current ||
+              l.status == LeaseStatus.Upcoming
+          ).length
+        )
         if (v.value === 'Additional')
           return hasParkingSpace ? 'Hyra flera' : 'Hyra en'
         else return 'Byte'

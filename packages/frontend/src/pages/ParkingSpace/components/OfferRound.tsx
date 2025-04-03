@@ -68,7 +68,7 @@ const getColumns = (expiresAt: Date): Array<GridColDef> => {
       field: 'contactCode',
       headerName: 'Kundnummer',
       ...sharedProps,
-      flex: 1.25,
+      flex: 1,
     },
     {
       field: 'queuePoints',
@@ -99,10 +99,10 @@ const getColumns = (expiresAt: Date): Array<GridColDef> => {
     },
     {
       field: 'hasParkingSpace',
-      headerName: 'Har bilplats',
+      headerName: 'Har bilplats (G/K)',
       valueFormatter: (v) => (v.value ? 'Ja' : 'Nej'),
       ...sharedProps,
-      flex: 0.75,
+      flex: 1,
     },
     {
       field: 'status',
