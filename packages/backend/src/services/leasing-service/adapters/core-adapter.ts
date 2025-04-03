@@ -134,6 +134,21 @@ const getTenantByContactCode = async (
   }
 }
 
+const getContactByContactCode = async (
+  contactCode: string
+): Promise<AdapterResult<Contact, unknown>> => {
+  try {
+    const result = await getFromCore<{ content: Contact }>({
+      method: 'get',
+      url: `${coreBaseUrl}/contact/contactCode/${contactCode}`,
+    }).then((res) => res.data)
+
+    return { ok: true, data: result.content }
+  } catch (err) {
+    return { ok: false, err, statusCode: 500 }
+  }
+}
+
 const validatePropertyRentalRules = async (
   contactCode: string,
   rentalObjectCode: string
@@ -448,6 +463,7 @@ export {
   removeApplicant,
   getContactsDataBySearchQuery,
   getTenantByContactCode,
+  getContactByContactCode,
   createNoteOfInterestForInternalParkingSpace,
   validatePropertyRentalRules,
   validateResidentialAreaRentalRules,
