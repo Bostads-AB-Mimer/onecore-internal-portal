@@ -27,7 +27,6 @@ const getStatusName = (status: LeaseStatus) => {
 const Contact = () => {
   const routeParams = useParams<'id'>()
   const { data } = useContact(routeParams.id ?? '')
-  console.log('tenant1', data)
   const tenant = data?.data.contact
   const invoices = data?.data.invoices
 
