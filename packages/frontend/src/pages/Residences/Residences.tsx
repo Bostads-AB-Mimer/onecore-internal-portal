@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Container,
@@ -22,6 +22,7 @@ import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
 import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
 import HousingReferenceReviewStatusComponentSwitcher from './components/HousingReferenceReviewStatusComponentSwitcher'
+import { useCustomerCard } from './hooks/useCustomerCard'
 
 type HousingTypes = z.infer<
   typeof schemas.v1.ApplicationProfileHousingTypeSchema
@@ -56,9 +57,6 @@ export type Inputs = {
 const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
 const ResidencesPage: React.FC = () => {
-  const [selectedContact, setSelectedContact] =
-    useState<ContactSearchData | null>(null)
-
   const { handleSubmit, ...formMethods } = useForm<Inputs>({
     defaultValues: {
       housingType: '',
@@ -71,13 +69,61 @@ const ResidencesPage: React.FC = () => {
         lastApplicantUpdatedAt: dayjs(),
         phone: '',
         reasonRejected: '',
-        reviewStatus: 'REJECTED',
+        reviewStatus: 'PENDING',
       },
       landlord: '',
       numAdults: 1,
       numChildren: 0,
     },
   })
+
+  const [selectedContact, setSelectedContact] =
+    useState<ContactSearchData | null>(null)
+
+  const { isError, isSuccess, status, data } = useCustomerCard(
+    selectedContact?.contactCode
+  )
+
+  useEffect(() => {
+    if (isSuccess) {
+      const {
+        applicationProfile: {
+          housingType,
+          housingTypeDescription,
+          landlord,
+          numAdults,
+          numChildren,
+          housingReference,
+        },
+      } = data
+
+      formMethods.reset({
+        housingType: housingType || '',
+        housingTypeDescription: housingTypeDescription || '',
+        landlord: landlord || '',
+        numAdults: numAdults,
+        numChildren: numChildren,
+        housingReference: {
+          comment: housingReference.comment || '',
+          email: housingReference.email || '',
+          expiresAt: dayjs(housingReference.expiresAt),
+          lastAdminUpdatedAt: dayjs(housingReference.lastAdminUpdatedAt),
+          lastApplicantUpdatedAt: dayjs(
+            housingReference.lastApplicantUpdatedAt
+          ),
+          phone: housingReference.phone || '',
+          reasonRejected: housingReference.reasonRejected || '',
+          reviewStatus: housingReference.reviewStatus || '',
+        },
+      })
+    }
+    if (isError) {
+      formMethods.reset()
+    }
+    // Using exhaustive-deps rule leads to an infinite loop, using `status`
+    // instead
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status])
 
   return (
     <Stack spacing={4} padding={0}>
@@ -96,12 +142,22 @@ const ResidencesPage: React.FC = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} padding={2}>
                   <Grid item xs={12}>
-                    <CustomerInformation
-                      name="John Applebaum"
-                      socialSecurityNumber="111122334444"
-                      customerNumber="P123456"
-                      phoneNumber="0720-123 45 67"
-                    />
+                    {isSuccess ? (
+                      <CustomerInformation
+                        fullName={data.contact.fullName}
+                        nationalRegistrationNumber={
+                          data.contact.nationalRegistrationNumber
+                        }
+                        contactCode={data.contact.contactCode}
+                        phoneNumber={
+                          data.contact.phoneNumbers?.find(
+                            ({ isMainNumber }) => isMainNumber
+                          )?.phoneNumber
+                        }
+                      />
+                    ) : (
+                      <CustomerInformation />
+                    )}
 
                     <HousingType />
                     <HousingTypeComponentSwitcher />
