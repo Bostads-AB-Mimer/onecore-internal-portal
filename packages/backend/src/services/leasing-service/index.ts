@@ -315,13 +315,10 @@ export const routes = (router: KoaRouter) => {
   router.get('(.*)/contacts/:contactCode/customer-card', async (ctx) => {
     const metadata = generateRouteMetadata(ctx, ['q'])
 
-    const customerCardResult = await coreAdapter.getCustomerCardByContactCode(
-      ctx.params.contactCode
-    )
-
-    const contactResult = await coreAdapter.getContactByContactCode(
-      ctx.params.contactCode
-    )
+    const [customerCardResult, contactResult] = await Promise.all([
+      coreAdapter.getCustomerCardByContactCode(ctx.params.contactCode),
+      coreAdapter.getContactByContactCode(ctx.params.contactCode),
+    ])
 
     if (!customerCardResult.ok) {
       ctx.status = customerCardResult.statusCode
