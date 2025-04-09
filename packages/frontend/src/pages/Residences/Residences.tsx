@@ -65,8 +65,6 @@ const ResidencesPage: React.FC = () => {
         comment: '',
         email: '',
         expiresAt: dayjs(),
-        lastAdminUpdatedAt: dayjs(),
-        lastApplicantUpdatedAt: dayjs(),
         phone: '',
         reasonRejected: '',
         reviewStatus: 'PENDING',
@@ -107,10 +105,6 @@ const ResidencesPage: React.FC = () => {
           comment: housingReference.comment || '',
           email: housingReference.email || '',
           expiresAt: dayjs(housingReference.expiresAt),
-          lastAdminUpdatedAt: dayjs(housingReference.lastAdminUpdatedAt),
-          lastApplicantUpdatedAt: dayjs(
-            housingReference.lastApplicantUpdatedAt
-          ),
           phone: housingReference.phone || '',
           reasonRejected: housingReference.reasonRejected || '',
           reviewStatus: housingReference.reviewStatus || '',
