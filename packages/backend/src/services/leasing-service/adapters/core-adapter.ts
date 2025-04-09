@@ -11,6 +11,10 @@ import {
   ReplyToOfferErrorCodes,
   Tenant,
   schemas,
+<<<<<<< HEAD
+=======
+  GetCustomerCardByContactCodeErrorCodes,
+>>>>>>> main
 } from 'onecore-types'
 import { AxiosError, HttpStatusCode } from 'axios'
 import { z } from 'zod'
