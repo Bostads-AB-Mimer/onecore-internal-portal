@@ -10,9 +10,10 @@ import {
   OfferWithOfferApplicants,
   ReplyToOfferErrorCodes,
   Tenant,
+  schemas,
 } from 'onecore-types'
 import { AxiosError, HttpStatusCode } from 'axios'
-
+import { z } from 'zod'
 import Config from '../../../common/config'
 import { getFromCore } from '../../common/adapters/core-adapter'
 
@@ -140,6 +141,21 @@ const getTenantByContactCode = async (
       return { ok: false, err: err.response?.data?.type, statusCode: 500 }
     }
 
+    return { ok: false, err, statusCode: 500 }
+  }
+}
+
+const getContactByContactCode = async (
+  contactCode: string
+): Promise<AdapterResult<Contact, unknown>> => {
+  try {
+    const result = await getFromCore<{ content: Contact }>({
+      method: 'get',
+      url: `${coreBaseUrl}/contact/contactCode/${contactCode}`,
+    }).then((res) => res.data)
+
+    return { ok: true, data: result.content }
+  } catch (err) {
     return { ok: false, err, statusCode: 500 }
   }
 }
@@ -403,12 +419,67 @@ const getActiveOfferByListingId = async (
   }
 }
 
+type ApplicationProfile = z.infer<typeof schemas.v1.ApplicationProfileSchema>
+
+enum GetCustomerCardByContactCodeErrorCodes {
+  NotFound = 'not-found',
+  Unknown = 'unknown',
+}
+
+type CustomerCard = {
+  applicationProfile: ApplicationProfile
+}
+
+const getCustomerCardByContactCode = async (
+  contactCode: string
+): Promise<AdapterResult<CustomerCard, unknown>> => {
+  try {
+    const {
+      data: { content: applicationProfile },
+    } = await getFromCore<{
+      content: ApplicationProfile
+    }>({
+      method: 'get',
+      url: `${coreBaseUrl}/contacts/${contactCode}/application-profile`,
+    })
+
+    return {
+      ok: true,
+      data: {
+        applicationProfile,
+      },
+    }
+  } catch (error) {
+    if (!(error instanceof AxiosError)) {
+      return {
+        ok: false,
+        err: GetCustomerCardByContactCodeErrorCodes.Unknown,
+        statusCode: 500,
+      }
+    }
+    if (error.response?.status === 404) {
+      return {
+        ok: false,
+        err: GetCustomerCardByContactCodeErrorCodes.NotFound,
+        statusCode: 404,
+      }
+    } else {
+      return {
+        ok: false,
+        err: GetCustomerCardByContactCodeErrorCodes.Unknown,
+        statusCode: 500,
+      }
+    }
+  }
+}
+
 export {
   getListingsWithApplicants,
   getListingWithApplicants,
   removeApplicant,
   getContactsDataBySearchQuery,
   getTenantByContactCode,
+  getContactByContactCode,
   createNoteOfInterestForInternalParkingSpace,
   validatePropertyRentalRules,
   validateResidentialAreaRentalRules,
@@ -419,4 +490,5 @@ export {
   acceptOffer,
   denyOffer,
   getActiveOfferByListingId,
+  getCustomerCardByContactCode,
 }

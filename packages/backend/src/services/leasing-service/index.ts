@@ -65,7 +65,7 @@ export const routes = (router: KoaRouter) => {
 
   router.get('(.*)/contact/:contactCode', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
-    const result = await coreAdapter.getTenantByContactCode(
+    const result = await coreAdapter.getContactByContactCode(
       ctx.params.contactCode
     )
 
@@ -309,6 +309,33 @@ export const routes = (router: KoaRouter) => {
     } else {
       ctx.status = result.statusCode
       ctx.body = { error: result.err, ...metadata }
+    }
+  })
+
+  router.get('(.*)/contacts/:contactCode/customer-card', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx, ['q'])
+
+    const [customerCardResult, contactResult] = await Promise.all([
+      coreAdapter.getCustomerCardByContactCode(ctx.params.contactCode),
+      coreAdapter.getContactByContactCode(ctx.params.contactCode),
+    ])
+
+    if (!customerCardResult.ok) {
+      ctx.status = customerCardResult.statusCode
+      ctx.body = { error: customerCardResult.err, ...metadata }
+      return
+    }
+
+    if (!contactResult.ok) {
+      ctx.status = contactResult.statusCode
+      ctx.body = { error: contactResult.err, ...metadata }
+      return
+    }
+
+    ctx.status = 200
+    ctx.body = {
+      content: { ...customerCardResult.data, contact: contactResult.data },
+      ...metadata,
     }
   })
 }
