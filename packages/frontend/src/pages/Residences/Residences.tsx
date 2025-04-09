@@ -54,6 +54,9 @@ export type Inputs = {
   numChildren: number
 }
 
+const getContactsMainPhoneNumber = (contact: Contact) =>
+  contact.phoneNumbers?.find(({ isMainNumber }) => isMainNumber)?.phoneNumber
+
 const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
 const ResidencesPage: React.FC = () => {
@@ -143,11 +146,7 @@ const ResidencesPage: React.FC = () => {
                           data.contact.nationalRegistrationNumber
                         }
                         contactCode={data.contact.contactCode}
-                        phoneNumber={
-                          data.contact.phoneNumbers?.find(
-                            ({ isMainNumber }) => isMainNumber
-                          )?.phoneNumber
-                        }
+                        phoneNumber={getContactsMainPhoneNumber(data.contact)}
                       />
                     ) : (
                       <CustomerInformation />
