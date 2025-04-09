@@ -11,7 +11,6 @@ import {
   ReplyToOfferErrorCodes,
   Tenant,
   schemas,
-  GetCustomerCardByContactCodeErrorCodes,
 } from 'onecore-types'
 import { AxiosError, HttpStatusCode } from 'axios'
 import { z } from 'zod'
@@ -421,6 +420,11 @@ const getActiveOfferByListingId = async (
 }
 
 type ApplicationProfile = z.infer<typeof schemas.v1.ApplicationProfileSchema>
+
+enum GetCustomerCardByContactCodeErrorCodes {
+  NotFound = 'not-found',
+  Unknown = 'unknown',
+}
 
 type CustomerCard = {
   applicationProfile: ApplicationProfile
