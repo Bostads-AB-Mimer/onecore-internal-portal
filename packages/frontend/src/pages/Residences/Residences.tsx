@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
 import dayjs from 'dayjs'
-import { schemas } from 'onecore-types'
+import { Contact, schemas } from 'onecore-types'
 import { z } from 'zod'
 
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
