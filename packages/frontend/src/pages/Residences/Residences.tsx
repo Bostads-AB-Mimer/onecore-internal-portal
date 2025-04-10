@@ -94,8 +94,15 @@ const ResidencesPage: React.FC = () => {
           landlord,
           numAdults,
           numChildren,
-          housingReference,
-        },
+          housingReference = {
+            comment: '',
+            email: '',
+            expiresAt: dayjs(),
+            phone: '',
+            reasonRejected: '',
+            reviewStatus: 'PENDING',
+          },
+        } = {},
       } = data
 
       formMethods.reset({
