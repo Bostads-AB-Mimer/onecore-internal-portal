@@ -2,17 +2,17 @@ import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import React from 'react'
 
 type CustomerReferenceFormProps = {
-  customerReferenceReceivedAt: string
-  housingReferenceUpdatedAt: string
-  updatedBy: string
-  validUntil?: string
+  customerReferenceReceivedAt?: string
+  housingReferenceUpdatedAt?: string
+  updatedBy?: string | null
+  expiresAt?: string
 }
 
 const CustomerReferenceForm = ({
-  customerReferenceReceivedAt,
-  housingReferenceUpdatedAt,
-  updatedBy,
-  validUntil,
+  customerReferenceReceivedAt = '-',
+  housingReferenceUpdatedAt = '-',
+  updatedBy = '-',
+  expiresAt = '-',
 }: CustomerReferenceFormProps) => (
   <Table>
     <TableBody>
@@ -31,10 +31,10 @@ const CustomerReferenceForm = ({
         <TableCell align="right">{updatedBy}</TableCell>
       </TableRow>
 
-      {validUntil && (
+      {expiresAt && (
         <TableRow>
           <TableCell>Giltig till</TableCell>
-          <TableCell align="right">{validUntil}</TableCell>
+          <TableCell align="right">{expiresAt}</TableCell>
         </TableRow>
       )}
     </TableBody>

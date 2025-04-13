@@ -312,18 +312,25 @@ export const routes = (router: KoaRouter) => {
     }
   })
 
-  router.get('(.*)/contacts/:contactCode/customer-card', async (ctx) => {
+  router.get('(.*)/contacts/:contactCode/application-profile', async (ctx) => {
     const metadata = generateRouteMetadata(ctx, ['q'])
 
-    const [customerCardResult, contactResult] = await Promise.all([
-      coreAdapter.getCustomerCardByContactCode(ctx.params.contactCode),
+    const [applicationProfileResult, contactResult] = await Promise.all([
+      coreAdapter.getApplicationProfileByContactCode(ctx.params.contactCode),
       coreAdapter.getContactByContactCode(ctx.params.contactCode),
     ])
 
-    if (!customerCardResult.ok) {
-      ctx.status = customerCardResult.statusCode
-      ctx.body = { error: customerCardResult.err, ...metadata }
-      return
+    let applicationProfile = null
+
+    // FIXME: Should status 404 not be allowed to be "ok" ?
+    if (!applicationProfileResult.ok) {
+      if (applicationProfileResult.statusCode != 404) {
+        ctx.status = applicationProfileResult.statusCode
+        ctx.body = { error: applicationProfileResult.err, ...metadata }
+        return
+      }
+    } else {
+      applicationProfile = applicationProfileResult.data
     }
 
     if (!contactResult.ok) {
@@ -334,8 +341,28 @@ export const routes = (router: KoaRouter) => {
 
     ctx.status = 200
     ctx.body = {
-      content: { ...customerCardResult.data, contact: contactResult.data },
+      content: {
+        applicationProfile,
+        contact: contactResult.data,
+      },
       ...metadata,
+    }
+  })
+
+  router.put('(.*)/contacts/:contactCode/application-profile', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx, ['q'])
+
+    const result = await coreAdapter.createOrUpdateApplicationProfile(
+      ctx.params.contactCode,
+      ctx.request.body
+    )
+
+    if (result.ok) {
+      ctx.status = 200
+      ctx.body = {
+        content: result.data,
+        ...metadata,
+      }
     }
   })
 }

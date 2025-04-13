@@ -18,7 +18,7 @@ export const useCustomerCard = (
     enabled: Boolean(contactCode),
     queryFn: async () => {
       return await apiClient
-        .get(`/contacts/${contactCode}/customer-card`)
+        .get(`/contacts/${contactCode}/application-profile`)
         .then((response) => response.data.content)
     },
     retry: (failureCount: number, error: AxiosError) =>

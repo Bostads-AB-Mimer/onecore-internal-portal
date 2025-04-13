@@ -10,6 +10,7 @@ import {
   OfferWithOfferApplicants,
   ReplyToOfferErrorCodes,
   Tenant,
+  leasing,
   schemas,
 } from 'onecore-types'
 import { AxiosError, HttpStatusCode } from 'axios'
@@ -421,18 +422,14 @@ const getActiveOfferByListingId = async (
 
 type ApplicationProfile = z.infer<typeof schemas.v1.ApplicationProfileSchema>
 
-enum GetCustomerCardByContactCodeErrorCodes {
+enum GetApplicationProfileByContactCodeErrorCodes {
   NotFound = 'not-found',
   Unknown = 'unknown',
 }
 
-type CustomerCard = {
-  applicationProfile: ApplicationProfile
-}
-
-const getCustomerCardByContactCode = async (
+const getApplicationProfileByContactCode = async (
   contactCode: string
-): Promise<AdapterResult<CustomerCard, unknown>> => {
+): Promise<AdapterResult<ApplicationProfile, unknown>> => {
   try {
     const {
       data: { content: applicationProfile },
@@ -445,31 +442,56 @@ const getCustomerCardByContactCode = async (
 
     return {
       ok: true,
-      data: {
-        applicationProfile,
-      },
+      data: applicationProfile,
     }
   } catch (error) {
     if (!(error instanceof AxiosError)) {
       return {
         ok: false,
-        err: GetCustomerCardByContactCodeErrorCodes.Unknown,
+        err: GetApplicationProfileByContactCodeErrorCodes.Unknown,
         statusCode: 500,
       }
     }
     if (error.response?.status === 404) {
       return {
         ok: false,
-        err: GetCustomerCardByContactCodeErrorCodes.NotFound,
+        err: GetApplicationProfileByContactCodeErrorCodes.NotFound,
         statusCode: 404,
       }
     } else {
       return {
         ok: false,
-        err: GetCustomerCardByContactCodeErrorCodes.Unknown,
+        err: GetApplicationProfileByContactCodeErrorCodes.Unknown,
         statusCode: 500,
       }
     }
+  }
+}
+
+type CreateOrUpdateApplicationProfileRequestParams = z.infer<
+  typeof leasing.v1.CreateOrUpdateApplicationProfileRequestParamsSchema
+>
+
+type CreateOrUpdateApplicationProfileResponseData = z.infer<
+  typeof leasing.v1.CreateOrUpdateApplicationProfileResponseDataSchema
+>
+
+const createOrUpdateApplicationProfile = async (
+  contactCode: string,
+  profileCommand: CreateOrUpdateApplicationProfileRequestParams
+): Promise<
+  AdapterResult<CreateOrUpdateApplicationProfileResponseData, unknown>
+> => {
+  try {
+    const response = await getFromCore<any>({
+      method: 'post',
+      url: `${coreBaseUrl}/contacts/${contactCode}/application-profile/admin`,
+      data: profileCommand,
+    })
+
+    return { ok: true, data: response.data.content }
+  } catch (err) {
+    return { ok: false, err: 'unknown', statusCode: 500 }
   }
 }
 
@@ -490,5 +512,6 @@ export {
   acceptOffer,
   denyOffer,
   getActiveOfferByListingId,
-  getCustomerCardByContactCode,
+  getApplicationProfileByContactCode,
+  createOrUpdateApplicationProfile,
 }

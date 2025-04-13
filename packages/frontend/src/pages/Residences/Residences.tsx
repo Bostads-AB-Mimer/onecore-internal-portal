@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
 import { Contact, schemas } from 'onecore-types'
 import { z } from 'zod'
@@ -23,6 +24,11 @@ import CustomerReference from './components/CustomerReference'
 import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
 import HousingReferenceReviewStatusComponentSwitcher from './components/HousingReferenceReviewStatusComponentSwitcher'
 import { useCustomerCard } from './hooks/useCustomerCard'
+import {
+  useCreateOrUpdateApplicationProfile,
+  UpdateApplicationProfileRequestParams,
+  UpdateApplicationProfileRequestParamsSchema,
+} from './hooks/useCreateOrUpdateApplicationProfile'
 
 type HousingTypes = z.infer<
   typeof schemas.v1.ApplicationProfileHousingTypeSchema
@@ -43,6 +49,8 @@ export type Inputs = {
     comment: string
     email: string
     expiresAt: dayjs.Dayjs
+    reviewedBy: string | null
+    reviewedAt: dayjs.Dayjs
     lastAdminUpdatedAt: dayjs.Dayjs
     lastApplicantUpdatedAt: dayjs.Dayjs
     phone: string
@@ -56,8 +64,6 @@ export type Inputs = {
 
 const getContactsMainPhoneNumber = (contact: Contact) =>
   contact.phoneNumbers?.find(({ isMainNumber }) => isMainNumber)?.phoneNumber
-
-const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
 const ResidencesPage: React.FC = () => {
   const { handleSubmit, ...formMethods } = useForm<Inputs>({
@@ -85,25 +91,68 @@ const ResidencesPage: React.FC = () => {
     selectedContact?.contactCode
   )
 
+  const createOrUpdateApplicationProfile = useCreateOrUpdateApplicationProfile()
+
+  const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    const { housingType, housingReference, landlord } = data
+
+    // TODO: Handle all form invariants
+    const isRental = ['RENTAL', 'SUB_RENTAL', 'LIVES_WITH_FAMILY'].includes(
+      housingType
+    )
+    const isRejected = housingReference.reviewStatus === 'REJECTED'
+
+    const parsed = UpdateApplicationProfileRequestParamsSchema.safeParse({
+      ...data,
+      landlord: isRental ? landlord : null,
+      housingReference: {
+        ...housingReference,
+        reasonRejected: isRejected ? housingReference.reasonRejected : null,
+        expiresAt: housingReference.expiresAt,
+      },
+    })
+
+    if (parsed.success) {
+      createOrUpdateApplicationProfile.mutate(
+        {
+          contactCode: selectedContact?.contactCode ?? '',
+          applicationProfile: parsed.data,
+        },
+        {
+          onSuccess: () => {
+            toast('Boendeprofilen är sparad', {
+              type: 'success',
+              hideProgressBar: true,
+            })
+          },
+        }
+      )
+    } else {
+      console.log('Zod result: ', parsed)
+      console.log('Invalid form: ', data)
+    }
+  }
+
   useEffect(() => {
     if (isSuccess) {
+      const applicationProfile = data.applicationProfile ?? {}
       const {
-        applicationProfile: {
-          housingType,
-          housingTypeDescription,
-          landlord,
-          numAdults,
-          numChildren,
-          housingReference = {
-            comment: '',
-            email: '',
-            expiresAt: dayjs(),
-            phone: '',
-            reasonRejected: '',
-            reviewStatus: 'PENDING',
-          },
-        } = {},
-      } = data
+        housingType,
+        housingTypeDescription,
+        landlord,
+        numAdults,
+        numChildren,
+        housingReference = {
+          comment: '',
+          email: '',
+          expiresAt: dayjs(),
+          reviewedAt: dayjs(),
+          reviewedBy: '',
+          phone: '',
+          reasonRejected: '',
+          reviewStatus: 'PENDING',
+        },
+      } = applicationProfile
 
       formMethods.reset({
         housingType: housingType || '',
@@ -115,6 +164,8 @@ const ResidencesPage: React.FC = () => {
           comment: housingReference.comment || '',
           email: housingReference.email || '',
           expiresAt: dayjs(housingReference.expiresAt),
+          reviewedAt: dayjs(housingReference.reviewedAt),
+          reviewedBy: housingReference.reviewedBy,
           phone: housingReference.phone || '',
           reasonRejected: housingReference.reasonRejected || '',
           reviewStatus: housingReference.reviewStatus || '',
@@ -168,10 +219,21 @@ const ResidencesPage: React.FC = () => {
                     <HousingReferenceReviewStatusComponentSwitcher />
 
                     <CustomerReference
-                      customerReferenceReceivedAt="2024-01-01"
-                      housingReferenceUpdatedAt="2024-01-01"
-                      updatedBy="MaS"
-                      validUntil="2024-07-01"
+                      customerReferenceReceivedAt={
+                        data?.applicationProfile?.housingReference?.createdAt.toString() ??
+                        undefined
+                      }
+                      housingReferenceUpdatedAt={
+                        data?.applicationProfile?.housingReference?.reviewedAt?.toString() ??
+                        undefined
+                      }
+                      updatedBy={
+                        data?.applicationProfile?.housingReference?.reviewedBy
+                      }
+                      expiresAt={
+                        data?.applicationProfile?.housingReference?.expiresAt?.toString() ??
+                        undefined
+                      }
                     />
 
                     <HousingReferenceComment />
