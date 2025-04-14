@@ -357,12 +357,16 @@ export const routes = (router: KoaRouter) => {
       ctx.request.body
     )
 
-    if (result.ok) {
-      ctx.status = 200
-      ctx.body = {
-        content: result.data,
-        ...metadata,
-      }
+    if (!result.ok) {
+      ctx.status = result.statusCode
+      ctx.body = { error: result.err, ...metadata }
+      return
+    }
+
+    ctx.status = 200
+    ctx.body = {
+      content: result.data,
+      ...metadata,
     }
   })
 }
