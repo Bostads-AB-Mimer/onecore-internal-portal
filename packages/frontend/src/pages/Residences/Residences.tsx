@@ -87,9 +87,12 @@ const ResidencesPage: React.FC = () => {
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
 
-  const { isError, isSuccess, status, data } = useCustomerCard(
-    selectedContact?.contactCode
-  )
+  const {
+    isError,
+    isSuccess,
+    status,
+    data: customerCard,
+  } = useCustomerCard(selectedContact?.contactCode)
 
   const createOrUpdateApplicationProfile = useCreateOrUpdateApplicationProfile()
 
@@ -135,7 +138,7 @@ const ResidencesPage: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      const applicationProfile = data.applicationProfile ?? {}
+      const applicationProfile = customerCard.applicationProfile ?? {}
       const {
         housingType,
         housingTypeDescription,
@@ -199,12 +202,14 @@ const ResidencesPage: React.FC = () => {
                   <Grid item xs={12}>
                     {isSuccess ? (
                       <CustomerInformation
-                        fullName={data.contact.fullName}
+                        fullName={customerCard.contact.fullName}
                         nationalRegistrationNumber={
-                          data.contact.nationalRegistrationNumber
+                          customerCard.contact.nationalRegistrationNumber
                         }
-                        contactCode={data.contact.contactCode}
-                        phoneNumber={getContactsMainPhoneNumber(data.contact)}
+                        contactCode={customerCard.contact.contactCode}
+                        phoneNumber={getContactsMainPhoneNumber(
+                          customerCard.contact
+                        )}
                       />
                     ) : (
                       <CustomerInformation />
@@ -220,18 +225,19 @@ const ResidencesPage: React.FC = () => {
 
                     <CustomerReference
                       customerReferenceReceivedAt={
-                        data?.applicationProfile?.housingReference?.createdAt.toString() ??
+                        customerCard?.applicationProfile?.housingReference?.createdAt.toString() ??
                         undefined
                       }
                       housingReferenceUpdatedAt={
-                        data?.applicationProfile?.housingReference?.reviewedAt?.toString() ??
+                        customerCard?.applicationProfile?.housingReference?.reviewedAt?.toString() ??
                         undefined
                       }
                       updatedBy={
-                        data?.applicationProfile?.housingReference?.reviewedBy
+                        customerCard?.applicationProfile?.housingReference
+                          ?.reviewedBy
                       }
                       expiresAt={
-                        data?.applicationProfile?.housingReference?.expiresAt?.toString() ??
+                        customerCard?.applicationProfile?.housingReference?.expiresAt?.toString() ??
                         undefined
                       }
                     />
