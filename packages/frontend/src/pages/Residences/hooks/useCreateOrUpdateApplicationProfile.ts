@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import { leasing } from 'onecore-types'
 import { z } from 'zod'
+import apiClient from '../../../utils/api-client'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
@@ -39,16 +40,9 @@ type Params = {
 export const useCreateOrUpdateApplicationProfile = () => {
   return useMutation<unknown, AxiosError, Params>({
     mutationFn: (params: Params) =>
-      axios.put<unknown>(
+      apiClient.put<unknown>(
         `${backendUrl}/contacts/${params.contactCode}/application-profile`,
-        params.applicationProfile,
-        {
-          headers: {
-            Accept: 'application/json',
-            'Access-Control-Allow-Credentials': true,
-          },
-          withCredentials: true,
-        }
+        params.applicationProfile
       ),
   })
 }
