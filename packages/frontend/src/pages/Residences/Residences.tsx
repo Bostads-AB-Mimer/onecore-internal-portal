@@ -103,6 +103,7 @@ const ResidencesPage: React.FC = () => {
     const isRental = ['RENTAL', 'SUB_RENTAL', 'LIVES_WITH_FAMILY'].includes(
       housingType
     )
+
     const isRejected = housingReference.reviewStatus === 'REJECTED'
 
     const parsed = UpdateApplicationProfileRequestParamsSchema.safeParse({
@@ -128,6 +129,12 @@ const ResidencesPage: React.FC = () => {
               hideProgressBar: true,
             })
           },
+          onError: (_error) => {
+            toast('Ett fel inträffade vid sparande av boendeprofilen', {
+              type: 'error',
+              hideProgressBar: true,
+            })
+          },
         }
       )
     } else {
@@ -138,7 +145,6 @@ const ResidencesPage: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      const applicationProfile = customerCard.applicationProfile ?? {}
       const {
         housingType,
         housingTypeDescription,
@@ -155,7 +161,7 @@ const ResidencesPage: React.FC = () => {
           reasonRejected: '',
           reviewStatus: 'PENDING',
         },
-      } = applicationProfile
+      } = customerCard.applicationProfile ?? {}
 
       formMethods.reset({
         housingType: housingType || '',
