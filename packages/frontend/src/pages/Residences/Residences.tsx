@@ -211,20 +211,17 @@ const ResidencesPage: React.FC = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} padding={2}>
                   <Grid item xs={12}>
-                    {isSuccess ? (
-                      <CustomerInformation
-                        fullName={customerCard.contact.fullName}
-                        nationalRegistrationNumber={
-                          customerCard.contact.nationalRegistrationNumber
-                        }
-                        contactCode={customerCard.contact.contactCode}
-                        phoneNumber={getContactsMainPhoneNumber(
-                          customerCard.contact
-                        )}
-                      />
-                    ) : (
-                      <CustomerInformation />
-                    )}
+                    <CustomerInformation
+                      fullName={customerCard?.contact.fullName}
+                      nationalRegistrationNumber={
+                        customerCard?.contact.nationalRegistrationNumber
+                      }
+                      contactCode={customerCard?.contact.contactCode}
+                      phoneNumber={
+                        customerCard?.contact &&
+                        getContactsMainPhoneNumber(customerCard.contact)
+                      }
+                    />
 
                     <HousingType />
                     <HousingTypeComponentSwitcher />
