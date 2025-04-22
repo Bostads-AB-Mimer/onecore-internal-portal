@@ -192,6 +192,8 @@ const ResidencesPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
 
+  const housingReference = customerCard?.applicationProfile?.housingReference
+
   return (
     <Stack spacing={4} padding={0}>
       <Typography variant="h1">Bostäder - sökandeuppgifter</Typography>
@@ -233,22 +235,10 @@ const ResidencesPage: React.FC = () => {
                     <HousingReferenceReviewStatusComponentSwitcher />
 
                     <CustomerReference
-                      customerReferenceReceivedAt={
-                        customerCard?.applicationProfile?.housingReference?.createdAt.toString() ??
-                        undefined
-                      }
-                      housingReferenceUpdatedAt={
-                        customerCard?.applicationProfile?.housingReference?.reviewedAt?.toString() ??
-                        undefined
-                      }
-                      updatedBy={
-                        customerCard?.applicationProfile?.housingReference
-                          ?.reviewedBy
-                      }
-                      expiresAt={
-                        customerCard?.applicationProfile?.housingReference?.expiresAt?.toString() ??
-                        undefined
-                      }
+                      customerReferenceReceivedAt={housingReference?.createdAt}
+                      housingReferenceUpdatedAt={housingReference?.reviewedAt}
+                      updatedBy={housingReference?.reviewedBy}
+                      expiresAt={housingReference?.expiresAt}
                     />
 
                     <HousingReferenceComment />

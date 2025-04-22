@@ -1,29 +1,37 @@
 import { Table, TableBody, TableCell, TableRow } from '@mui/material'
+import dayjs from 'dayjs'
 import React from 'react'
 
+const FormattedDateOrDash = ({ date }: { date: Date | null | undefined }) =>
+  date ? <span>{dayjs(date).format('YYYY-MM-DD')}</span> : <span>-</span>
+
 type CustomerReferenceFormProps = {
-  customerReferenceReceivedAt?: string
-  housingReferenceUpdatedAt?: string
+  customerReferenceReceivedAt?: Date | null
+  housingReferenceUpdatedAt?: Date | null
   updatedBy?: string | null
-  expiresAt?: string
+  expiresAt?: Date | null
 }
 
 const CustomerReferenceForm = ({
-  customerReferenceReceivedAt = '-',
-  housingReferenceUpdatedAt = '-',
-  updatedBy = '-',
-  expiresAt = '-',
+  customerReferenceReceivedAt,
+  housingReferenceUpdatedAt,
+  updatedBy,
+  expiresAt,
 }: CustomerReferenceFormProps) => (
   <Table>
     <TableBody>
       <TableRow>
         <TableCell>Referensuppgifter från kund</TableCell>
-        <TableCell align="right">{customerReferenceReceivedAt}</TableCell>
+        <TableCell align="right">
+          <FormattedDateOrDash date={customerReferenceReceivedAt} />
+        </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Boendereferens hanterad/uppdaterad</TableCell>
-        <TableCell align="right">{housingReferenceUpdatedAt}</TableCell>
+        <TableCell align="right">
+          <FormattedDateOrDash date={housingReferenceUpdatedAt} />
+        </TableCell>
       </TableRow>
 
       <TableRow>
@@ -34,7 +42,9 @@ const CustomerReferenceForm = ({
       {expiresAt && (
         <TableRow>
           <TableCell>Giltig till</TableCell>
-          <TableCell align="right">{expiresAt}</TableCell>
+          <TableCell align="right">
+            <FormattedDateOrDash date={expiresAt} />
+          </TableCell>
         </TableRow>
       )}
     </TableBody>
