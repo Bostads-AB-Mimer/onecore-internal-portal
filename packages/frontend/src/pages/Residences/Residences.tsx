@@ -26,7 +26,6 @@ import HousingReferenceReviewStatusComponentSwitcher from './components/HousingR
 import { useCustomerCard } from './hooks/useCustomerCard'
 import {
   useCreateOrUpdateApplicationProfile,
-  UpdateApplicationProfileRequestParams,
   UpdateApplicationProfileRequestParamsSchema,
 } from './hooks/useCreateOrUpdateApplicationProfile'
 
@@ -92,6 +91,7 @@ const ResidencesPage: React.FC = () => {
     isSuccess,
     status,
     data: customerCard,
+    refetch,
   } = useCustomerCard(selectedContact?.contactCode)
 
   const createOrUpdateApplicationProfile = useCreateOrUpdateApplicationProfile()
@@ -112,7 +112,7 @@ const ResidencesPage: React.FC = () => {
       housingReference: {
         ...housingReference,
         reasonRejected: isRejected ? housingReference.reasonRejected : null,
-        expiresAt: housingReference.expiresAt,
+        expiresAt: null,
       },
     })
 
@@ -128,6 +128,7 @@ const ResidencesPage: React.FC = () => {
               type: 'success',
               hideProgressBar: true,
             })
+            refetch()
           },
           onError: (_error) => {
             toast('Ett fel inträffade vid sparande av boendeprofilen', {
@@ -138,8 +139,10 @@ const ResidencesPage: React.FC = () => {
         }
       )
     } else {
-      console.log('Zod result: ', parsed)
-      console.log('Invalid form: ', data)
+      toast(parsed.error.issues[0].message, {
+        type: 'error',
+        hideProgressBar: true,
+      })
     }
   }
 
