@@ -64,6 +64,9 @@ export type Inputs = {
 const getContactsMainPhoneNumber = (contact: Contact) =>
   contact.phoneNumbers?.find(({ isMainNumber }) => isMainNumber)?.phoneNumber
 
+const emptyStringToNull = (val: string | null | undefined): string | null =>
+  val == null || val.trim() === '' ? null : val
+
 const ResidencesPage: React.FC = () => {
   const { handleSubmit, ...formMethods } = useForm<Inputs>({
     defaultValues: {
@@ -97,21 +100,14 @@ const ResidencesPage: React.FC = () => {
   const createOrUpdateApplicationProfile = useCreateOrUpdateApplicationProfile()
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-    const { housingType, housingReference, landlord } = data
-
-    // TODO: Handle all form invariants
-    const isRental = ['RENTAL', 'SUB_RENTAL', 'LIVES_WITH_FAMILY'].includes(
-      housingType
-    )
-
-    const isRejected = housingReference.reviewStatus === 'REJECTED'
-
     const parsed = UpdateApplicationProfileRequestParamsSchema.safeParse({
       ...data,
-      landlord: isRental ? landlord : null,
+      landlord: emptyStringToNull(data.landlord),
       housingReference: {
-        ...housingReference,
-        reasonRejected: isRejected ? housingReference.reasonRejected : null,
+        ...data.housingReference,
+        reasonRejected: emptyStringToNull(data.housingReference.reasonRejected),
+        email: emptyStringToNull(data.housingReference.email),
+        phone: emptyStringToNull(data.housingReference.phone),
         expiresAt: null,
       },
     })
@@ -139,10 +135,15 @@ const ResidencesPage: React.FC = () => {
         }
       )
     } else {
-      toast(parsed.error.issues[0].message, {
-        type: 'error',
-        hideProgressBar: true,
-      })
+      toast(
+        `${parsed.error.issues[0].message}: ${parsed.error.issues[0].path.join(
+          '.'
+        )}`,
+        {
+          type: 'error',
+          hideProgressBar: true,
+        }
+      )
     }
   }
 
