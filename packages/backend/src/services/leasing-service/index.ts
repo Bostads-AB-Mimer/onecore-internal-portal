@@ -354,7 +354,13 @@ export const routes = (router: KoaRouter) => {
 
     const result = await coreAdapter.createOrUpdateApplicationProfile(
       ctx.params.contactCode,
-      ctx.request.body
+      {
+        ...ctx.request.body,
+        housingReference: {
+          ...ctx.request.body.housingReference,
+          reviewedBy: ctx.session?.account.name,
+        },
+      }
     )
 
     if (!result.ok) {
