@@ -21,8 +21,6 @@ import HousingType from './components/Form/HousingType'
 import HousingReferenceReviewStatus from './components/Form/ReviewStatus'
 import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
-import HousingTypeComponentSwitcher from './components/HousingTypeComponentSwitcher'
-import HousingReferenceReviewStatusComponentSwitcher from './components/HousingReferenceReviewStatusComponentSwitcher'
 import { useCustomerCard } from './hooks/useCustomerCard'
 import {
   useCreateOrUpdateApplicationProfile,
@@ -207,53 +205,62 @@ const ResidencesPage: React.FC = () => {
             onSelect={setSelectedContact}
           />
 
-          <Paper elevation={3}>
-            <FormProvider handleSubmit={handleSubmit} {...formMethods}>
+          <Paper
+            elevation={3}
+            sx={{
+              opacity: isSuccess ? 1 : 0.5,
+              transition: 'opacity 0.3s',
+              padding: '0px 20px',
+            }}
+          >
+            <FormProvider {...formMethods} handleSubmit={handleSubmit}>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={2} padding={2}>
-                  <Grid item xs={12}>
-                    <CustomerInformation
-                      fullName={customerCard?.contact.fullName}
-                      nationalRegistrationNumber={
-                        customerCard?.contact.nationalRegistrationNumber
-                      }
-                      contactCode={customerCard?.contact.contactCode}
-                      phoneNumber={
-                        customerCard?.contact &&
-                        getContactsMainPhoneNumber(customerCard.contact)
-                      }
-                    />
+                <fieldset disabled={!isSuccess}>
+                  <Grid container spacing={2} padding={2}>
+                    <Grid item xs={12}>
+                      <CustomerInformation
+                        fullName={customerCard?.contact.fullName}
+                        nationalRegistrationNumber={
+                          customerCard?.contact.nationalRegistrationNumber
+                        }
+                        contactCode={customerCard?.contact.contactCode}
+                        phoneNumber={
+                          customerCard?.contact &&
+                          getContactsMainPhoneNumber(customerCard.contact)
+                        }
+                      />
 
-                    <HousingType />
-                    <HousingTypeComponentSwitcher />
+                      <HousingType />
 
-                    <Divider />
+                      <Divider />
 
-                    <HousingReferenceReviewStatus />
-                    <HousingReferenceReviewStatusComponentSwitcher />
+                      <HousingReferenceReviewStatus />
 
-                    <CustomerReference
-                      customerReferenceReceivedAt={housingReference?.createdAt}
-                      housingReferenceUpdatedAt={housingReference?.reviewedAt}
-                      updatedBy={housingReference?.reviewedBy}
-                      expiresAt={housingReference?.expiresAt}
-                    />
+                      <CustomerReference
+                        customerReferenceReceivedAt={
+                          housingReference?.createdAt
+                        }
+                        housingReferenceUpdatedAt={housingReference?.reviewedAt}
+                        updatedBy={housingReference?.reviewedBy}
+                        expiresAt={housingReference?.expiresAt}
+                      />
 
-                    <HousingReferenceComment />
+                      <HousingReferenceComment />
+                    </Grid>
+
+                    <Grid
+                      item
+                      container
+                      justifyContent="center"
+                      xs={12}
+                      marginY={4}
+                    >
+                      <Button type="submit" variant="contained">
+                        Spara/uppdatera boendereferens
+                      </Button>
+                    </Grid>
                   </Grid>
-
-                  <Grid
-                    item
-                    container
-                    justifyContent="center"
-                    xs={12}
-                    marginY={4}
-                  >
-                    <Button type="submit" variant="contained">
-                      Spara/uppdatera boendereferens
-                    </Button>
-                  </Grid>
-                </Grid>
+                </fieldset>
               </form>
             </FormProvider>
           </Paper>
