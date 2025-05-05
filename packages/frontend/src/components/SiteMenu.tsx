@@ -53,8 +53,6 @@ const SiteMenu = () => (
               <MenuLink href="/bilplatser" title="Bilplatser" />
             </MenuItem>
 
-            <Divider />
-
             <MenuItem onClick={popupState.close}>
               <MenuLink href="/materialval" title="Materialval" />
             </MenuItem>
