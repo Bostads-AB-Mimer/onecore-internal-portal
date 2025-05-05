@@ -60,7 +60,7 @@ const SiteMenu = () => (
             </MenuItem>
 
             <MenuItem onClick={popupState.close}>
-              <MenuLink href="/bostader" title="Bostäder" />
+              <MenuLink href="/sokandeprofil" title="Sökandeprofil" />
             </MenuItem>
           </Menu>
         </Backdrop>

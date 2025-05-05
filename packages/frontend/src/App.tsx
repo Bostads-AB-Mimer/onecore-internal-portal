@@ -68,7 +68,7 @@ function App() {
                     path="/materialval/utskrift"
                     element={<MaterialChoiceDetails />}
                   />
-                  <Route path="/bostader" element={<Residences />} />
+                  <Route path="/sokandeprofil" element={<Residences />} />
                   <Route path="/logout" element={<Login />} />
                 </Route>
               </Routes>
