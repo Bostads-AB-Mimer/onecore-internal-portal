@@ -45,19 +45,19 @@ const SiteMenu = () => (
             <MenuLink
               href="/bilplatser"
               title="Bilplatser"
-              popupState={popupState}
+              onClick={popupState.close}
             />
 
             <MenuLink
               href="/materialval"
               title="Materialval"
-              popupState={popupState}
+              onClick={popupState.close}
             />
 
             <MenuLink
               href="/sokandeprofil"
               title="Sökandeprofil"
-              popupState={popupState}
+              onClick={popupState.close}
             />
           </Menu>
         </Backdrop>
