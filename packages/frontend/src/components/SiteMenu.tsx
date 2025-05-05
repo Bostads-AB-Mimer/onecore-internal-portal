@@ -42,17 +42,23 @@ const SiteMenu = () => (
               <Typography variant="h1">Aktuellt</Typography>
             </MenuItem>
 
-            <MenuItem onClick={popupState.close}>
-              <MenuLink href="/bilplatser" title="Bilplatser" />
-            </MenuItem>
+            <MenuLink
+              href="/bilplatser"
+              title="Bilplatser"
+              popupState={popupState}
+            />
 
-            <MenuItem onClick={popupState.close}>
-              <MenuLink href="/materialval" title="Materialval" />
-            </MenuItem>
+            <MenuLink
+              href="/materialval"
+              title="Materialval"
+              popupState={popupState}
+            />
 
-            <MenuItem onClick={popupState.close}>
-              <MenuLink href="/sokandeprofil" title="Sökandeprofil" />
-            </MenuItem>
+            <MenuLink
+              href="/sokandeprofil"
+              title="Sökandeprofil"
+              popupState={popupState}
+            />
           </Menu>
         </Backdrop>
       </>
