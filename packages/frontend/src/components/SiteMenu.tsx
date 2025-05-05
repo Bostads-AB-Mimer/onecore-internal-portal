@@ -50,7 +50,7 @@ const SiteMenu = () => (
             </MenuItem>
 
             <MenuItem onClick={popupState.close}>
-              <MenuLink href="/parkingspaces" title="Parkeringsplatser" />
+              <MenuLink href="/bilplatser" title="Bilplatser" />
             </MenuItem>
 
             <Divider />
