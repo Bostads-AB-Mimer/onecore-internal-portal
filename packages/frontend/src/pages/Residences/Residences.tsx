@@ -66,7 +66,7 @@ const emptyStringToNull = (val: string | null | undefined): string | null =>
   val == null || val.trim() === '' ? null : val
 
 const ResidencesPage: React.FC = () => {
-  const { handleSubmit, ...formMethods } = useForm<Inputs>({
+  const formMethods = useForm<Inputs>({
     defaultValues: {
       housingType: '',
       housingTypeDescription: '',
@@ -84,6 +84,8 @@ const ResidencesPage: React.FC = () => {
     },
   })
 
+  const { handleSubmit, watch, setValue, reset } = formMethods
+
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
 
@@ -96,6 +98,13 @@ const ResidencesPage: React.FC = () => {
   } = useCustomerCard(selectedContact?.contactCode)
 
   const createOrUpdateApplicationProfile = useCreateOrUpdateApplicationProfile()
+
+  const reviewStatus = watch('housingReference.reviewStatus')
+  useEffect(() => {
+    if (reviewStatus !== 'REJECTED') {
+      setValue('housingReference.reasonRejected', '', { shouldValidate: true })
+    }
+  }, [reviewStatus, setValue])
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     const parsed = UpdateApplicationProfileRequestParamsSchema.safeParse({
@@ -165,7 +174,7 @@ const ResidencesPage: React.FC = () => {
         },
       } = customerCard.applicationProfile ?? {}
 
-      formMethods.reset({
+      reset({
         housingType: housingType || '',
         housingTypeDescription: housingTypeDescription || '',
         landlord: landlord || '',
@@ -184,19 +193,15 @@ const ResidencesPage: React.FC = () => {
       })
     }
     if (isError) {
-      formMethods.reset()
+      reset()
     }
-    // Using exhaustive-deps rule leads to an infinite loop, using `status`
-    // instead
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status])
+  }, [customerCard?.applicationProfile, isError, isSuccess, reset, status])
 
   const housingReference = customerCard?.applicationProfile?.housingReference
 
   return (
     <Stack spacing={4} padding={0}>
       <Typography variant="h1">Sökandeprofil</Typography>
-
       <Container maxWidth="md" disableGutters>
         <Stack spacing={2}>
           <SearchContact
@@ -213,7 +218,7 @@ const ResidencesPage: React.FC = () => {
               padding: '0px 20px',
             }}
           >
-            <FormProvider {...formMethods} handleSubmit={handleSubmit}>
+            <FormProvider {...formMethods}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <fieldset disabled={!isSuccess}>
                   <Grid container spacing={2} padding={2}>

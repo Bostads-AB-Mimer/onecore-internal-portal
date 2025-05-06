@@ -5,16 +5,23 @@ import {
   Select,
   Typography,
 } from '@mui/material'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller, useFormContext, useWatch } from 'react-hook-form'
 
 const RejectedReason = () => {
   const { control } = useFormContext()
+  const reviewStatus = useWatch({
+    control,
+    name: 'housingReference.reviewStatus',
+  })
+
+  if (reviewStatus !== 'REJECTED') {
+    return null
+  }
 
   return (
     <Controller
       name="housingReference.reasonRejected"
       control={control}
-      shouldUnregister
       rules={{
         required: { value: true, message: 'Du behöver välja en anledning' },
       }}
