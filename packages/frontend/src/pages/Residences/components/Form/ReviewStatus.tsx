@@ -23,13 +23,15 @@ const ReviewStatus = () => {
         <Controller
           name="housingReference.reviewStatus"
           control={control}
-          shouldUnregister
-          defaultValue="REJECTED"
           render={({ field }) => (
             <FormControl fullWidth>
               <Typography variant="h2">Ange status boendereferens *</Typography>
 
-              <RadioGroup row={isMinWidth600} {...field} sx={{ paddingLeft: '10px'}}>
+              <RadioGroup
+                row={isMinWidth600}
+                {...field}
+                sx={{ paddingLeft: '10px' }}
+              >
                 <FormControlLabel
                   value="APPROVED"
                   control={<Radio />}
