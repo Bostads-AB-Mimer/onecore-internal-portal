@@ -61,9 +61,11 @@ const ParkingSpaces = () => {
         <Box display="flex" flexGrow="1" justifyContent="flex-end" gap="1rem">
           <SyncInternalParkingSpaces />
 
-          <Button variant="dark-outlined">
-            Publicera bilplatser från Xpand
-          </Button>
+          <Link to="/bilplatser/publicera">
+            <Button variant="dark-outlined">
+              Publicera bilplatser från Xpand
+            </Button>
+          </Link>
 
           <SearchBar
             onChange={onSearch}
