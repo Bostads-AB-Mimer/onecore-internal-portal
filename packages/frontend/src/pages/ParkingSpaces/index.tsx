@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
 import { useCallback, useMemo, useState } from 'react'
 import { type GridColDef } from '@mui/x-data-grid'
 import Chevron from '@mui/icons-material/ChevronRight'
@@ -60,6 +60,11 @@ const ParkingSpaces = () => {
         <Typography variant="h1">Bilplatser</Typography>
         <Box display="flex" flexGrow="1" justifyContent="flex-end" gap="1rem">
           <SyncInternalParkingSpaces />
+
+          <Button variant="dark-outlined">
+            Publicera bilplatser från Xpand
+          </Button>
+
           <SearchBar
             onChange={onSearch}
             disabled={parkingSpaces.isLoading}
