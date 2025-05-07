@@ -17,22 +17,26 @@ import { useSyncInternalParkingSpaces } from '../hooks/useSyncInternalParkingSpa
 
 export const SyncInternalParkingSpaces = () => {
   const syncInternalParkingSpaces = useSyncInternalParkingSpaces()
-  const [open, setOpen] = useState(false)
-  const onCloseModal = () => setOpen(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <React.Fragment>
-      <Button variant="dark-outlined" onClick={() => setOpen(true)}>
+      <Button variant="dark-outlined" onClick={() => setIsOpen(true)}>
         Hämta publicerade bilplatser
       </Button>
-      <Dialog onClose={onCloseModal} open={open} maxWidth="sm" fullWidth>
+      <Dialog
+        onClose={() => setIsOpen(false)}
+        open={isOpen}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle variant="h1" fontSize={24} textAlign="left">
           Hämta publicerade bilplatser från XPand
         </DialogTitle>
 
         <IconButton
           aria-label="close"
-          onClick={() => setOpen(false)}
+          onClick={() => setIsOpen(false)}
           sx={(theme) => ({
             position: 'absolute',
             right: 8,
