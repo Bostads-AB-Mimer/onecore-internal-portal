@@ -199,6 +199,12 @@ const ResidencesPage: React.FC = () => {
 
   const housingReference = customerCard?.applicationProfile?.housingReference
 
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
   return (
     <Stack spacing={4} padding={0}>
       <Typography variant="h1">Sökandeprofil</Typography>
@@ -208,6 +214,7 @@ const ResidencesPage: React.FC = () => {
             placeholder="Sök på person eller kundnummer"
             contact={selectedContact}
             onSelect={setSelectedContact}
+            inputRef={inputRef}
           />
 
           <Paper
