@@ -1,6 +1,12 @@
 import React from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
-import { Grid, FormControl, Typography, TextField } from '@mui/material'
+import {
+  Grid,
+  FormControl,
+  FormHelperText,
+  Typography,
+  TextField,
+} from '@mui/material'
 
 import { housingFieldMatrix } from '../model/conditional'
 
@@ -26,6 +32,15 @@ const fieldConfigs: any = {
         min: 1,
       },
     },
+    controller: {
+      rules: {
+        value: true,
+        message: 'Du behöver ange antalet vuxna i hushållet.',
+        validate: (value: string) => {
+          return value !== '' || 'Du behöver ange antalet vuxna i hushållet.'
+        },
+      },
+    },
     grid: {
       sm: 6,
     },
@@ -36,6 +51,14 @@ const fieldConfigs: any = {
       type: 'number',
       inputProps: {
         min: 0,
+      },
+    },
+    controller: {
+      rules: {
+        value: true,
+        message: 'Du behöver ange antalet barn i hushållet.',
+        validate: (value: string) =>
+          value !== '' || 'Du behöver ange antalet vuxna i hushållet.',
       },
     },
     grid: {
@@ -63,18 +86,19 @@ const HousingTypeDetailsSection = () => {
   return (
     <React.Fragment>
       {fields.map((fieldName) => {
-        const { label, grid, input } = fieldConfigs[fieldName]
+        const { label, grid, input, controller } = fieldConfigs[fieldName]
 
         return (
           <Grid item key={fieldName} xs={12} {...grid}>
             <Controller
               name={fieldName}
               control={control}
-              render={({ field }) => {
+              {...controller}
+              render={({ field, fieldState }) => {
                 if (input.type === 'number') {
                   input.onChange = ({ target }: any) =>
                     field.onChange(
-                      target.value === '' ? 0 : parseInt(target.value)
+                      target.value == '' ? '' : parseInt(target.value)
                     )
                 }
                 return (
@@ -83,7 +107,14 @@ const HousingTypeDetailsSection = () => {
                       {label}
                     </Typography>
 
-                    <TextField size="small" {...field} {...input} />
+                    <TextField
+                      size="small"
+                      error={fieldState.invalid}
+                      {...field}
+                      {...input}
+                    />
+
+                    <FormHelperText>{fieldState.error?.message}</FormHelperText>
                   </FormControl>
                 )
               }}
