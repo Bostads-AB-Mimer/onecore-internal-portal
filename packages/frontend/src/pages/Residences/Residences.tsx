@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Button,
   Container,
@@ -10,15 +10,15 @@ import {
 } from '@mui/material'
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import dayjs from 'dayjs'
 import { Contact, schemas } from 'onecore-types'
+import dayjs from 'dayjs'
 import { z } from 'zod'
 
 import { SearchContact } from '../ParkingSpaces/components/create-applicant-for-listing/SearchContact'
 import { ContactSearchData } from '../ParkingSpaces/components/create-applicant-for-listing/types'
 import CustomerInformation from './components/CustomerInformation'
 import HousingType from './components/Form/HousingType'
-import HousingReferenceReviewStatus from './components/Form/ReviewStatus'
+import ReviewStatusSection from './components/ReviewStatusSection'
 import HousingReferenceComment from './components/Form/HousingReferenceComment'
 import CustomerReference from './components/CustomerReference'
 import { useCustomerCard } from './hooks/useCustomerCard'
@@ -26,6 +26,11 @@ import {
   useCreateOrUpdateApplicationProfile,
   UpdateApplicationProfileRequestParamsSchema,
 } from './hooks/useCreateOrUpdateApplicationProfile'
+import {
+  housingFieldMatrix,
+  reviewStatusFieldMatrix,
+} from './model/conditional'
+import { setConditionalFields } from '../../utils/transform-model'
 
 type HousingTypes = z.infer<
   typeof schemas.v1.ApplicationProfileHousingTypeSchema
@@ -62,29 +67,32 @@ export type Inputs = {
 const getContactsMainPhoneNumber = (contact: Contact) =>
   contact.phoneNumbers?.find(({ isMainNumber }) => isMainNumber)?.phoneNumber
 
-const emptyStringToNull = (val: string | null | undefined): string | null =>
-  val == null || val.trim() === '' ? null : val
+const formDefaults = () => {
+  return {
+    housingType: '',
+    housingTypeDescription: '',
+    housingReference: {
+      comment: '',
+      email: '',
+      expiresAt: dayjs(),
+      phone: '',
+      reasonRejected: '',
+      reviewStatus: 'PENDING',
+    },
+    landlord: '',
+    numAdults: 1,
+    numChildren: 0,
+  }
+}
 
 const ResidencesPage: React.FC = () => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      housingType: '',
-      housingTypeDescription: '',
-      housingReference: {
-        comment: '',
-        email: '',
-        expiresAt: dayjs(),
-        phone: '',
-        reasonRejected: '',
-        reviewStatus: 'PENDING',
-      },
-      landlord: '',
-      numAdults: 1,
-      numChildren: 0,
+      ...formDefaults(),
     },
   })
 
-  const { handleSubmit, watch, setValue, reset } = formMethods
+  const { handleSubmit, reset } = formMethods
 
   const [selectedContact, setSelectedContact] =
     useState<ContactSearchData | null>(null)
@@ -99,25 +107,30 @@ const ResidencesPage: React.FC = () => {
 
   const createOrUpdateApplicationProfile = useCreateOrUpdateApplicationProfile()
 
-  const reviewStatus = watch('housingReference.reviewStatus')
-  useEffect(() => {
-    if (reviewStatus !== 'REJECTED') {
-      setValue('housingReference.reasonRejected', '', { shouldValidate: true })
-    }
-  }, [reviewStatus, setValue])
-
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-    const parsed = UpdateApplicationProfileRequestParamsSchema.safeParse({
-      ...data,
-      landlord: emptyStringToNull(data.landlord),
+    const payload = {
+      ...formDefaults(),
+      housingType: data.housingType,
+      numAdults: data.numAdults,
+      numChildren: data.numChildren,
       housingReference: {
-        ...data.housingReference,
-        reasonRejected: emptyStringToNull(data.housingReference.reasonRejected),
-        email: emptyStringToNull(data.housingReference.email),
-        phone: emptyStringToNull(data.housingReference.phone),
-        expiresAt: null,
+        ...formDefaults().housingReference,
+        reviewStatus: data.housingReference.reviewStatus,
+        reviewedBy: '',
+        reasonRejected: null,
       },
-    })
+    }
+
+    setConditionalFields(data, housingFieldMatrix, data.housingType, payload)
+    setConditionalFields(
+      data,
+      reviewStatusFieldMatrix,
+      data.housingReference.reviewStatus,
+      payload
+    )
+
+    const parsed =
+      UpdateApplicationProfileRequestParamsSchema.safeParse(payload)
 
     if (parsed.success) {
       createOrUpdateApplicationProfile.mutate(
@@ -246,7 +259,7 @@ const ResidencesPage: React.FC = () => {
 
                       <Divider />
 
-                      <HousingReferenceReviewStatus />
+                      <ReviewStatusSection />
 
                       <CustomerReference
                         customerReferenceReceivedAt={
