@@ -51,10 +51,6 @@ export type Inputs = {
     comment: string
     email: string
     expiresAt: dayjs.Dayjs
-    reviewedBy: string | null
-    reviewedAt: dayjs.Dayjs
-    lastAdminUpdatedAt: dayjs.Dayjs
-    lastApplicantUpdatedAt: dayjs.Dayjs
     phone: string
     reasonRejected: RejectedReasons | ''
     reviewStatus: ReviewStatus
@@ -67,7 +63,7 @@ export type Inputs = {
 const getContactsMainPhoneNumber = (contact: Contact) =>
   contact.phoneNumbers?.find(({ isMainNumber }) => isMainNumber)?.phoneNumber
 
-const formDefaults = () => {
+const formDefaults = (): Inputs => {
   return {
     housingType: '',
     housingTypeDescription: '',
@@ -116,7 +112,6 @@ const ResidencesPage: React.FC = () => {
       housingReference: {
         ...formDefaults().housingReference,
         reviewStatus: data.housingReference.reviewStatus,
-        reviewedBy: '',
         reasonRejected: null,
       },
     }
@@ -179,8 +174,6 @@ const ResidencesPage: React.FC = () => {
           comment: '',
           email: '',
           expiresAt: dayjs(),
-          reviewedAt: dayjs(),
-          reviewedBy: '',
           phone: '',
           reasonRejected: '',
           reviewStatus: 'PENDING',
@@ -197,8 +190,6 @@ const ResidencesPage: React.FC = () => {
           comment: housingReference.comment || '',
           email: housingReference.email || '',
           expiresAt: dayjs(housingReference.expiresAt),
-          reviewedAt: dayjs(housingReference.reviewedAt),
-          reviewedBy: housingReference.reviewedBy,
           phone: housingReference.phone || '',
           reasonRejected: housingReference.reasonRejected || '',
           reviewStatus: housingReference.reviewStatus || '',
