@@ -33,5 +33,5 @@ export const reviewStatusFieldMatrix: Record<string, string[]> = {
   ],
   ['CONTACTED_UNREACHABLE']: [],
   ['REFERENCE_NOT_REQUIRED']: [],
-  [']PENDING']: [],
+  ['PENDING']: [],
 } as const
