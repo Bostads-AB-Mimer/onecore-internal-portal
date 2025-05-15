@@ -9,13 +9,13 @@ import {
 } from '../ParkingSpaces/hooks/useParkingSpaceListings'
 
 const PublishParkingSpacesPage: React.FC = () => {
-  const { data: parkingSpaceListings, isLoading } =
+  const { data: listings, isLoading } =
     useParkingSpaceListings('needs-republish')
 
   return (
     <Listings
       columns={[...getColumns(), ...getActionColumns()]}
-      rows={parkingSpaceListings}
+      rows={listings}
       loading={isLoading}
       key="needs-republish"
     />
