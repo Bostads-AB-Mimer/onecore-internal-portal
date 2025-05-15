@@ -9,21 +9,10 @@ import { ListingWithOffer } from '../ParkingSpaces/hooks/useParkingSpaceListings
 import { DeleteListing } from '../ParkingSpaces/components/DeleteListing'
 import { CreateApplicantForListing } from '../ParkingSpaces/components/create-applicant-for-listing/CreateApplicantForListing'
 
-const dateFormatter = new Intl.DateTimeFormat('sv-SE', {
-  timeZone: 'UTC',
-})
-
-const numberFormatter = new Intl.NumberFormat('sv-SE', {
-  style: 'currency',
-  currency: 'SEK',
-})
-
 const PublishParkingSpacesPage: React.FC = () => {
   return (
     <Listings
-      columns={getColumns(dateFormatter, numberFormatter).concat(
-        getActionColumns()
-      )}
+      columns={[...getColumns(), ...getActionColumns()]}
       rows={[]}
       loading={false}
       key="published"
@@ -63,10 +52,12 @@ const Listings = (props: {
   />
 )
 
-const getColumns = (
-  dateFormatter: Intl.DateTimeFormat,
-  numberFormatter: Intl.NumberFormat
-): Array<GridColDef<ListingWithOffer>> => {
+const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
+  const numberFormatter = new Intl.NumberFormat('sv-SE', {
+    style: 'currency',
+    currency: 'SEK',
+  })
+
   const sharedColumnProps = {
     editable: false,
     flex: 1,
