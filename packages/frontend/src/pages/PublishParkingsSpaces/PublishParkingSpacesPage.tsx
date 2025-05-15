@@ -1,28 +1,34 @@
-import { IconButton, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { type GridColDef } from '@mui/x-data-grid'
-import Chevron from '@mui/icons-material/ChevronRight'
-import { Listing, ListingStatus } from 'onecore-types'
-import { Link } from 'react-router-dom'
+import { Listing } from 'onecore-types'
 
 import { DataGridTable } from '../../components'
-import { ListingWithOffer } from '../ParkingSpaces/hooks/useParkingSpaceListings'
-import { DeleteListing } from '../ParkingSpaces/components/DeleteListing'
-import { CreateApplicantForListing } from '../ParkingSpaces/components/create-applicant-for-listing/CreateApplicantForListing'
+import {
+  ListingWithOffer,
+  useParkingSpaceListings,
+} from '../ParkingSpaces/hooks/useParkingSpaceListings'
 
 const PublishParkingSpacesPage: React.FC = () => {
+  const { data: parkingSpaceListings, isLoading } =
+    useParkingSpaceListings('needs-republish')
+
   return (
     <Listings
       columns={[...getColumns(), ...getActionColumns()]}
-      rows={[]}
-      loading={false}
+      rows={parkingSpaceListings}
+      loading={isLoading}
       key="published"
     />
   )
 }
 
-const Listings = (props: {
+const Listings = ({
+  columns,
+  rows = [],
+  loading,
+}: {
   columns: Array<GridColDef>
-  rows: Array<Listing>
+  rows?: Array<Listing>
   loading: boolean
 }) => (
   <DataGridTable
@@ -42,10 +48,10 @@ const Listings = (props: {
         </Stack>
       ),
     }}
-    columns={props.columns}
-    rows={props.rows}
+    columns={columns}
+    rows={rows}
     getRowId={(row) => row.id}
-    loading={props.loading}
+    loading={loading}
     rowHeight={72}
     disableRowSelectionOnClick
     autoHeight
@@ -105,35 +111,9 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
       flex: 1,
       minWidth: 250,
       cellClassName: 'actions',
-      getActions: ({ row }) => [
-        <DeleteListing
-          key={0}
-          address={row.address}
-          rentalObjectCode={row.rentalObjectCode}
-          disabled={row.status !== ListingStatus.Active}
-          id={row.id}
-        />,
-        <CreateApplicantForListing
-          key={1}
-          disabled={row.status !== ListingStatus.Active}
-          listing={row}
-        />,
+      getActions: () => [
+        // TODO: Add dropdown menu for publish in queue type
       ],
-    },
-    {
-      field: 'action-link',
-      headerName: '',
-      sortable: false,
-      filterable: false,
-      flex: 0.5,
-      disableColumnMenu: true,
-      renderCell: ({ id }) => (
-        <Link to={`/bilplatser/${id}`}>
-          <IconButton sx={{ color: 'black' }}>
-            <Chevron />
-          </IconButton>
-        </Link>
-      ),
     },
   ]
 }
