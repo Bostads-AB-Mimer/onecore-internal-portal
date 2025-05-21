@@ -10,7 +10,7 @@ export const useRemoveApplicantFromListing = () => {
   return useMutation<unknown, AxiosError, Params>({
     mutationFn: (params: Params) =>
       axios.delete<unknown>(
-        `${backendUrl}/listings/applicant/${params.applicantId}`,
+        `${backendUrl}/listings/applicants/${params.applicantId}`,
         {
           headers: {
             Accept: 'application/json',

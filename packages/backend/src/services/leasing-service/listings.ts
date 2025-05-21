@@ -24,7 +24,7 @@ export const routes = (router: KoaRouter) => {
     ctx.body = { error: result.err, ...metadata }
   })
 
-  router.delete('(.*)/listings/applicant/:applicantId', async (ctx) => {
+  router.delete('(.*)/listings/applicants/:applicantId', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
     const result = await coreAdapter.removeApplicant(ctx.params.applicantId)
 
