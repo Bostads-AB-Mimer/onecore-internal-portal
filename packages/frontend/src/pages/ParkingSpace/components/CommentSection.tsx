@@ -132,7 +132,7 @@ const CommentSection = (props: { listingId: number }) => {
   }, [data])
 
   const { control, handleSubmit, reset } = useForm<CommentFormState>({
-    defaultValues: { type: 'comment', comment: '' },
+    defaultValues: { type: 'COMMENT', comment: '' },
   })
 
   /* Mutations */
@@ -154,7 +154,7 @@ const CommentSection = (props: { listingId: number }) => {
       }
     )
 
-    reset({ type: 'comment', comment: '' })
+    reset({ type: 'COMMENT', comment: '' })
   }
 
   const removeComment = useRemoveComment()
@@ -219,7 +219,7 @@ const CommentSection = (props: { listingId: number }) => {
                   aria-label="Typ av kommentar"
                 >
                   <ToggleButton
-                    value="comment"
+                    value="COMMENT"
                     aria-label="Kommentar"
                     sx={{
                       color: '#2196f3', // light blue
@@ -232,7 +232,7 @@ const CommentSection = (props: { listingId: number }) => {
                     <ChatBubbleOutlineIcon />
                   </ToggleButton>
                   <ToggleButton
-                    value="warning"
+                    value="WARNING"
                     aria-label="Varning"
                     sx={{
                       color: '#fbc02d', // amber
@@ -245,7 +245,7 @@ const CommentSection = (props: { listingId: number }) => {
                     <WarningAmberIcon />
                   </ToggleButton>
                   <ToggleButton
-                    value="stop"
+                    value="STOP"
                     aria-label="Allvarlig varning"
                     sx={{
                       color: '#e53935', // red
