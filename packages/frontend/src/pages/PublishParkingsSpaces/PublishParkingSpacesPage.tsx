@@ -53,8 +53,11 @@ const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
       ...sharedColumnProps,
       valueFormatter: ({ value }) => `${numberFormatter.format(value)}/mån`,
     },
-
-    // TODO: Antal publicerade intern kö
+    {
+      field: 'numTimesPublishedInInternalQueue',
+      headerName: 'Antal publiceringar intern kö',
+      ...sharedColumnProps,
+    },
   ]
 }
 
