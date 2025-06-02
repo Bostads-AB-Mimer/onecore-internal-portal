@@ -61,8 +61,14 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
       flex: 1,
       minWidth: 250,
       cellClassName: 'actions',
+      headerName: 'Publicera i kötyp',
+      headerAlign: 'left',
       getActions: () => [
-        // TODO: Add dropdown menu for publish in queue type
+        <Select key="queueType" sx={{ width: '100%', display: 'block' }}>
+          <MenuItem value="">Välj</MenuItem>
+          <MenuItem value="internal">Intern</MenuItem>
+          <MenuItem value="external">Extern</MenuItem>
+        </Select>,
       ],
     },
   ]
