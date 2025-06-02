@@ -38,6 +38,11 @@ const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
       ...sharedColumnProps,
     },
     {
+      field: 'districtCaption',
+      headerName: 'Distrikt',
+      ...sharedColumnProps,
+    },
+    {
       field: 'objectTypeCaption',
       headerName: 'Bilplatstyp',
       ...sharedColumnProps,
