@@ -119,7 +119,7 @@ const PublishParkingSpacesPage: React.FC = () => {
     <Listings
       columns={[...getColumns(), ...getActionColumns()]}
       rows={exampleListings}
-      loading={isLoading}
+      loading={false}
       key="needs-republish"
     />
   )
