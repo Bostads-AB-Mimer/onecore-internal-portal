@@ -8,56 +8,6 @@ import {
   useParkingSpaceListings,
 } from '../ParkingSpaces/hooks/useParkingSpaceListings'
 
-const PublishParkingSpacesPage: React.FC = () => {
-  const { data: listings, isLoading } =
-    useParkingSpaceListings('needs-republish')
-
-  return (
-    <Listings
-      columns={[...getColumns(), ...getActionColumns()]}
-      rows={listings}
-      loading={isLoading}
-      key="needs-republish"
-    />
-  )
-}
-
-const Listings = ({
-  columns,
-  rows = [],
-  loading,
-}: {
-  columns: Array<GridColDef>
-  rows?: Array<Listing>
-  loading: boolean
-}) => (
-  <DataGridTable
-    initialState={{
-      sorting: {
-        sortModel: [{ field: 'queuePoints', sort: 'desc' }],
-      },
-      pagination: { paginationModel: { pageSize: 30 } },
-    }}
-    pageSizeOptions={[10, 30, 60, 100]}
-    slots={{
-      noRowsOverlay: () => (
-        <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
-          <Typography fontSize="14px">
-            Det finns inga annonser att visa.
-          </Typography>
-        </Stack>
-      ),
-    }}
-    columns={columns}
-    rows={rows}
-    getRowId={(row) => row.id}
-    loading={loading}
-    rowHeight={72}
-    disableRowSelectionOnClick
-    autoHeight
-  />
-)
-
 const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
   const numberFormatter = new Intl.NumberFormat('sv-SE', {
     style: 'currency',
@@ -117,5 +67,55 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
     },
   ]
 }
+
+const PublishParkingSpacesPage: React.FC = () => {
+  const { data: listings, isLoading } =
+    useParkingSpaceListings('needs-republish')
+
+  return (
+    <Listings
+      columns={[...getColumns(), ...getActionColumns()]}
+      rows={listings}
+      loading={isLoading}
+      key="needs-republish"
+    />
+  )
+}
+
+const Listings = ({
+  columns,
+  rows = [],
+  loading,
+}: {
+  columns: Array<GridColDef>
+  rows?: Array<Listing>
+  loading: boolean
+}) => (
+  <DataGridTable
+    initialState={{
+      sorting: {
+        sortModel: [{ field: 'queuePoints', sort: 'desc' }],
+      },
+      pagination: { paginationModel: { pageSize: 30 } },
+    }}
+    pageSizeOptions={[10, 30, 60, 100]}
+    slots={{
+      noRowsOverlay: () => (
+        <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
+          <Typography fontSize="14px">
+            Det finns inga annonser att visa.
+          </Typography>
+        </Stack>
+      ),
+    }}
+    columns={columns}
+    rows={rows}
+    getRowId={(row) => row.id}
+    loading={loading}
+    rowHeight={72}
+    disableRowSelectionOnClick
+    autoHeight
+  />
+)
 
 export default PublishParkingSpacesPage
