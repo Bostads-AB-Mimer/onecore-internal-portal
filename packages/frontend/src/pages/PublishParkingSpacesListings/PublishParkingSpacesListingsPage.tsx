@@ -72,8 +72,8 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
       headerName: 'Publicera i kötyp',
       headerAlign: 'left',
       getActions: () => [
-        <Select key="queueType" sx={{ width: '100%', display: 'block' }}>
-          <MenuItem value="">Välj</MenuItem>
+        <Select key="queueType" defaultValue="select">
+          <MenuItem value="select">Välj</MenuItem>
           <MenuItem value="internal">Intern</MenuItem>
           <MenuItem value="external">Extern</MenuItem>
         </Select>,
@@ -115,11 +115,16 @@ const PublishParkingSpacesPage: React.FC = () => {
   const { data: listings, isLoading } =
     useParkingSpaceListings('needs-republish')
 
+  // const { data: listings, isLoading } = {
+  //   data: exampleListings,
+  //   isLoading: false,
+  // }
+
   return (
     <Listings
       columns={[...getColumns(), ...getActionColumns()]}
-      rows={exampleListings}
-      loading={false}
+      rows={listings}
+      loading={isLoading}
       key="needs-republish"
     />
   )
