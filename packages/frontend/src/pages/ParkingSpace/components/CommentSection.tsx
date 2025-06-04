@@ -25,6 +25,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/sv'
 import { CommentThreadId, Comment, CommentType } from 'onecore-types'
+import { toast } from 'react-toastify'
 
 import { useProfile, Account } from '../../../common/hooks/useProfile'
 import { useCommentThread } from '../hooks/useCommentThread'
@@ -35,9 +36,9 @@ dayjs.extend(relativeTime)
 dayjs.locale('sv')
 
 const commentTypeColors: Record<string, string> = {
-  comment: '#f7fbfe',
-  warning: '#fffdf5',
-  stop: '#fff7f8',
+  COMMENT: 'inherit',
+  WARNING: '#fffdf5',
+  STOP: '#fff7f8',
 }
 
 const iconProps = { margin: '8px' }
@@ -60,7 +61,7 @@ const CommentCard = ({
 }: {
   comment: Comment
   isOwnComment: boolean
-  onDeleteClick: (_: any) => undefined
+  onDeleteClick: (id: number) => void
 }) => (
   <Paper
     sx={{
@@ -105,15 +106,11 @@ const CommentCard = ({
   </Paper>
 )
 
-const CommentSection = (props: { listingId: number }) => {
+const CommentSection = (props: { threadId: CommentThreadId }) => {
   const { data: profile } = useProfile()
 
   const account = profile?.account as Account
-
-  const threadId: CommentThreadId = {
-    targetId: props.listingId,
-    targetType: 'listings',
-  }
+  const threadId = props.threadId
 
   /* State */
   const [comments, setComments] = useState<Array<Comment>>([])
@@ -150,15 +147,20 @@ const CommentSection = (props: { listingId: number }) => {
         onSuccess: (newComment: Comment) => {
           setLocalCommentIds((current) => new Set(current).add(newComment.id))
           setComments([newComment, ...comments])
+          reset({ type: 'COMMENT', comment: '' })
+        },
+        onError: () => {
+          toast('Ett fel inträffade när din kommentar skulle sparas.', {
+            type: 'error',
+            hideProgressBar: true,
+          })
         },
       }
     )
-
-    reset({ type: 'COMMENT', comment: '' })
   }
 
   const removeComment = useRemoveComment()
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number): void => {
     removeComment.mutate(
       {
         threadId: threadId,
@@ -174,7 +176,7 @@ const CommentSection = (props: { listingId: number }) => {
   }
 
   /* Dialog interaction */
-  const handleDeleteClick = (id: number) => {
+  const handleDeleteClick = (id: number): void => {
     setDeleteDialog({
       open: true,
       commentId: id,
@@ -287,7 +289,7 @@ const CommentSection = (props: { listingId: number }) => {
                   <CommentCard
                     comment={comment}
                     isOwnComment={account?.username === comment.authorId}
-                    onDeleteClick={handleDeleteClick}
+                    onDeleteClick={() => handleDeleteClick(comment.id)}
                   />
                 </Collapse>
               ))}
@@ -338,7 +340,7 @@ const CommentSection = (props: { listingId: number }) => {
               </Button>
               <LoadingButton
                 variant="dark"
-                onClick={() => handleDelete(deleteDialog.commentId)}
+                onClick={() => handleDelete(deleteDialog.commentId!)}
                 loading={removeComment.isPending}
               >
                 Bekräfta

@@ -24,6 +24,7 @@ declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     dark: true
     'dark-outlined': true
+    'dark-outlined-utility': true
   }
 }
 

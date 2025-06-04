@@ -31,18 +31,28 @@ export const routes = (router: KoaRouter) => {
       type: true,
     }
   )
-  type AddCommentPayload = z.infer<typeof AddCommentPayloadSchema>
 
   router.post('(.*)/comments/:targetType/thread/:targetId', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
     const { targetType, targetId } = ctx.params
 
-    const comment = <AddCommentPayload>ctx.request.body
+    const parseResult = AddCommentPayloadSchema.safeParse(ctx.request.body)
+
+    if (!parseResult.success) {
+      ctx.status = 400
+      ctx.body = {
+        error: 'Invalid request body',
+        invalid: ctx.request.body,
+        detail: parseResult.error,
+        ...metadata,
+      }
+      return
+    }
 
     const result = await coreAdapter.addComment(
       { targetType, targetId: Number(targetId) },
       {
-        ...comment,
+        ...parseResult.data,
         authorName: ctx.session?.account.name,
         authorId: ctx.session?.account.username,
       }

@@ -11,11 +11,11 @@ export function mapAddCommentErrors(
   e: AxiosError<{ error?: AddCommentRequestErrorCodes; errorMessage: string }>
 ): RequestError<AddCommentRequestErrorCodes> {
   switch (e.response?.data?.error) {
-    case AddCommentRequestErrorCodes.NoComment:
+    case AddCommentRequestErrorCodes.EmptyComment:
       return {
         status: e.response.status,
         errorHeading: 'Tom kommentar',
-        errorCode: AddCommentRequestErrorCodes.NoComment,
+        errorCode: AddCommentRequestErrorCodes.EmptyComment,
         errorMessage: 'Kan ej lämna tom kommentar.',
       }
     case AddCommentRequestErrorCodes.Unknown:

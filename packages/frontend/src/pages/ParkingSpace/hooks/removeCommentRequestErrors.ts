@@ -14,11 +14,11 @@ export function mapRemoveCommentErrors(
   }>
 ): RequestError<RemoveCommentRequestErrorCodes> {
   switch (e.response?.data?.error) {
-    case RemoveCommentRequestErrorCodes.NoComment:
+    case RemoveCommentRequestErrorCodes.AccessDenied:
       return {
         status: e.response.status,
         errorHeading: 'Ej tillåtet',
-        errorCode: RemoveCommentRequestErrorCodes.NoComment,
+        errorCode: RemoveCommentRequestErrorCodes.AccessDenied,
         errorMessage: 'Du kan endast ta bort dina egna kommentarer.',
       }
     case RemoveCommentRequestErrorCodes.Unknown:

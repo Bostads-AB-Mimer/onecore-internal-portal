@@ -37,7 +37,9 @@ const ParkingSpace = () => {
           <Typography paddingY="2rem" variant="h1">
             Kommentarer / Logg
           </Typography>
-          <CommentSection listingId={listingId} />
+          <CommentSection
+            threadId={{ targetType: 'listing', targetId: listingId }}
+          />
         </Grid>
       </Grid>
     </>
