@@ -20,7 +20,7 @@ import ParkingSpaces from './pages/ParkingSpaces'
 import ParkingSpace from './pages/ParkingSpace'
 import { mdTheme } from './theme'
 import Residences from './pages/Residences/Residences'
-import PublishParkingSpacesPage from './pages/PublishParkingsSpaces/PublishParkingSpacesPage'
+import PublishParkingSpacesPage from './pages/PublishParkingSpacesListings/PublishParkingSpacesListingsPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
