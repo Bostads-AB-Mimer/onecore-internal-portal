@@ -27,7 +27,7 @@ const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
       flex: 1.25,
       renderCell: ({ row }) => (
         <span>
-          <span style={{ display: 'block' }}>{row.address}</span>
+          {row.address}
           {row.rentalObjectCode}
         </span>
       ),
@@ -162,6 +162,7 @@ const Listings = ({
     loading={loading}
     rowHeight={72}
     disableRowSelectionOnClick
+    checkboxSelection
     autoHeight
   />
 )

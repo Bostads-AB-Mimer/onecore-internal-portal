@@ -310,6 +310,9 @@ export const mdTheme = createTheme(theme, {
           color: theme.palette.warmGrey.main,
         },
         cell: { fontSize: '1.25em' },
+        checkboxInput: {
+          color: '#007BC4',
+        },
       },
     },
     MuiCardActions: {
