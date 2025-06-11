@@ -68,16 +68,15 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
       type: 'actions',
       flex: 1,
       minWidth: 250,
-      cellClassName: 'actions',
       headerName: 'Publicera i kötyp',
       headerAlign: 'left',
-      getActions: () => [
-        <Select key="queueType" defaultValue="select">
+      renderCell: () => (
+        <Select defaultValue="select" fullWidth>
           <MenuItem value="select">Välj</MenuItem>
           <MenuItem value="internal">Intern</MenuItem>
           <MenuItem value="external">Extern</MenuItem>
-        </Select>,
-      ],
+        </Select>
+      ),
     },
   ]
 }
