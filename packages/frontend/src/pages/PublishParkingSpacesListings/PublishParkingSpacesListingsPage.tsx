@@ -110,25 +110,6 @@ const exampleListings: Array<Listing> = [
   },
 ]
 
-const PublishParkingSpacesPage: React.FC = () => {
-  const { data: listings, isLoading } =
-    useParkingSpaceListings('needs-republish')
-
-  // const { data: listings, isLoading } = {
-  //   data: exampleListings,
-  //   isLoading: false,
-  // }
-
-  return (
-    <Listings
-      columns={[...getColumns(), ...getActionColumns()]}
-      rows={listings}
-      loading={isLoading}
-      key="needs-republish"
-    />
-  )
-}
-
 const Listings = ({
   columns,
   rows = [],
@@ -166,5 +147,24 @@ const Listings = ({
     hideFooterPagination
   />
 )
+
+const PublishParkingSpacesPage: React.FC = () => {
+  // const { data: listings, isLoading } =
+  //   useParkingSpaceListings('needs-republish')
+
+  const { data: listings, isLoading } = {
+    data: exampleListings,
+    isLoading: false,
+  }
+
+  return (
+    <Listings
+      columns={[...getColumns(), ...getActionColumns()]}
+      rows={listings}
+      loading={isLoading}
+      key="needs-republish"
+    />
+  )
+}
 
 export default PublishParkingSpacesPage
