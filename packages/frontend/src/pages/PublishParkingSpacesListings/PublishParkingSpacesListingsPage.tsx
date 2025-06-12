@@ -163,6 +163,7 @@ const Listings = ({
     disableRowSelectionOnClick
     checkboxSelection
     autoHeight
+    hideFooterPagination
   />
 )
 
