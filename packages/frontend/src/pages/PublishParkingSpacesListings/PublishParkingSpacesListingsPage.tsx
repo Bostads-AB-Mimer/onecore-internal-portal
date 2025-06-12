@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { MenuItem, Select, Stack, Typography } from '@mui/material'
 import { type GridColDef } from '@mui/x-data-grid'
 import { Listing, ListingStatus } from 'onecore-types'
@@ -158,12 +159,23 @@ const PublishParkingSpacesPage: React.FC = () => {
   }
 
   return (
-    <Listings
-      columns={[...getColumns(), ...getActionColumns()]}
-      rows={listings}
-      loading={isLoading}
-      key="needs-republish"
-    />
+    <Fragment>
+      <Typography variant="h1" paddingBottom={2}>
+        Publicera bilplatser
+      </Typography>
+
+      <Typography variant="body1" paddingBottom={2}>
+        Nedan listas alla bilplatser som behöver ompubliceras från Xpand och som
+        ej är spärrade.
+      </Typography>
+
+      <Listings
+        columns={[...getColumns(), ...getActionColumns()]}
+        rows={listings}
+        loading={isLoading}
+        key="needs-republish"
+      />
+    </Fragment>
   )
 }
 
