@@ -221,7 +221,6 @@ export const mdTheme = createTheme(
         styleOverrides: {
           root: {
             textTransform: 'initial',
-            backgroundColor: 'black',
             fontFamily: 'graphikRegular',
             fontSize: 14,
             fontWeight: 500,
