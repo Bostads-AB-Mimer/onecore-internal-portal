@@ -71,8 +71,7 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
       headerName: 'Publicera i kötyp',
       headerAlign: 'left',
       renderCell: () => (
-        <Select defaultValue="select" fullWidth>
-          <MenuItem value="select">Välj</MenuItem>
+        <Select defaultValue="internal" fullWidth>
           <MenuItem value="internal">Intern</MenuItem>
           <MenuItem value="external">Extern</MenuItem>
         </Select>
