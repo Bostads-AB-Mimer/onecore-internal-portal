@@ -1,4 +1,4 @@
-import { Box, MenuItem, Select, Stack, Typography } from '@mui/material'
+import { Box, Button, MenuItem, Select, Stack, Typography } from '@mui/material'
 import { type GridColDef } from '@mui/x-data-grid'
 import { Listing, ListingStatus } from 'onecore-types'
 
@@ -148,6 +148,10 @@ const Listings = ({
   />
 )
 
+const handlePublishParkingSpaces = () => {
+  // TODO implement
+}
+
 const PublishParkingSpacesPage: React.FC = () => {
   // const { data: listings, isLoading } =
   //   useParkingSpaceListings('needs-republish')
@@ -174,6 +178,16 @@ const PublishParkingSpacesPage: React.FC = () => {
         loading={isLoading}
         key="needs-republish"
       />
+
+      <Box display="flex" justifyContent="space-between">
+        <Button variant="dark-outlined" onClick={history.back}>
+          Avbryt
+        </Button>
+
+        <Button variant="contained" onClick={handlePublishParkingSpaces}>
+          Publicera bilplatser
+        </Button>
+      </Box>
     </Box>
   )
 }
