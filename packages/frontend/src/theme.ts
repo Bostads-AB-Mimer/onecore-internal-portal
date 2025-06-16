@@ -232,7 +232,6 @@ export const mdTheme = createTheme(
           {
             props: { variant: 'dark' },
             style: {
-              borderRadius: '6px',
               textTransform: 'none',
               fontWeight: 700,
               backgrund: 'rgba(0, 0, 0, 1)',
@@ -249,9 +248,8 @@ export const mdTheme = createTheme(
           {
             props: { variant: 'dark-outlined' },
             style: {
-              borderRadius: '6px',
               textTransform: 'none',
-              border: '2px solid black',
+              border: '1px solid black',
               fontWeight: 700,
               color: 'rgba(0, 0, 0, 1)',
               background: 'white',
