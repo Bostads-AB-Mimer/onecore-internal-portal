@@ -94,6 +94,7 @@ const exampleListings: Array<Listing> = [
     publishedTo: new Date(),
     status: ListingStatus.Active,
     vacantFrom: new Date(),
+    numTimesPublishedInInternalQueue: 3,
   },
   {
     id: 2,
@@ -107,6 +108,7 @@ const exampleListings: Array<Listing> = [
     publishedTo: new Date(),
     status: ListingStatus.Active,
     vacantFrom: new Date(),
+    numTimesPublishedInInternalQueue: 2,
   },
 ]
 
