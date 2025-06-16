@@ -145,10 +145,8 @@ const Listings = ({
       }}
       columns={columns}
       rows={rows}
-      getRowId={(row) => row.id}
       loading={loading}
       rowHeight={72}
-      disableRowSelectionOnClick
       checkboxSelection
       autoHeight
       hideFooterPagination
@@ -185,10 +183,10 @@ const PublishParkingSpacesPage: React.FC = () => {
       </Typography>
 
       <Listings
-        columns={[...getColumns(), ...getActionColumns()]}
-        rows={listings}
-        loading={isLoading}
         key="needs-republish"
+        rows={listings}
+        columns={[...getColumns(), ...getActionColumns()]}
+        loading={isLoading}
       />
 
       <Box display="flex" justifyContent="space-between">
