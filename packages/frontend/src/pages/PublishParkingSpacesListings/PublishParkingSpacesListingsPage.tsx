@@ -1,5 +1,4 @@
-import { Fragment } from 'react'
-import { MenuItem, Select, Stack, Typography } from '@mui/material'
+import { Box, MenuItem, Select, Stack, Typography } from '@mui/material'
 import { type GridColDef } from '@mui/x-data-grid'
 import { Listing, ListingStatus } from 'onecore-types'
 
@@ -159,7 +158,7 @@ const PublishParkingSpacesPage: React.FC = () => {
   }
 
   return (
-    <Fragment>
+    <Box>
       <Typography variant="h1" paddingBottom={2}>
         Publicera bilplatser
       </Typography>
@@ -175,7 +174,7 @@ const PublishParkingSpacesPage: React.FC = () => {
         loading={isLoading}
         key="needs-republish"
       />
-    </Fragment>
+    </Box>
   )
 }
 
