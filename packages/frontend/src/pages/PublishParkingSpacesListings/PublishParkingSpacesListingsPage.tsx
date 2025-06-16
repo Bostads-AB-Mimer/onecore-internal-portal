@@ -128,9 +128,6 @@ const Listings = ({
   return (
     <DataGridTable
       initialState={{
-        sorting: {
-          sortModel: [{ field: 'queuePoints', sort: 'desc' }],
-        },
         pagination: { paginationModel: { pageSize: 30 } },
       }}
       pageSizeOptions={[10, 30, 60, 100]}
