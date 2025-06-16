@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Box, Button, MenuItem, Select, Stack, Typography } from '@mui/material'
 import { type GridColDef } from '@mui/x-data-grid'
 import { Listing, ListingStatus } from 'onecore-types'
@@ -117,35 +118,45 @@ const Listings = ({
   columns: Array<GridColDef>
   rows?: Array<Listing>
   loading: boolean
-}) => (
-  <DataGridTable
-    initialState={{
-      sorting: {
-        sortModel: [{ field: 'queuePoints', sort: 'desc' }],
-      },
-      pagination: { paginationModel: { pageSize: 30 } },
-    }}
-    pageSizeOptions={[10, 30, 60, 100]}
-    slots={{
-      noRowsOverlay: () => (
-        <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
-          <Typography fontSize="14px">
-            Det finns inga annonser att visa.
-          </Typography>
-        </Stack>
-      ),
-    }}
-    columns={columns}
-    rows={rows}
-    getRowId={(row) => row.id}
-    loading={loading}
-    rowHeight={72}
-    disableRowSelectionOnClick
-    checkboxSelection
-    autoHeight
-    hideFooterPagination
-  />
-)
+}) => {
+  const [selectionModel, setSelectionModel] = useState<Array<number>>(() =>
+    rows.map(({ id }) => id)
+  )
+
+  return (
+    <DataGridTable
+      initialState={{
+        sorting: {
+          sortModel: [{ field: 'queuePoints', sort: 'desc' }],
+        },
+        pagination: { paginationModel: { pageSize: 30 } },
+      }}
+      pageSizeOptions={[10, 30, 60, 100]}
+      slots={{
+        noRowsOverlay: () => (
+          <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
+            <Typography fontSize="14px">
+              Det finns inga annonser att visa.
+            </Typography>
+          </Stack>
+        ),
+      }}
+      columns={columns}
+      rows={rows}
+      getRowId={(row) => row.id}
+      loading={loading}
+      rowHeight={72}
+      disableRowSelectionOnClick
+      checkboxSelection
+      autoHeight
+      hideFooterPagination
+      rowSelectionModel={selectionModel}
+      onRowSelectionModelChange={(rows) =>
+        setSelectionModel(rows as Array<number>)
+      }
+    />
+  )
+}
 
 const handlePublishParkingSpaces = () => {
   // TODO implement
