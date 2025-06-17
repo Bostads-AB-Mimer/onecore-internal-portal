@@ -75,6 +75,7 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
         <Select defaultValue="internal" fullWidth>
           <MenuItem value="internal">Intern</MenuItem>
           <MenuItem value="external">Extern</MenuItem>
+          <MenuItem value="no-points">Poängfri</MenuItem>
         </Select>
       ),
     },
