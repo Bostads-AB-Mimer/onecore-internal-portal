@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, Button, MenuItem, Select, Stack, Typography } from '@mui/material'
-import { type GridColDef } from '@mui/x-data-grid'
-import { Listing, ListingStatus } from 'onecore-types'
+import { type GridRowId, type GridColDef } from '@mui/x-data-grid'
 
 import { DataGridTable } from '../../components'
 import {
@@ -121,9 +120,11 @@ const Listings = ({
   rows?: Array<Listing>
   loading: boolean
 }) => {
-  const [selectionModel, setSelectionModel] = useState<Array<number>>(() =>
-    rows.map(({ id }) => id)
-  )
+  const [selectionModel, setSelectionModel] = useState<Array<GridRowId>>()
+
+  useEffect(() => {
+    setSelectionModel(rows.map(({ id }) => id))
+  }, [rows])
 
   return (
     <DataGridTable
@@ -144,9 +145,7 @@ const Listings = ({
       autoHeight
       hideFooterPagination
       rowSelectionModel={selectionModel}
-      onRowSelectionModelChange={(rows) =>
-        setSelectionModel(rows as Array<number>)
-      }
+      onRowSelectionModelChange={setSelectionModel}
     />
   )
 }
