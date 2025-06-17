@@ -81,37 +81,6 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
   ]
 }
 
-const exampleListings: Array<Listing> = [
-  {
-    id: 1,
-    address: 'Exempelgatan 1',
-    districtCaption: 'Distrikt A',
-    blockCaption: 'Område A',
-    objectTypeCaption: 'Exempeltyp',
-    monthlyRent: 1000,
-    rentalObjectCode: '12345',
-    publishedFrom: new Date(),
-    publishedTo: new Date(),
-    status: ListingStatus.Active,
-    vacantFrom: new Date(),
-    numTimesPublishedInInternalQueue: 3,
-  },
-  {
-    id: 2,
-    address: 'Exempelgatan 2',
-    districtCaption: 'Distrikt A',
-    blockCaption: 'Område B',
-    objectTypeCaption: 'Exempeltyp',
-    monthlyRent: 1000,
-    rentalObjectCode: '12345',
-    publishedFrom: new Date(),
-    publishedTo: new Date(),
-    status: ListingStatus.Active,
-    vacantFrom: new Date(),
-    numTimesPublishedInInternalQueue: 2,
-  },
-]
-
 const Listings = ({
   columns,
   rows = [],
@@ -156,13 +125,7 @@ const handlePublishParkingSpaces = () => {
 }
 
 const PublishParkingSpacesPage: React.FC = () => {
-  // const { data: listings, isLoading } =
-  //   useParkingSpaceListings('needs-republish')
-
-  const { data: listings, isLoading } = {
-    data: exampleListings,
-    isLoading: false,
-  }
+  const { data: listings, isLoading } = useParkingSpaceListings('published')
 
   return (
     <Box>
