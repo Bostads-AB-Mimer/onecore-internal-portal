@@ -100,7 +100,6 @@ export const routes = (router: KoaRouter) => {
     }
   })
 
-  // /listings/with-applicants
   router.get('(.*)/listings/with-applicants', async (ctx) => {
     const metadata = generateRouteMetadata(ctx)
     const result = await coreAdapter.getListingsWithApplicants(ctx.querystring)
