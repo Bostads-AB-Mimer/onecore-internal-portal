@@ -127,10 +127,6 @@ const Listings = ({
 
   return (
     <DataGridTable
-      initialState={{
-        pagination: { paginationModel: { pageSize: 30 } },
-      }}
-      pageSizeOptions={[10, 30, 60, 100]}
       slots={{
         noRowsOverlay: () => (
           <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
