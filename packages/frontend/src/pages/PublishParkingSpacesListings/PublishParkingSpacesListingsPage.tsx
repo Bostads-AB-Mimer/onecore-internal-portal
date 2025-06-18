@@ -94,7 +94,7 @@ const Listings = ({
   const [selectionModel, setSelectionModel] = useState<Array<GridRowId>>()
 
   useEffect(() => {
-    setSelectionModel(rows.map(({ id }) => id))
+    if (rows.length > 0) setSelectionModel(rows.map(({ id }) => id))
   }, [rows])
 
   return (
