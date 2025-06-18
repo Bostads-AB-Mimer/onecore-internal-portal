@@ -86,17 +86,15 @@ const Listings = ({
   columns,
   rows = [],
   loading,
+  selectedIds,
+  onRowSelectionModelChange,
 }: {
   columns: Array<GridColDef>
   rows?: Array<Listing>
   loading: boolean
+  selectedIds: Array<GridRowId>
+  onRowSelectionModelChange: (model: Array<GridRowId>) => void
 }) => {
-  const [selectionModel, setSelectionModel] = useState<Array<GridRowId>>()
-
-  useEffect(() => {
-    if (rows.length > 0) setSelectionModel(rows.map(({ id }) => id))
-  }, [rows])
-
   return (
     <DataGridTable
       slots={{
@@ -115,18 +113,25 @@ const Listings = ({
       checkboxSelection
       autoHeight
       hideFooterPagination
-      rowSelectionModel={selectionModel}
-      onRowSelectionModelChange={setSelectionModel}
+      rowSelectionModel={selectedIds}
+      onRowSelectionModelChange={onRowSelectionModelChange}
     />
   )
 }
 
-const handlePublishParkingSpaces = () => {
-  // TODO implement
+const handlePublishParkingSpaces = (ids: Array<GridRowId>) => {
+  console.log('Publishing parking spaces with IDs:', ids)
 }
 
 const PublishParkingSpacesPage: React.FC = () => {
   const { data: listings, isLoading } = useParkingSpaceListings('published')
+  const [selectedIds, setSelectedIds] = useState<Array<GridRowId>>([])
+
+  useEffect(() => {
+    if (listings) {
+      setSelectedIds(listings.map(({ id }) => id))
+    }
+  }, [listings])
 
   return (
     <Box>
@@ -144,14 +149,19 @@ const PublishParkingSpacesPage: React.FC = () => {
         rows={listings}
         columns={[...getColumns(), ...getActionColumns()]}
         loading={isLoading}
+        selectedIds={selectedIds}
+        onRowSelectionModelChange={setSelectedIds}
       />
 
       <Box display="flex" justifyContent="space-between">
-        <Button variant="dark-outlined" onClick={history.back}>
+        <Button variant="dark-outlined" onClick={() => window.history.back()}>
           Avbryt
         </Button>
 
-        <Button variant="contained" onClick={handlePublishParkingSpaces}>
+        <Button
+          variant="contained"
+          onClick={() => handlePublishParkingSpaces(selectedIds)}
+        >
           Publicera bilplatser
         </Button>
       </Box>
