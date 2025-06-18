@@ -94,30 +94,28 @@ const Listings = ({
   loading: boolean
   selectedIds: Array<GridRowId>
   onRowSelectionModelChange: (model: Array<GridRowId>) => void
-}) => {
-  return (
-    <DataGridTable
-      slots={{
-        noRowsOverlay: () => (
-          <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
-            <Typography fontSize="14px">
-              Det finns inga annonser att visa.
-            </Typography>
-          </Stack>
-        ),
-      }}
-      columns={columns}
-      rows={rows}
-      loading={loading}
-      rowHeight={72}
-      checkboxSelection
-      autoHeight
-      hideFooterPagination
-      rowSelectionModel={selectedIds}
-      onRowSelectionModelChange={onRowSelectionModelChange}
-    />
-  )
-}
+}) => (
+  <DataGridTable
+    slots={{
+      noRowsOverlay: () => (
+        <Stack paddingTop="1rem" alignItems="center" justifyContent="center">
+          <Typography fontSize="14px">
+            Det finns inga annonser att visa.
+          </Typography>
+        </Stack>
+      ),
+    }}
+    columns={columns}
+    rows={rows}
+    loading={loading}
+    rowHeight={72}
+    checkboxSelection
+    autoHeight
+    hideFooterPagination
+    rowSelectionModel={selectedIds}
+    onRowSelectionModelChange={onRowSelectionModelChange}
+  />
+)
 
 const handlePublishParkingSpaces = (ids: Array<GridRowId>) => {
   console.log('Publishing parking spaces with IDs:', ids)
