@@ -39,7 +39,7 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
             <Typography>Bilplats</Typography>
             <Box>
               <Typography fontWeight="bold">
-                {parkingSpaceListing.address}
+                {parkingSpaceListing.rentalObject.address}
               </Typography>
               <Typography fontWeight="bold" textAlign="right">
                 {parkingSpaceListing.rentalObjectCode}
@@ -58,7 +58,7 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
             <Typography>Område</Typography>
             <Box>
               <Typography fontWeight="bold">
-                {parkingSpaceListing.districtCaption}
+                {parkingSpaceListing.rentalObject.districtCaption}
               </Typography>
             </Box>
           </Box>
@@ -66,7 +66,7 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
             <Typography>Bilplatstyp</Typography>
             <Box>
               <Typography fontWeight="bold">
-                {parkingSpaceListing.objectTypeCaption}
+                {parkingSpaceListing.rentalObject.objectTypeCaption}
               </Typography>
             </Box>
           </Box>
@@ -74,7 +74,7 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
             <Typography>Hyra</Typography>
             <Box>
               <Typography fontWeight="bold">{`${numberFormatter.format(
-                parkingSpaceListing.monthlyRent
+                parkingSpaceListing.rentalObject.monthlyRent
               )}/mån`}</Typography>
             </Box>
           </Box>
@@ -100,7 +100,10 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
             <Typography>Ledig från och med</Typography>
             <Box>
               <Typography fontWeight="bold">
-                {printVacantFrom(dateFormatter, parkingSpaceListing.vacantFrom)}
+                {printVacantFrom(
+                  dateFormatter,
+                  parkingSpaceListing.rentalObject.vacantFrom
+                )}
               </Typography>
             </Box>
           </Box>

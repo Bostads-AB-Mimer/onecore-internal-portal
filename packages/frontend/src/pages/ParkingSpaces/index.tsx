@@ -193,7 +193,7 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
       getActions: ({ row }) => [
         <DeleteListing
           key={0}
-          address={row.address}
+          address={row.rentalObject.address}
           rentalObjectCode={row.rentalObjectCode}
           disabled={row.status !== ListingStatus.Active}
           id={row.id}
@@ -278,7 +278,7 @@ const getColumns = (
       flex: 1.25,
       renderCell: (v) => (
         <span>
-          <span style={{ display: 'block' }}>{v.row.address}</span>
+          <span style={{ display: 'block' }}>{v.row.rentalObject.address}</span>
           {v.row.rentalObjectCode}
         </span>
       ),
@@ -287,22 +287,30 @@ const getColumns = (
       field: 'districtCaption',
       headerName: 'Område',
       ...sharedColumnProps,
+      valueGetter: (params) => params.row.rentalObject?.districtCaption ?? '',
     },
     {
       field: 'objectTypeCaption',
       headerName: 'Bilplatstyp',
       ...sharedColumnProps,
+      valueGetter: (params) => params.row.rentalObject?.objectTypeCaption ?? '',
     },
     {
-      field: 'waitingListType',
+      field: 'rentalRule',
       headerName: 'Kötyp',
       ...sharedColumnProps,
+      valueGetter: (params) => {
+        if (params.row.rentalRule === 'NON_SCORED') return 'Poängfri'
+        if (params.row.rentalRule === 'SCORED') return 'Extern'
+        return ''
+      },
     },
     {
       field: 'monthlyRent',
       headerName: 'Hyra',
       ...sharedColumnProps,
-      valueFormatter: (v) => `${numberFormatter.format(v.value)}/mån`,
+      valueFormatter: (v) =>
+        `${numberFormatter.format(v.row.rentalObject.monthlyRent)}/mån`,
     },
     {
       field: 'applicants',
@@ -321,7 +329,8 @@ const getColumns = (
       field: 'vacantFrom',
       headerName: 'Ledig FR.O.M',
       ...sharedColumnProps,
-      valueFormatter: (v) => printVacantFrom(dateFormatter, v.value),
+      valueFormatter: (v) =>
+        printVacantFrom(dateFormatter, v.row.rentalObject.vacantFrom),
     },
   ]
 }
