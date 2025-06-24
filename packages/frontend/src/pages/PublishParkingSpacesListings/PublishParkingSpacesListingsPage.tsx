@@ -66,6 +66,12 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
       headerName: 'Publicera i kötyp',
       headerAlign: 'left',
       renderCell: () => (
+        // TODO: Rule-based selection of queue type depending on whether it has
+        // been published before and which area it belongs to. If the parking
+        // space is in an area with special rental rules, it defaults to the
+        // `internal` queue.
+        //
+        // (Same as for the number of parking spaces per applicant)
         <Select defaultValue="internal" fullWidth>
           <MenuItem value="internal">Intern</MenuItem>
           <MenuItem value="external">Extern</MenuItem>
