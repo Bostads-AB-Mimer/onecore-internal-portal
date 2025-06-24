@@ -233,8 +233,8 @@ export const mdTheme = createTheme(
             style: {
               textTransform: 'none',
               fontWeight: 700,
-              backgrund: 'rgba(0, 0, 0, 1)',
-              color: 'rgba(255, 255, 255, 1)',
+              backgroundColor: 'black',
+              color: 'white',
               transition: 'none',
               ':hover': {
                 background: 'black',
