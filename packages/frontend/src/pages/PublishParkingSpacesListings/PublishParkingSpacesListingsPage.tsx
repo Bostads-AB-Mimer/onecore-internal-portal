@@ -15,16 +15,10 @@ const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
     currency: 'SEK',
   })
 
-  const sharedColumnProps = {
-    editable: false,
-    flex: 1,
-  }
-
   return [
     {
       field: 'address',
       headerName: 'Bilplats',
-      ...sharedColumnProps,
       flex: 1.25,
       renderCell: ({ row }) => (
         <span>
@@ -35,29 +29,29 @@ const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
     },
     {
       field: 'blockCaption',
+      flex: 1,
       headerName: 'Område',
-      ...sharedColumnProps,
     },
     {
       field: 'districtCaption',
+      flex: 1,
       headerName: 'Distrikt',
-      ...sharedColumnProps,
     },
     {
       field: 'objectTypeCaption',
+      flex: 1,
       headerName: 'Bilplatstyp',
-      ...sharedColumnProps,
     },
     {
       field: 'monthlyRent',
+      flex: 1,
       headerName: 'Hyra',
-      ...sharedColumnProps,
       valueFormatter: ({ value }) => `${numberFormatter.format(value)}/mån`,
     },
     {
       field: 'numTimesPublishedInInternalQueue',
+      flex: 1,
       headerName: 'Antal publiceringar intern kö',
-      ...sharedColumnProps,
     },
   ]
 }
