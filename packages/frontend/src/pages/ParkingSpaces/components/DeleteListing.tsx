@@ -49,7 +49,7 @@ export const DeleteListing = (props: {
         variant="dark"
         onClick={() => setOpen(true)}
       >
-        Ta bort annons
+        Radera
       </Button>
       <Dialog
         onClose={onClose}
