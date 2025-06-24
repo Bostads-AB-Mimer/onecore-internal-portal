@@ -285,9 +285,16 @@ const getColumns = (
     },
     {
       field: 'districtCaption',
-      headerName: 'Område',
+      headerName: 'Distrikt',
       ...sharedColumnProps,
       valueGetter: (params) => params.row.rentalObject?.districtCaption ?? '',
+    },
+    {
+      field: 'restidentalAreaCaption',
+      headerName: 'Område',
+      ...sharedColumnProps,
+      valueGetter: (params) =>
+        params.row.rentalObject?.restidentalAreaCaption ?? '',
     },
     {
       field: 'objectTypeCaption',
@@ -301,7 +308,7 @@ const getColumns = (
       ...sharedColumnProps,
       valueGetter: (params) => {
         if (params.row.rentalRule === 'NON_SCORED') return 'Poängfri'
-        if (params.row.rentalRule === 'SCORED') return 'Extern'
+        if (params.row.rentalRule === 'SCORED') return 'Intern'
         return ''
       },
     },
@@ -309,8 +316,8 @@ const getColumns = (
       field: 'monthlyRent',
       headerName: 'Hyra',
       ...sharedColumnProps,
-      valueFormatter: (v) =>
-        `${numberFormatter.format(v.row.rentalObject.monthlyRent)}/mån`,
+      valueGetter: (params) => params.row.rentalObject?.monthlyRent ?? 0,
+      valueFormatter: (v) => `${numberFormatter.format(v.value)}/mån`,
     },
     {
       field: 'applicants',
@@ -329,8 +336,8 @@ const getColumns = (
       field: 'vacantFrom',
       headerName: 'Ledig FR.O.M',
       ...sharedColumnProps,
-      valueFormatter: (v) =>
-        printVacantFrom(dateFormatter, v.row.rentalObject.vacantFrom),
+      valueGetter: (params) => params.row.rentalObject?.vacantFrom ?? '',
+      valueFormatter: (v) => printVacantFrom(dateFormatter, v.value),
     },
   ]
 }

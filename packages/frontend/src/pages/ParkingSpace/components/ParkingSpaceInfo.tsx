@@ -50,15 +50,37 @@ export const ParkingSpaceInfo = (props: { listingId: number }) => {
           <Box display="flex" justifyContent="space-between" flex="1">
             <Typography>Skyltnummer</Typography>
             <Box>
-              <Typography fontWeight="bold">{'N/A'}</Typography>
+              <Typography fontWeight="bold">
+                {
+                  parkingSpaceListing.rentalObjectCode.split('-')[
+                    parkingSpaceListing.rentalObjectCode.split('-').length - 1
+                  ]
+                }
+              </Typography>
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Yta</Typography>
+            <Box>
+              <Typography fontWeight="bold">
+                {parkingSpaceListing.rentalObject.braArea} kvm
+              </Typography>
             </Box>
           </Box>
           <Box height="50px" />
           <Box display="flex" justifyContent="space-between" flex="1">
-            <Typography>Område</Typography>
+            <Typography>Distrikt</Typography>
             <Box>
               <Typography fontWeight="bold">
                 {parkingSpaceListing.rentalObject.districtCaption}
+              </Typography>
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" flex="1">
+            <Typography>Område</Typography>
+            <Box>
+              <Typography fontWeight="bold">
+                {parkingSpaceListing.rentalObject.restidentalAreaCaption}
               </Typography>
             </Box>
           </Box>
