@@ -22,7 +22,7 @@ const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
       flex: 1.25,
       renderCell: ({ row }) => (
         <span>
-          {row.address}
+          <span style={{ display: 'block' }}>{row.address}</span>
           {row.rentalObjectCode}
         </span>
       ),
