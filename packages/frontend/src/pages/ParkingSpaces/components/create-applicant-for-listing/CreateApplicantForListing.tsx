@@ -295,18 +295,6 @@ function tenantHasValidContractForTheDiscrict(
   tenant: Tenant,
   listing: Listing
 ) {
-  console.log(
-    'tenant.upcomingHousingContract?.residentialArea?.code',
-    tenant.upcomingHousingContract?.residentialArea?.code
-  )
-  console.log(
-    'tenant.currentHousingContract?.residentialArea?.code',
-    tenant.currentHousingContract?.residentialArea?.code
-  )
-  console.log(
-    'listing.rentalObject.restidentalAreaCode',
-    listing.rentalObject.restidentalAreaCode
-  )
   const hasUpComingContractInThisDistrict =
     tenant.upcomingHousingContract?.residentialArea?.code ===
     listing.rentalObject.restidentalAreaCode
