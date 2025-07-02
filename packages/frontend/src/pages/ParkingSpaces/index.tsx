@@ -297,11 +297,11 @@ const getColumns = (
       valueGetter: (params) => params.row.rentalObject?.districtCaption ?? '',
     },
     {
-      field: 'restidentalAreaCaption',
+      field: 'residentialAreaCaption',
       headerName: 'Område',
       ...sharedColumnProps,
       valueGetter: (params) =>
-        params.row.rentalObject?.restidentalAreaCaption ?? '',
+        params.row.rentalObject?.residentialAreaCaption ?? '',
     },
     {
       field: 'objectTypeCaption',
