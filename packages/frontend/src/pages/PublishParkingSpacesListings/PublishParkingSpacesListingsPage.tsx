@@ -153,7 +153,7 @@ const PublishParkingSpacesPage: React.FC = () => {
 
       <Box display="flex" justifyContent="space-between">
         <Button variant="dark-outlined" onClick={() => window.history.back()}>
-          Avbryt
+          Tillbaka
         </Button>
 
         <Button
