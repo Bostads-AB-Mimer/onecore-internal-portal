@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Box, Button, MenuItem, Select, Stack, Typography } from '@mui/material'
 import { type GridRowId, type GridColDef } from '@mui/x-data-grid'
-import { Listing } from 'onecore-types'
+import { RentalObject } from 'onecore-types'
 
 import { DataGridTable } from '../../components'
-import {
-  ListingWithOffer,
-  useParkingSpaceListings,
-} from '../ParkingSpaces/hooks/useParkingSpaceListings'
+import { ListingWithOffer } from '../ParkingSpaces/hooks/useParkingSpaceListings'
+import { useVacantParkingSpaces } from '../ParkingSpaces/hooks/useVacantParkingSpaces'
 
-const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
+const getColumns = (): Array<GridColDef<RentalObject>> => {
   const numberFormatter = new Intl.NumberFormat('sv-SE', {
     style: 'currency',
     currency: 'SEK',
@@ -28,7 +26,7 @@ const getColumns = (): Array<GridColDef<ListingWithOffer>> => {
       ),
     },
     {
-      field: 'blockCaption',
+      field: 'residentialAreaCaption',
       flex: 1,
       headerName: 'Område',
     },
@@ -72,17 +70,16 @@ const getActionColumns = (): Array<GridColDef<ListingWithOffer>> => {
         // `internal` queue.
         //
         // (Same as for the number of parking spaces per applicant)
-        <Select defaultValue="internal" fullWidth>
-          <MenuItem value="internal">Intern</MenuItem>
-          <MenuItem value="external">Extern</MenuItem>
-          <MenuItem value="no-points">Poängfri</MenuItem>
+        <Select defaultValue="SCORED" fullWidth>
+          <MenuItem value="SCORED">Intern</MenuItem>
+          <MenuItem value="NON_SCORED">Poängfri</MenuItem>
         </Select>
       ),
     },
   ]
 }
 
-const Listings = ({
+const ParkingSpaces = ({
   columns,
   rows = [],
   loading,
@@ -90,7 +87,7 @@ const Listings = ({
   onRowSelectionModelChange,
 }: {
   columns: Array<GridColDef>
-  rows?: Array<Listing>
+  rows?: Array<RentalObject>
   loading: boolean
   selectedIds: Array<GridRowId>
   onRowSelectionModelChange: (model: Array<GridRowId>) => void
@@ -106,12 +103,13 @@ const Listings = ({
       ),
     }}
     columns={columns}
+    getRowId={(row) => row.rentalObjectCode}
     rows={rows}
     loading={loading}
     rowHeight={72}
     checkboxSelection
     autoHeight
-    hideFooterPagination
+    hideFooterPagination={false}
     rowSelectionModel={selectedIds}
     onRowSelectionModelChange={onRowSelectionModelChange}
   />
@@ -122,14 +120,16 @@ const handlePublishParkingSpaces = (ids: Array<GridRowId>) => {
 }
 
 const PublishParkingSpacesPage: React.FC = () => {
-  const { data: listings, isLoading } = useParkingSpaceListings('published')
+  const { data: parkingSpaces, isLoading } = useVacantParkingSpaces()
   const [selectedIds, setSelectedIds] = useState<Array<GridRowId>>([])
 
   useEffect(() => {
-    if (listings) {
-      setSelectedIds(listings.map(({ id }) => id))
+    if (parkingSpaces) {
+      setSelectedIds(
+        parkingSpaces.map(({ rentalObjectCode }) => rentalObjectCode)
+      )
     }
-  }, [listings])
+  }, [parkingSpaces])
 
   return (
     <Box>
@@ -142,9 +142,9 @@ const PublishParkingSpacesPage: React.FC = () => {
         ej är spärrade.
       </Typography>
 
-      <Listings
+      <ParkingSpaces
         key="needs-republish"
-        rows={listings}
+        rows={parkingSpaces}
         columns={[...getColumns(), ...getActionColumns()]}
         loading={isLoading}
         selectedIds={selectedIds}
